@@ -261,6 +261,96 @@ h2{font-size:1.05rem;margin:0 0 10px}
 <style>.tabs button span,.helpbtn span{white-space:nowrap;font-size:.56rem;letter-spacing:-.02em}</style>
 <style>.pi{width:1.1em;height:1.1em;display:inline-block;vertical-align:-.18em;margin:0 .15em}h1 .pi,h2 .pi{width:1em;height:1em;color:var(--sun)}</style>
 <style>.sharebtns{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}.sharebtns .ghost{font-size:.85rem;padding:10px 6px}.sharemsg{font-size:.85rem;margin:8px 0 0;min-height:1em;word-break:break-all}</style>
+<style>
+#titleCard{text-align:center}
+.tc-lab{font-size:.78rem;letter-spacing:.25em;color:var(--soft)}
+.tc-row{display:flex;align-items:center;justify-content:center;gap:10px;margin:8px 0 4px}
+.tc-ic svg{width:36px;height:36px;color:var(--sun);display:block}
+.tc-name{font-size:1.7rem;font-weight:900}
+.tc-desc{font-size:.85rem;color:var(--soft)}
+.tc-next{font-size:.85rem;margin-top:10px;padding-top:10px;border-top:1px solid var(--line)}
+.tc-next b{color:var(--sun)}
+.tg-ov{position:fixed;inset:0;z-index:45;display:flex;align-items:center;justify-content:center;background:rgba(8,10,14,.96);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);padding:24px;overflow:hidden}
+.tg-box{position:relative;text-align:center;color:#fff;animation:tgPop .7s cubic-bezier(.2,1.6,.4,1) both}
+.tg-rays{position:absolute;left:50%;top:42%;width:520px;height:520px;margin:-260px 0 0 -260px;border-radius:50%;background:repeating-conic-gradient(rgba(255,158,122,.10) 0 10deg,transparent 10deg 20deg);animation:tgSpin 12s linear infinite;pointer-events:none}
+.tg-kicker{position:relative;font-size:1rem;font-weight:800;letter-spacing:.35em;color:#FF9E7A;margin-bottom:14px}
+.tg-ic{position:relative;width:120px;height:120px;margin:0 auto 10px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:rgba(255,158,122,.14);box-shadow:0 0 0 6px rgba(255,158,122,.25),0 0 60px rgba(255,158,122,.5)}
+.tg-ic svg{width:70px;height:70px;color:#FF9E7A}
+.tg-name{position:relative;font-size:3.2rem;font-weight:900;line-height:1.1;text-shadow:0 0 24px rgba(255,158,122,.6)}
+.tg-desc{position:relative;font-size:1rem;opacity:.85;margin:12px 0 4px}
+.tg-cond{position:relative;font-size:.85rem;opacity:.65;margin-bottom:22px}
+.tg-btn{position:relative;border:none;border-radius:999px;padding:14px 38px;font:inherit;font-weight:800;font-size:1.05rem;background:#FF9E7A;color:#14171C;cursor:pointer}
+.tg-cf{position:absolute;top:-20px;width:10px;height:16px;border-radius:2px;animation:tgFall linear forwards;pointer-events:none}
+@keyframes tgPop{0%{transform:scale(.2);opacity:0}100%{transform:scale(1);opacity:1}}
+@keyframes tgSpin{to{transform:rotate(360deg)}}
+@keyframes tgFall{to{transform:translateY(110vh) rotate(720deg)}}
+@media (prefers-reduced-motion:reduce){.tg-box,.tg-rays,.tg-cf{animation:none}.tg-cf{display:none}}
+</style>
+<style>.tc-review{margin-top:14px;padding-top:14px;border-top:1px solid var(--line);text-align:left;font-size:.88rem}.tc-rvh{font-weight:900;color:var(--sun);text-align:center;margin-bottom:6px}.tc-rvid{margin:6px 0 2px}.tc-rvsum{font-size:.8rem;color:var(--soft)}.tc-rvcode{display:flex;gap:8px;margin-top:10px}.tc-rvcode input{flex:2;min-width:0;padding:10px;border-radius:12px;border:2px solid var(--line);font:inherit;text-transform:uppercase;background:var(--card);color:var(--ink)}.tc-rvcode .ghost{flex:1}</style>
+<style>
+.nw-ov{position:fixed;inset:0;z-index:44;display:flex;align-items:flex-end;justify-content:center;background:rgba(8,10,14,.55);padding:0 12px calc(12px + env(safe-area-inset-bottom,0px))}
+.nw-box{width:100%;max-width:440px;background:var(--card);color:var(--ink);border-radius:22px;padding:20px 20px 16px;box-shadow:0 -8px 40px rgba(0,0,0,.3);animation:nwUp .35s ease-out both}
+.nw-k{font-size:.75rem;letter-spacing:.25em;color:var(--sun);font-weight:800}
+.nw-t{font-size:1.15rem;font-weight:900;margin:4px 0 2px}
+.nw-d{font-size:.78rem;color:var(--soft);margin-bottom:10px}
+.nw-box ul{margin:0 0 14px;padding-left:1.2em;font-size:.9rem;line-height:1.7}
+.nw-btn{width:100%;border:none;border-radius:999px;padding:12px;font:inherit;font-weight:800;background:var(--sun);color:var(--sunInk,#14171C);cursor:pointer}
+@keyframes nwUp{from{transform:translateY(40px);opacity:0}to{transform:none;opacity:1}}
+@media (prefers-reduced-motion:reduce){.nw-box{animation:none}}
+</style>
+<style>
+/* 段階的な演出 */
+.tg-l0 .tg-box,.tg-l1 .tg-box,.tg-l2 .tg-box{animation:tgPopS .5s ease-out both}
+.tg-l0 .tg-ic,.tg-l1 .tg-ic{box-shadow:none;background:rgba(255,255,255,.06);width:90px;height:90px}
+.tg-l0 .tg-ic svg,.tg-l1 .tg-ic svg{width:50px;height:50px}
+.tg-l0 .tg-name{font-size:2rem;text-shadow:none;opacity:.85}
+.tg-l1 .tg-name{font-size:2.3rem;text-shadow:none}
+.tg-l2 .tg-name{font-size:2.6rem}
+.tg-l3 .tg-name,.tg-l4 .tg-name{font-size:2.9rem}
+.tg-l5 .tg-name,.tg-l6 .tg-name{font-size:3.2rem}
+.tg-l7 .tg-name,.tg-l8 .tg-name{font-size:3.6rem}
+.tg-l0 .tg-kicker{color:#8A909B;letter-spacing:.15em}
+.tg-l0 .tg-btn{background:#3A4250;color:#fff}
+.tg-l3 .tg-rays,.tg-l4 .tg-rays{opacity:.5;animation-duration:20s}
+.tg-l5 .tg-rays,.tg-l6 .tg-rays{opacity:.9;animation-duration:12s}
+.tg-l7 .tg-rays,.tg-l8 .tg-rays{opacity:1;animation-duration:7s;width:760px;height:760px;margin:-380px 0 0 -380px}
+.tg-wave{position:absolute;left:50%;top:42%;width:120px;height:120px;margin:-60px 0 0 -60px;border-radius:50%;border:3px solid #FF9E7A;animation:tgWave 1.6s ease-out .2s both;pointer-events:none}
+.tg-wave.w2{animation-delay:.6s}
+.tg-flash{position:absolute;inset:0;background:#fff;animation:tgFlash .6s ease-out both;pointer-events:none}
+.tg-gold .tg-kicker{color:#FFD27A}
+.tg-gold .tg-ic{background:rgba(255,210,122,.16);box-shadow:0 0 0 6px rgba(255,210,122,.35),0 0 90px rgba(255,210,122,.7)}
+.tg-gold .tg-ic svg{color:#FFD27A}
+.tg-gold .tg-name{background:linear-gradient(180deg,#FFF4D6,#FFD27A 55%,#E9A54A);-webkit-background-clip:text;background-clip:text;color:transparent;text-shadow:none;filter:drop-shadow(0 0 18px rgba(255,210,122,.6))}
+.tg-gold .tg-rays{background:repeating-conic-gradient(rgba(255,210,122,.16) 0 8deg,transparent 8deg 16deg)}
+.tg-gold .tg-wave{border-color:#FFD27A}
+.tg-gold .tg-btn{background:linear-gradient(180deg,#FFE9A8,#FFD27A)}
+@keyframes tgPopS{0%{transform:translateY(12px);opacity:0}100%{transform:none;opacity:1}}
+@keyframes tgWave{0%{transform:scale(.4);opacity:.9}100%{transform:scale(6);opacity:0}}
+@keyframes tgFlash{0%{opacity:.85}100%{opacity:0}}
+/* 不滅の法灯（別格） */
+.tg-h{background:#000!important}
+.th-glow{position:absolute;left:50%;top:40%;width:700px;height:700px;margin:-350px 0 0 -350px;border-radius:50%;background:radial-gradient(closest-side,rgba(255,170,60,.35),rgba(255,120,40,.12) 55%,transparent);animation:thGlow 3s ease-out .6s both,thBreath 3.2s ease-in-out 3.6s infinite;pointer-events:none}
+.th-box{position:relative;text-align:center;color:#fff}
+.th-k{font-size:.95rem;letter-spacing:.6em;color:#FFD27A;font-weight:800;animation:thFade 1s ease-out .4s both}
+.th-flame{position:relative;width:110px;height:170px;margin:18px auto 6px}
+.th-flame svg{position:absolute;left:15px;top:0;width:80px;height:120px;transform-origin:50% 90%;animation:thIgnite 1.4s cubic-bezier(.2,1.4,.4,1) .9s both,thFlicker .18s ease-in-out 2.4s infinite alternate}
+.th-f1{fill:#FF9E3D}.th-f2{fill:#FFF1B8}
+.th-lamp{position:absolute;left:20px;bottom:0;width:70px;height:40px;border-radius:0 0 35px 35px;background:linear-gradient(180deg,#C9A35A,#7A5A22);box-shadow:0 0 30px rgba(255,170,60,.5);animation:thFade .8s ease-out .2s both}
+.th-name{font-size:3.4rem;font-weight:900;letter-spacing:.06em;margin-top:6px}
+.th-name span{display:inline-block;background:linear-gradient(180deg,#FFF4D6,#FFD27A 50%,#E9A54A);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 16px rgba(255,190,90,.7));animation:thChar .7s cubic-bezier(.2,1.5,.4,1) both}
+.th-sub{font-size:1.15rem;margin-top:14px;color:#FFE9C2;animation:thFade 1.2s ease-out 3.4s both}
+.th-sub2{font-size:.85rem;margin:6px 0 26px;color:#B9A27A;animation:thFade 1.2s ease-out 3.9s both}
+.th-btn{background:linear-gradient(180deg,#FFE9A8,#E9A54A)!important;color:#2A1A00!important;animation:thFade 1s ease-out 4.6s both}
+.th-em{position:absolute;bottom:-10px;border-radius:50%;background:#FFC46B;box-shadow:0 0 8px #FF9E3D;animation:thRise linear infinite both;pointer-events:none}
+@keyframes thGlow{0%{transform:scale(.1);opacity:0}100%{transform:scale(1);opacity:1}}
+@keyframes thBreath{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
+@keyframes thIgnite{0%{transform:scale(0);opacity:0}60%{opacity:1}100%{transform:scale(1);opacity:1}}
+@keyframes thFlicker{0%{transform:scale(1,1) skewX(0)}100%{transform:scale(.96,1.04) skewX(2deg)}}
+@keyframes thChar{0%{transform:translateY(20px) scale(.6);opacity:0}100%{transform:none;opacity:1}}
+@keyframes thFade{0%{opacity:0;transform:translateY(6px)}100%{opacity:1;transform:none}}
+@keyframes thRise{0%{transform:translateY(0);opacity:0}15%{opacity:1}100%{transform:translateY(-105vh);opacity:0}}
+@media (prefers-reduced-motion:reduce){.tg-wave,.tg-flash,.th-em{display:none}.th-glow,.th-flame svg,.th-name span,.th-sub,.th-sub2,.th-btn,.th-k,.th-lamp{animation:none}}
+</style>
 </head>
 <body>
 <div id="splash" class="splash" role="dialog" aria-label="とめれん帳">
@@ -308,6 +398,7 @@ h2{font-size:1.05rem;margin:0 0 10px}
       <div class="helpmenu" id="helpMenu">
         <a href="#" id="helpGuide">💡 使い方を見る</a>
         <a href="https://form.jotform.com/262745742685065" target="_blank" rel="noopener">📮 お問い合わせ</a>
+        <a href="#news" id="helpNews">🔔 運営からのお知らせ</a>
         <a href="#share" id="helpShare">🔗 とめれん帳を教える</a>
       </div>
     </div>
@@ -456,6 +547,25 @@ h2{font-size:1.05rem;margin:0 0 10px}
     <div id="dayBody"></div>
   </section>
 
+  <section data-tab="log" class="card" id="titleCard">
+    <div class="tc-lab">いまの称号</div>
+    <div class="tc-row"><span class="tc-ic" id="tcIcon"></span><span class="tc-name" id="tcName">—</span></div>
+    <div class="tc-desc" id="tcDesc"></div>
+    <div class="tc-next" id="tcNext"></div>
+    <div class="tc-review" id="tcReview" hidden>
+      <div class="tc-rvh">「不滅の法灯」の審査に申請できるよ</div>
+      <p>千年消えない火の称号。きみの記録を運営が審査して、合格したら<b>認定コード</b>をメールで送るよ。</p>
+      <div class="tc-rvid">申請番号：<b id="rvId"></b></div>
+      <div class="tc-rvsum" id="rvSum"></div>
+      <div class="sharebtns">
+        <button type="button" class="ghost" id="rvCopy">📋 申請内容をコピー</button>
+        <a class="ghost" href="https://form.jotform.com/262753238845062" target="_blank" rel="noopener" style="text-align:center;text-decoration:none">申請フォームをひらく</a>
+      </div>
+      <div class="tc-rvcode"><input id="rvCode" placeholder="認定コード（6文字）" autocomplete="off" maxlength="12"><button type="button" class="ghost" id="rvCheck">決定</button></div>
+      <p class="sharemsg" id="rvMsg" aria-live="polite"></p>
+    </div>
+  </section>
+
   <section data-tab="log" class="card">
     <h2>これまでのきろく 📈</h2>
     <div class="stats" id="stats"></div>
@@ -471,7 +581,7 @@ h2{font-size:1.05rem;margin:0 0 10px}
     <ul class="hist" id="hist"></ul>
   </section>
 
-  <p data-tab="log" class="foot">ver.7<br>きろくは自分だけが見れるよ🔒<br><a href="https://form.jotform.com/262745742685065" target="_blank" rel="noopener" style="color:var(--soft)">お問い合わせ</a><br><button class="linkbtn" id="resetAll">きろくを全部けす</button></p>
+  <p data-tab="log" class="foot">ver.8<br>きろくは自分だけが見れるよ🔒<br><a href="https://form.jotform.com/262745742685065" target="_blank" rel="noopener" style="color:var(--soft)">お問い合わせ</a><br><button class="linkbtn" id="resetAll">きろくを全部けす</button></p>
 </main>
 
 <script>
@@ -1922,9 +2032,10 @@ h2{font-size:1.05rem;margin:0 0 10px}
     mail:'<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/>',
     arrow:'<path d="M5 12h14M13 6l6 6-6 6"/>',
     link:'<path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/>',
+    bell:'<path d="M6 16V11a6 6 0 0 1 12 0v5l2 2H4z"/><path d="M10 20a2 2 0 0 0 4 0"/>',
     timer:'<circle cx="12" cy="13" r="8"/><path d="M10 2h4"/><path d="M10.5 10v6M13.5 10v6"/>'
   };
-  var M={'📌':'pin','🤔':'q','🌟':'star','🖼️':'img','🖼':'img','🎙️':'mic','🎙':'mic','📅':'cal','📈':'chart','🙏':'hands','🫶':'heart','💦':'drop','🎉':'spark','📋':'clip','🎁':'gift','✅':'check','🔈':'spk','🔊':'spkon','🔇':'mute','🌙':'moon','⬆':'up','🎬':'film','💭':'cloud','🤖':'bot','🏁':'flag','✕':'x','💡':'bulb','📮':'mail','→':'arrow','💪':'timer','🔗':'link'};
+  var M={'📌':'pin','🤔':'q','🌟':'star','🖼️':'img','🖼':'img','🎙️':'mic','🎙':'mic','📅':'cal','📈':'chart','🙏':'hands','🫶':'heart','💦':'drop','🎉':'spark','📋':'clip','🎁':'gift','✅':'check','🔈':'spk','🔊':'spkon','🔇':'mute','🌙':'moon','⬆':'up','🎬':'film','💭':'cloud','🤖':'bot','🏁':'flag','✕':'x','💡':'bulb','📮':'mail','→':'arrow','💪':'timer','🔗':'link','🔔':'bell'};
   var keys=Object.keys(M).sort(function(a,b){return b.length-a.length}).map(function(k){return k.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')});
   var RE=new RegExp('('+keys.join('|')+')\uFE0F?','g');
   function svg(n){var e=document.createElementNS('http://www.w3.org/2000/svg','svg');e.setAttribute('viewBox','0 0 24 24');e.setAttribute('class','pi');e.setAttribute('aria-hidden','true');e.setAttribute('fill','none');e.setAttribute('stroke','currentColor');e.setAttribute('stroke-width','2');e.setAttribute('stroke-linecap','round');e.setAttribute('stroke-linejoin','round');e.innerHTML=P[n];return e;}
@@ -1965,6 +2076,141 @@ h2{font-size:1.05rem;margin:0 0 10px}
     var b=e.target.closest('[data-share]'); if(b){ go(b.getAttribute('data-share')); return; }
     if(e.target.closest('#helpShare')){ e.preventDefault(); var t=document.querySelector('#tabs button[data-go="help"]'); if(t) t.click(); setTimeout(function(){var c=document.getElementById('share'); if(c) c.scrollIntoView({behavior:'smooth',block:'start'});},80); var hm=document.getElementById('helpMenu'); if(hm) hm.classList.remove('open'); }
   });
+})();
+</script>
+
+<script>
+(function(){
+  var SV=function(d){return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+d+'</svg>';};
+  var T=[
+    {n:'流れ星',m:1,d:1,t:'願いごと3回言う前に消える',ic:SV('<path d="M16 4l1.2 2.6 2.8.4-2 2 .5 2.8L16 10.5 13.5 11.8 14 9l-2-2 2.8-.4z"/><path d="M11 9L3 17M9 12l-5 5M12 13l-5 5"/>')},
+    {n:'マッチの火',m:3,d:3,t:'シュッと点いて、すぐ消える',ic:SV('<path d="M9 21l7-11"/><circle cx="16.5" cy="9" r="1.6" fill="currentColor"/><path d="M16.5 3c1.8 1.8 2 3.4.6 4.6-1.6-.6-2.2-2.6-.6-4.6z"/>')},
+    {n:'線香花火',m:5,d:7,t:'ジリジリ粘りはじめた',ic:SV('<path d="M12 2v11"/><circle cx="12" cy="15" r="2"/><path d="M12 19v2M8.5 16.5l-1.5 1.5M15.5 16.5l1.5 1.5M8 14H6M16 14h2"/>')},
+    {n:'ろうそく',m:7,d:14,t:'静かに、じっくり灯る',ic:SV('<path d="M12 3c1.5 2 1.5 3.5 0 5-1.5-1.5-1.5-3 0-5z"/><rect x="9" y="10" width="6" height="11" rx="1"/>')},
+    {n:'蚊取り線香',m:10,d:30,t:'ひと晩もつ安定感',ic:SV('<path d="M12 12m-1 0a1 1 0 1 0 2 0a3 3 0 1 0-6 0a5 5 0 1 0 10 0a7 7 0 1 0-14 0a9 9 0 0 0 9 9"/>')},
+    {n:'灯台',m:15,d:60,t:'夜どおし消えない',ic:SV('<path d="M10 7h4l1 14H9z"/><path d="M9.5 7l2.5-4 2.5 4M10 12h4M3 9l6-1M21 9l-6-1M6 21h12"/>')},
+    {n:'大仏',m:20,d:100,t:'微動だにしない',ic:SV('<circle cx="12" cy="6" r="2.5"/><path d="M7 21c0-6 2-10 5-10s5 4 5 10z"/><path d="M4 21h16M9.5 16c1.5 1 3.5 1 5 0"/>')},
+    {n:'富士山',m:20,d:200,t:'どっしり、日本一動じない',ic:SV('<path d="M2 20l7-11 2 2 2-2 9 11z"/><path d="M8 10.5l1.5 1.5 1.5-1.5 2 2 1.5-1.5 1.5 1.5"/>')},
+    {n:'悟り',m:20,d:365,t:'もはや何にも動じない境地',ic:SV('<path d="M20 12a8 8 0 1 1-3-6.2"/><circle cx="12" cy="12" r="1.2" fill="currentColor"/>')}
+  ];
+  var HOUTOU={n:'不滅の法灯',t:'千年消えない火。審査を通った者だけの称号',ic:SV('<path d="M12 2c2 2.4 2 4.2 0 6-2-1.8-2-3.6 0-6z"/><path d="M8 10h8l-1 4H9z"/><path d="M10 14v4M14 14v4M7 21h10M9 18h6"/>')};
+  var ELIG=8; // 申請できる称号の番号（0から数えて8＝悟り）
+  function fnv(str){ var h=2166136261>>>0; for(var i=0;i<str.length;i++){ h^=str.charCodeAt(i); h=Math.imul(h,16777619)>>>0; } return h; }
+  function codeFor(id){ var a=fnv(id+'|tomeren-houtou|1200').toString(36).toUpperCase(); var b=fnv('k'+id).toString(36).toUpperCase(); return (a+b).replace(/[^0-9A-Z]/g,'').slice(0,6); }
+  function appId(){ var v=null; try{ v=localStorage.getItem('tomeren-appid'); }catch(e){} if(!v){ v='T'+Date.now().toString(36).toUpperCase().slice(-5)+Math.random().toString(36).toUpperCase().slice(2,6); try{ localStorage.setItem('tomeren-appid',v); }catch(e){} } return v; }
+  function hasHoutou(){ try{ return localStorage.getItem('tomeren-houtou')==='1'; }catch(e){ return false; } }
+  function stats(){
+    var L=null; try{ L=JSON.parse(localStorage.getItem('tomeren-log')||'null'); }catch(e){}
+    var ss=(L&&Array.isArray(L.sessions))?L.sessions:[];
+    var best=0, days={};
+    ss.forEach(function(x){ if(!x) return; best=Math.max(best,+x.active||0); var dt=new Date(x.t); if(!isNaN(dt)) days[dt.getFullYear()+'-'+dt.getMonth()+'-'+dt.getDate()]=1; });
+    return {bestMin:best/60, days:Object.keys(days).length};
+  }
+  function rankOf(st){ var r=-1; for(var i=0;i<T.length;i++){ if(st.bestMin>=T[i].m && st.days>=T[i].d) r=i; else break; } return r; }
+  function stored(){ var v=null; try{ v=localStorage.getItem('tomeren-title'); }catch(e){} return v===null?null:+v; }
+  function setStored(r){ try{ localStorage.setItem('tomeren-title',String(r)); }catch(e){} }
+  function renderCard(){
+    var st=stats(), r=rankOf(st), el=function(id){return document.getElementById(id);};
+    if(!el('tcName')) return;
+    renderReview(r,st);
+    if(hasHoutou()){ el('tcIcon').innerHTML=HOUTOU.ic; el('tcName').textContent=HOUTOU.n; el('tcDesc').textContent=HOUTOU.t; el('tcNext').innerHTML='最高位の称号だよ。おめでとう、そしてありがとう。'; return; }
+    if(r<0){ el('tcIcon').innerHTML=''; el('tcName').textContent='まだなし'; el('tcDesc').textContent='1回練習すると、最初の称号がもらえるよ'; }
+    else { el('tcIcon').innerHTML=T[r].ic; el('tcName').textContent=T[r].n; el('tcDesc').textContent=T[r].t; }
+    var nx=T[r+1];
+    if(!nx){ el('tcNext').innerHTML='残るは、審査でだけ与えられる「不滅の法灯」のみ…'; return; }
+    var needM=Math.max(0,Math.ceil(nx.m-st.bestMin)), needD=Math.max(0,nx.d-st.days), parts=[];
+    if(needM>0) parts.push('あと<b>'+needM+'分継続</b>');
+    if(needD>0) parts.push('あと<b>'+needD+'日間</b>');
+    el('tcNext').innerHTML='次の「'+nx.n+'」まで：'+(parts.length?parts.join('・'):'もうすぐ！');
+    if(nx.m>=20 && st.bestMin>=20) el('tcNext').innerHTML+='<br><span style="font-size:.78rem;color:var(--soft)">20分から上は日数だけで上がるよ。がんばりすぎ注意♡</span>';
+  }
+  function renderReview(r,st){
+    var box=document.getElementById('tcReview'); if(!box) return;
+    if(hasHoutou() || r<ELIG){ box.hidden=true; return; }
+    box.hidden=false;
+    var id=appId();
+    document.getElementById('rvId').textContent=id;
+    document.getElementById('rvSum').textContent='いまの称号：'+T[r].n+'／最長：'+Math.floor(st.bestMin)+'分／練習した日数：'+st.days+'日';
+  }
+  function celebrate(r){
+    if(r==='houtou') return celebrateHoutou();
+    var t=T[r], L=r; // 0（しょぼい）〜8（豪華）
+    var ov=document.createElement('div'); ov.className='tg-ov tg-l'+L+(L>=7?' tg-gold':''); ov.setAttribute('role','dialog'); ov.setAttribute('aria-label','称号ゲット');
+    var kick=L===0?'称号ゲット…？':(L<=2?'称号ゲット':(L<=5?'称号ゲット！':(L<=6?'称号ゲット！！':'称号ゲット！！！')));
+    var btn=L===0?'お、おう':'やったね！';
+    ov.innerHTML=(L>=3?'<div class="tg-rays"></div>':'')+(L>=5?'<div class="tg-wave"></div><div class="tg-wave w2"></div>':'')+(L>=6?'<div class="tg-flash"></div>':'')+'<div class="tg-box"><div class="tg-kicker">'+kick+'</div><div class="tg-ic">'+t.ic+'</div><div class="tg-name">'+t.n+'</div><div class="tg-desc">'+t.t+'</div><div class="tg-cond">'+t.m+'分継続・'+t.d+'日間 達成</div><button type="button" class="tg-btn">'+btn+'</button></div>';
+    var nConf=[3,8,14,22,30,40,55,70,95][L];
+    var cols=L>=7?['#FFD27A','#FFE9A8','#ffffff','#FF9E7A']:['#FF9E7A','#FFD27A','#ffffff','#7AC8FF'];
+    for(var i=0;i<nConf;i++){ var c=document.createElement('span'); c.className='tg-cf'; c.style.left=(Math.random()*100)+'%'; c.style.background=cols[i%4]; c.style.animationDuration=(2.2+Math.random()*2.2)+'s'; c.style.animationDelay=(Math.random()*.8)+'s'; ov.appendChild(c); }
+    document.body.appendChild(ov);
+    try{ if(navigator.vibrate) navigator.vibrate(L<=1?[30]:(L<=4?[60,40,120]:(L<=6?[80,40,80,40,160]:[100,50,100,50,100,50,300]))); }catch(e){}
+    var close=function(){ ov.remove(); renderCard(); };
+    ov.querySelector('.tg-btn').addEventListener('click',close);
+    ov.querySelector('.tg-btn').focus();
+  }
+  function celebrateHoutou(){
+    var ov=document.createElement('div'); ov.className='tg-ov tg-h'; ov.setAttribute('role','dialog'); ov.setAttribute('aria-label','不滅の法灯');
+    var name='不滅の法灯', letters='';
+    for(var i=0;i<name.length;i++) letters+='<span style="animation-delay:'+(1.6+i*0.28)+'s">'+name[i]+'</span>';
+    ov.innerHTML='<div class="th-glow"></div><div class="th-box"><div class="th-k">審査 合格</div><div class="th-flame"><svg viewBox="0 0 60 90" aria-hidden="true"><path class="th-f1" d="M30 4C42 22 50 34 50 50a20 20 0 0 1-40 0C10 34 18 22 30 4z"/><path class="th-f2" d="M30 30c6 9 10 15 10 22a10 10 0 0 1-20 0c0-7 4-13 10-22z"/></svg><div class="th-lamp"></div></div><div class="th-name">'+letters+'</div><div class="th-sub">千年、消えない火。</div><div class="th-sub2">審査を通った者だけに灯る、最高位の称号</div><button type="button" class="tg-btn th-btn">ありがたく受け取る</button></div>';
+    for(var j=0;j<46;j++){ var e=document.createElement('span'); e.className='th-em'; e.style.left=(Math.random()*100)+'%'; e.style.animationDuration=(3+Math.random()*3.5)+'s'; e.style.animationDelay=(0.8+Math.random()*3)+'s'; var sz=2+Math.random()*4; e.style.width=sz+'px'; e.style.height=sz+'px'; ov.appendChild(e); }
+    document.body.appendChild(ov);
+    try{ if(navigator.vibrate) navigator.vibrate([200,100,200,100,600]); }catch(e){}
+    var close=function(){ ov.remove(); renderCard(); };
+    ov.querySelector('.tg-btn').addEventListener('click',close);
+  }
+
+  function check(){
+    var r=rankOf(stats()), s=stored();
+    if(s===null){ setStored(r); }
+    else if(r>s){ setStored(r); setTimeout(function(){ celebrate(r); },1200); }
+    renderCard();
+  }
+  document.addEventListener('click',function(e){
+    if(e.target.closest('#rvCopy')){ var st=stats(), r=rankOf(st); var txt='申請番号：'+appId()+'\nいまの称号：'+(T[r]?T[r].n:'')+'\n最長の継続時間：'+Math.floor(st.bestMin)+'分\n練習した日数：'+st.days+'日'; var m=document.getElementById('rvMsg'); if(navigator.clipboard&&navigator.clipboard.writeText) navigator.clipboard.writeText(txt).then(function(){m.textContent='コピーしたよ。フォームの各欄に貼り付けてね';},function(){m.textContent=txt;}); else m.textContent=txt; }
+    if(e.target.closest('#rvCheck')){ var v=(document.getElementById('rvCode').value||'').trim().toUpperCase(); var m=document.getElementById('rvMsg'); if(v && v===codeFor(appId())){ try{ localStorage.setItem('tomeren-houtou','1'); }catch(err){} m.textContent=''; renderCard(); celebrate('houtou'); } else { m.textContent='コードがちがうみたい。もう一度たしかめてね'; } }
+  });
+  try{ if(new URLSearchParams(location.search).get('admin')==='houtou'){ var ad=document.createElement('div'); ad.className='card'; ad.style.cssText='margin:12px;padding:14px;border:2px dashed var(--sun)'; ad.innerHTML='<b>運営用：認定コードを作る</b><p style="font-size:.85rem;margin:6px 0">申請番号を入れると、その人用の認定コードが出るよ</p><input id="adId" placeholder="申請番号" style="width:100%;padding:10px;font:inherit;box-sizing:border-box"><p style="font-size:1.6rem;font-weight:900;letter-spacing:.2em;margin:10px 0 0" id="adOut"></p>'; document.body.insertBefore(ad,document.body.firstChild); ad.querySelector('#adId').addEventListener('input',function(){ var v=this.value.trim().toUpperCase(); ad.querySelector('#adOut').textContent=v?codeFor(v):''; }); } }catch(e){}
+  var first=stats(); if(stored()===null) setStored(rankOf(first));
+  renderCard();
+  var stage=document.getElementById('stage');
+  if(stage) new MutationObserver(function(){ if(stage.classList.contains('done') && !stage.__tgDone){ stage.__tgDone=true; setTimeout(check,300); } if(!stage.classList.contains('done')) stage.__tgDone=false; }).observe(stage,{attributes:true,attributeFilter:['class']});
+  document.addEventListener('click',function(e){ if(e.target.closest('#tabs button[data-go="log"]')) setTimeout(renderCard,50); });
+})();
+</script>
+
+<script>
+(function(){
+  // ===== 運営からのお知らせ（新しいお知らせは、いちばん上に足してね）=====
+  var NEWS=[
+    {v:'ver.8', d:'2026年10月3日', t:'とめれん帳がパワーアップしました', items:[
+      '称号システムが登場！練習を続けると、流れ星から悟りまで9つの称号がもらえるよ',
+      'アイコンをシンプルな線の絵に変えて、見やすくしたよ',
+      '練習画面を整理して「とめた！」ボタンを押しやすくしたよ',
+      '右上のヘルプから、お問い合わせと「とめれん帳を教える」ができるよ'
+    ]}
+  ];
+  var KEY='tomeren-news-seen';
+  function show(n){
+    if(document.querySelector('.nw-ov')) return;
+    var ov=document.createElement('div'); ov.className='nw-ov'; ov.setAttribute('role','dialog'); ov.setAttribute('aria-label','運営からのお知らせ');
+    ov.innerHTML='<div class="nw-box"><div class="nw-k">運営からのお知らせ</div><div class="nw-t"></div><div class="nw-d"></div><ul></ul><button type="button" class="nw-btn">OK</button></div>';
+    ov.querySelector('.nw-t').textContent=n.t; ov.querySelector('.nw-d').textContent=n.d+'　'+n.v;
+    var ul=ov.querySelector('ul'); n.items.forEach(function(x){ var li=document.createElement('li'); li.textContent=x; ul.appendChild(li); });
+    var close=function(){ try{ localStorage.setItem(KEY,n.v); }catch(e){} ov.remove(); };
+    ov.querySelector('.nw-btn').addEventListener('click',close);
+    ov.addEventListener('click',function(e){ if(e.target===ov) close(); });
+    document.body.appendChild(ov);
+  }
+  var latest=NEWS[0], seen=null; try{ seen=localStorage.getItem(KEY); }catch(e){}
+  if(latest && seen!==latest.v){
+    var tries=0, iv=setInterval(function(){
+      tries++; var sp=document.getElementById('splash'), g=document.getElementById('gate');
+      if(!sp && (!g || g.hidden)){ clearInterval(iv); setTimeout(function(){ show(latest); },400); }
+      if(tries>300) clearInterval(iv);
+    },300);
+  }
+  document.addEventListener('click',function(e){ if(e.target.closest('#helpNews')){ e.preventDefault(); var hm=document.getElementById('helpMenu'); if(hm) hm.classList.remove('open'); if(latest) show(latest); } });
 })();
 </script>
 </body>
