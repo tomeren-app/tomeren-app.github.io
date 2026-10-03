@@ -363,6 +363,59 @@ h2{font-size:1.05rem;margin:0 0 10px}
 .tabs .ddmenu button .ti{width:20px;height:20px}
 .tabs .ddmenu button.on{background:var(--sun)!important;color:var(--sunInk)!important}
 </style>
+<style>
+body.running main > h1, body.running main > p.sub, body.running #tip{display:none}
+body.running .adpop{display:none!important}
+body.running main{padding-top:6px}
+body.running .tabs{margin-bottom:8px}
+body.running .stage.run{padding:12px 14px 14px}
+body.running .stage.run .state{font-size:.78rem;line-height:1.45;margin-bottom:0}
+body.running .stage.run .stageimg{max-height:20vh;width:auto;margin:4px auto}
+body.running .stage.run .clock{width:150px;height:150px;font-size:2.6rem;margin:6px auto 8px}
+body.running .stage.run .dot{width:12px;height:12px}
+body.running .stage.run .countTxt{margin:0 0 8px;font-size:.78rem}
+body.running .stage.run .big{padding:14px;font-size:1.15rem}
+body.running .stage.run #controls .row{margin-top:6px;gap:6px}
+body.running .stage.run #controls .row .ghost{padding:7px 4px;font-size:.78rem}
+body.running .stage.run #controls > .ghost{padding:7px;font-size:.8rem;margin-top:6px!important}
+body.running .stage.run .lv{margin-top:10px;padding:8px 10px}
+body.running .stage.run .lvq{font-size:.78rem;margin-bottom:6px}
+body.running .stage.run .lvgrid{gap:4px}
+body.running .stage.run .lvgrid button{padding:7px 0;font-size:.9rem}
+body.running .stage.run .lvmsg{font-size:.72rem;margin-top:5px;line-height:1.4}
+body.running .stage.run .hand{margin:8px 0 0;padding:6px 10px;font-size:.78rem}
+body.running .stage.run .live{margin:8px 0 0;padding:6px 10px;font-size:.8rem;line-height:1.4}
+</style>
+<style>
+@media (max-height:720px){
+body.running .stage.run .clock{width:118px;height:118px;font-size:2.1rem;margin:4px auto 6px}
+body.running .stage.run .big{padding:11px}
+body.running .stage.run .lvmsg{display:none}
+body.running .stage.run .lvgrid button{padding:6px 0}
+body.running .stage.run .live{display:none}
+}
+</style>
+<style>
+.fb-ov{position:fixed;inset:0;z-index:46;display:flex;align-items:flex-end;justify-content:center;background:rgba(8,10,14,.6);padding:0 12px calc(12px + env(safe-area-inset-bottom,0px))}
+.fb-box{width:100%;max-width:440px;background:var(--card);color:var(--ink);border-radius:22px;padding:20px 18px 16px;box-shadow:0 -8px 40px rgba(0,0,0,.3);animation:nwUp .3s ease-out both;text-align:center}
+.fb-em{font-size:2.4rem;line-height:1}
+.fb-t{font-size:1.15rem;font-weight:900;margin:8px 0 4px}
+.fb-d{font-size:.88rem;color:var(--soft);line-height:1.6;margin-bottom:12px}
+.fb-opts{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}
+.fb-opts button{border:2px solid var(--line);background:var(--card);color:var(--ink);border-radius:14px;padding:10px 6px;font:inherit;font-size:.85rem;font-weight:700;cursor:pointer}
+.fb-opts button.sel{border-color:var(--sun);background:var(--sun);color:var(--sunInk)}
+.fb-main{width:100%;border:none;border-radius:999px;padding:13px;font:inherit;font-weight:800;background:var(--sun);color:var(--sunInk);cursor:pointer;margin-top:4px}
+.fb-sub{width:100%;border:2px solid var(--line);background:transparent;color:var(--ink);border-radius:999px;padding:11px;font:inherit;font-weight:700;cursor:pointer;margin-top:8px}
+.fb-link{display:inline-block;margin-top:10px;font-size:.8rem;color:var(--soft);text-decoration:underline;background:none;border:none;font:inherit;cursor:pointer}
+.fb-thx{font-size:.85rem;color:var(--sun);font-weight:800;min-height:1.2em;margin-top:6px}
+</style>
+<style>
+button,.ghost,.big,.chip,.ddbtn,.helpbtn,.tabs button,.lvgrid button,.fb-opts button,.tg-btn,.nw-btn{touch-action:manipulation;-webkit-tap-highlight-color:transparent;-webkit-user-select:none;user-select:none}
+button,.ddbtn,.helpbtn{transition:transform .08s ease,filter .08s ease}
+button:active,.ddbtn:active,.helpbtn:active{transform:scale(.95);filter:brightness(.92)}
+.big:active{transform:scale(.97)}
+</style>
+<style>.fb-link{display:inline-block;margin-top:12px;padding:8px 12px;font-size:.85rem;color:var(--ink);text-decoration:underline}.fb-addr{font-size:.72rem;color:var(--soft);margin-top:2px}</style>
 </head>
 <body>
 <div id="splash" class="splash" role="dialog" aria-label="とめれん帳">
@@ -743,9 +796,10 @@ h2{font-size:1.05rem;margin:0 0 10px}
     speak(leaked ? '気持ちよくなれて、ほんとによかったね。えらいよ。よしよし。'
       : (stops >= GOAL ? 'ちゃんと出せたね。えらいよ。'+GOAL+'回もがまんして、最後に気持ちよくなれた。今日の練習は大成功だよ。よしよし、おつかれさま。' : 'おつかれさま。気持ちよくなれてよかったね。えらいよ。'), true, null, (!leaked && stops >= GOAL) ? 'misc:done' : 'misc:leak');
     if (s.active >= 1){ log.sessions.push(s); persist(); }
-    lastResult = s; mode = 'done';
+    lastResult = s; mode = 'done'; try{ if (window.tmOnFinish) window.tmOnFinish(s, GOAL); }catch(e){}
     renderAll();
   }
+  function askQuit(){ if (window.tmQuitSheet) window.tmQuitSheet(cancel); else cancel(); }
   function cancel(){
     stopWarm(); regainUntil = 0;
     keepAwake(false); if (synth) try{ synth.cancel(); }catch(e){}
@@ -1451,6 +1505,8 @@ h2{font-size:1.05rem;margin:0 0 10px}
 
   function btn(cls, label, fn){ const b = document.createElement('button'); b.className = cls; b.type='button'; b.textContent = label; b.onclick = fn; return b; }
   function regainBtn(){ const b = ghost('🫶 やわらかくなってきた', regain); b.style.width='100%'; b.style.marginTop='10px'; b.style.borderColor='var(--rest)'; return b; }
+  // 中身が同じなら作り直さない（押している途中でボタンが入れかわって反応しない問題を防ぐ）
+  function setCtl(c, ...nodes){ const tmp=document.createElement('div'); tmp.append(...nodes); const sig=tmp.innerHTML; if (c.__sig===sig && c.childNodes.length) return; c.__sig=sig; c.replaceChildren(...tmp.childNodes); }
   function ghost(label, fn){ const b = document.createElement('button'); b.className='ghost'; b.type='button'; b.textContent=label; b.onclick=fn; return b; }
 
   function renderStage(){
@@ -1467,7 +1523,8 @@ h2{font-size:1.05rem;margin:0 0 10px}
     stage.classList.toggle('idle', mode==='idle');
     stage.classList.toggle('run', mode==='active'||mode==='rest');
     stage.classList.toggle('resting', mode==='rest');
-    stage.style.setProperty('--prog', String(Math.min(stops/GOAL,1)*100)+'%');
+    { const run=(mode==='active'||mode==='rest'); if (run && !document.body.classList.contains('running')) window.scrollTo(0,0); document.body.classList.toggle('running', run); }
+    { const el = activeMs + (mode==='active' ? (now()-segStart) : 0); stage.style.setProperty('--prog', String(Math.min(el/300000,1)*100)+'%'); }
     if (mode==='idle'){
       $('state').textContent = 'スタンバイOK';
       $('clock').textContent = '0:00';
@@ -1551,14 +1608,14 @@ h2{font-size:1.05rem;margin:0 0 10px}
       const wb = document.createElement('button'); wb.type='button'; wb.className='ghost'; wb.style.width='100%'; wb.style.marginTop='10px';
       wb.textContent = '🌙 じゅんびモード（スタンバイ用）'; wb.onclick = startWarm;
       $('live').textContent = '';
-      c.replaceChildren(box, btn('big go','はじめる', start), wb);
+      setCtl(c, box, btn('big go','はじめる', start), wb);
     } else if (mode==='warm'){
       $('state').textContent = 'じゅんび中♡ ゆっくりでいいよ';
       $('clock').textContent = '🌙';
       $('countTxt').textContent = '時間はまだはかってないよ';
       const r = document.createElement('div'); r.className='row';
       r.append(ghost('もどる', ()=>{ stopWarm(); mode='idle'; if (synth) try{synth.cancel();}catch(e){} renderStage(); }));
-      c.replaceChildren(btn('big go','はじめる', start), r);
+      setCtl(c, btn('big go','はじめる', start), r);
     } else if (mode==='active'){
       $('state').textContent = stops >= GOAL
         ? '🏁 ゴールタイム❤️ がんばったごほうびの時間だよ。気持ちいいのをそのまま受けとって、出して！'
@@ -1567,11 +1624,11 @@ h2{font-size:1.05rem;margin:0 0 10px}
       $('countTxt').textContent = stops+'回止めた / 目標'+GOAL+'回';
       const r = document.createElement('div'); r.className='row';
       if (stops >= GOAL){
-        r.append(ghost('やめる', cancel), ghost('もう1回とめる', hold));
-        c.replaceChildren(btn('big go','出した🎉', ()=>finish(false)), regainBtn(), r);
+        r.append(ghost('やめる', askQuit), ghost('もう1回とめる', hold));
+        setCtl(c, btn('big go','出した🎉', ()=>finish(false)), regainBtn(), r);
       } else {
-        r.append(ghost('やめる', cancel), ghost('出ちゃった💦', ()=>finish(true)), ghost('おわり', ()=>finish(false)));
-        c.replaceChildren(btn('big stop','とめた！', hold), regainBtn(), r);
+        r.append(ghost('やめる', askQuit), ghost('出ちゃった💦', ()=>finish(true)), ghost('おわり', ()=>finish(false)));
+        setCtl(c, btn('big stop','とめた！', hold), regainBtn(), r);
       }
     } else if (mode==='rest'){
       const rs = Math.floor(curRest()/1000);
@@ -1579,9 +1636,9 @@ h2{font-size:1.05rem;margin:0 0 10px}
       $('clock').textContent = fmt(curActive());
       $('countTxt').textContent = stops+'回止めた / 休けい '+fmt(curRest());
       const r = document.createElement('div'); r.className='row';
-      if (stops >= GOAL) r.append(ghost('やめる', cancel), ghost('出した🎉', ()=>finish(false)));
-      else r.append(ghost('やめる', cancel), ghost('出ちゃった💦', ()=>finish(true)), ghost('おわり', ()=>finish(false)));
-      c.replaceChildren(btn('big again', rs < 30 ? '落ち着いたら再開' : '再開する', resume), regainBtn(), r);
+      if (stops >= GOAL) r.append(ghost('やめる', askQuit), ghost('出した🎉', ()=>finish(false)));
+      else r.append(ghost('やめる', askQuit), ghost('出ちゃった💦', ()=>finish(true)), ghost('おわり', ()=>finish(false)));
+      setCtl(c, btn('big again', rs < 30 ? '落ち着いたら再開' : '再開する', resume), regainBtn(), r);
     } else if (mode==='done'){
       const s = lastResult || {active:0,stops:0};
       const best = log.sessions.reduce((m,x)=>Math.max(m,x.active),0);
@@ -1630,7 +1687,7 @@ h2{font-size:1.05rem;margin:0 0 10px}
       nb.style.width='100%'; nb.style.marginTop='10px';
       const cb = ghost('とじる', ()=>{ mode='idle'; renderStage(); });
       cb.style.width='100%'; cb.style.marginTop='8px';
-      c.replaceChildren(cheer, btn('big go','もう一回やる', start), nb, cb);
+      setCtl(c, cheer, btn('big go','もう一回やる', start), nb, cb);
     }
   }
 
@@ -2158,6 +2215,7 @@ h2{font-size:1.05rem;margin:0 0 10px}
     box.hidden=false;
     var id=appId();
     document.getElementById('rvId').textContent=id;
+    try{ var mb0=mailBody(); document.getElementById('rvMail').href='mailto:'+MAILTO+'?subject='+encodeURIComponent(mb0.subject)+'&body='+encodeURIComponent(mb0.body); }catch(e){}
     document.getElementById('rvSum').textContent='いまの称号：'+T[r].n+'／最長：'+Math.floor(st.bestMin)+'分／練習した日数：'+st.days+'日';
   }
   function celebrate(r){
@@ -2195,7 +2253,7 @@ h2{font-size:1.05rem;margin:0 0 10px}
     renderCard();
   }
   document.addEventListener('click',function(e){
-    if(e.target.closest('#rvMail')){ e.preventDefault(); var mb=mailBody(); location.href='mailto:'+MAILTO+'?subject='+encodeURIComponent(mb.subject)+'&body='+encodeURIComponent(mb.body); return; }
+    if(e.target.closest('#rvMail')){ var mb=mailBody(); e.target.closest('#rvMail').href='mailto:'+MAILTO+'?subject='+encodeURIComponent(mb.subject)+'&body='+encodeURIComponent(mb.body); return; }
     if(e.target.closest('#rvCopy')){ var mb2=mailBody(), m2=document.getElementById('rvMsg'), full='宛先：'+MAILTO+'\n件名：'+mb2.subject+'\n\n'+mb2.body; if(navigator.clipboard&&navigator.clipboard.writeText) navigator.clipboard.writeText(full).then(function(){m2.textContent='コピーしたよ。'+MAILTO+' 宛てにメールで送ってね';},function(){m2.textContent=full;}); else m2.textContent=full; return; }
     if(false && e.target.closest('#rvCopy')){ var st=stats(), r=rankOf(st); var txt='申請番号：'+appId()+'\nいまの称号：'+(T[r]?T[r].n:'')+'\n最長の継続時間：'+Math.floor(st.bestMin)+'分\n練習した日数：'+st.days+'日'; var m=document.getElementById('rvMsg'); if(navigator.clipboard&&navigator.clipboard.writeText) navigator.clipboard.writeText(txt).then(function(){m.textContent='コピーしたよ。フォームの各欄に貼り付けてね';},function(){m.textContent=txt;}); else m.textContent=txt; }
     if(e.target.closest('#rvCheck')){ var v=(document.getElementById('rvCode').value||'').trim().toUpperCase(); var m=document.getElementById('rvMsg'); if(v && v===codeFor(appId())){ try{ localStorage.setItem('tomeren-houtou','1'); }catch(err){} m.textContent=''; renderCard(); celebrate('houtou'); } else { m.textContent='コードがちがうみたい。もう一度たしかめてね'; } }
@@ -2263,6 +2321,51 @@ h2{font-size:1.05rem;margin:0 0 10px}
   function sync(){ ws.forEach(function(w){ var on=!!w.querySelector('.ddmenu button.on'); w.querySelector('.ddbtn').classList.toggle('on',on); }); }
   ws.forEach(function(w){ w.querySelectorAll('.ddmenu button').forEach(function(x){ new MutationObserver(sync).observe(x,{attributes:true,attributeFilter:['class']}); }); });
   sync();
+})();
+</script>
+
+<script>
+(function(){
+  var MAIL='tomeren.app@gmail.com';
+  function ev(name){ try{ if(window.gtag) gtag('event',name,{}); }catch(e){} }
+  function sheet(html){ var ov=document.createElement('div'); ov.className='fb-ov'; ov.setAttribute('role','dialog'); ov.innerHTML='<div class="fb-box">'+html+'</div>'; document.body.appendChild(ov); return ov; }
+  function mhref(subject,body){ return 'mailto:'+MAIL+'?subject='+encodeURIComponent(subject)+'&body='+encodeURIComponent(body); }
+  function opts(ov,list,prefix){
+    var sel=null;
+    var a=ov.querySelector('a.fb-link');
+    var upd=function(){ if(!a) return; var lab=(list.filter(function(q){return q[0]===sel;})[0]||['',''])[1]; a.href=(prefix==='quit')?mhref('【とめれん帳】やめた理由のフィードバック','理由：'+(lab||'（えらんでない）')+'\n\nくわしく：\n'):mhref('【とめれん帳】完走フィードバック','感想：'+(lab||'（えらんでない）')+'\n\nひと言：\n'); };
+    ov.querySelectorAll('.fb-opts button').forEach(function(b){ b.addEventListener('click',function(){ ov.querySelectorAll('.fb-opts button').forEach(function(x){x.classList.remove('sel');}); b.classList.add('sel'); sel=b.getAttribute('data-k'); upd(); }); });
+    upd();
+    return function(){ return sel; };
+  }
+  // ① やめる → 確認＋フィードバック
+  var QUIT=[['bad','気持ちよくなかった'],['hard','アプリが使いにくい'],['time','時間がなくなった'],['other','その他']];
+  window.tmQuitSheet=function(doQuit){
+    var ov=sheet('<div class="fb-em">🥺</div><div class="fb-t">やめないで！</div><div class="fb-d">アプリのせいで、気持ちよさ嫌いになっちゃった？<br>気持ちよくなかった？<br>よかったら、運営に理由を教えてね</div><div class="fb-opts">'+QUIT.map(function(q){return '<button type="button" data-k="'+q[0]+'">'+q[1]+'</button>';}).join('')+'</div><button type="button" class="fb-main" data-a="keep">やっぱり続ける</button><button type="button" class="fb-sub" data-a="quit">やめる</button><a class="fb-link" data-a="mail" href="#">くわしく運営にメールする</a><div class="fb-addr">メールが開かないときは '+MAIL+' まで</div><div class="fb-thx"></div>');
+    var getSel=opts(ov,QUIT,'quit');
+    ov.addEventListener('click',function(e){ var a=e.target.closest('[data-a]'); if(!a) return; var k=getSel(); var act=a.getAttribute('data-a');
+      if(act==='keep'){ if(k) ev('fb_quit_'+k+'_but_kept'); ev('fb_quit_kept'); ov.remove(); }
+      else if(act==='quit'){ ev('fb_quit_'+(k||'none')); ov.remove(); doQuit(); }
+      else if(act==='mail'){ ev('fb_quit_mail'); }
+    });
+  };
+  // ② 3回がまんして完遂 × 5回に1回
+  var DONE=[['great','最高だった！'],['good','いい感じ'],['meh','ふつう'],['bad','いまいち']];
+  function doneSheet(n){
+    var ov=sheet('<div class="fb-em">🎉</div><div class="fb-t">'+n+'回目の完走、おめでとう！</div><div class="fb-d">3回がまんして、最後までいけたね。<br>とめれん帳、使ってみてどうだった？<br>運営に教えてくれるとうれしいな</div><div class="fb-opts">'+DONE.map(function(q){return '<button type="button" data-k="'+q[0]+'">'+q[1]+'</button>';}).join('')+'</div><button type="button" class="fb-main" data-a="send">運営に送る</button><button type="button" class="fb-sub" data-a="skip">また今度</button><a class="fb-link" data-a="mail" href="#">ひと言メールで伝える</a><div class="fb-addr">メールが開かないときは '+MAIL+' まで</div><div class="fb-thx"></div>');
+    var getSel=opts(ov,DONE,'done');
+    ov.addEventListener('click',function(e){ var a=e.target.closest('[data-a]'); if(!a) return; var k=getSel(), act=a.getAttribute('data-a');
+      if(act==='send'){ if(!k){ ov.querySelector('.fb-thx').textContent='どれかひとつ選んでね'; return; } ev('fb_done_'+k); ov.querySelector('.fb-thx').textContent='届いたよ！ありがとう♡'; setTimeout(function(){ ov.remove(); },900); }
+      else if(act==='skip'){ ev('fb_done_skip'); ov.remove(); }
+      else if(act==='mail'){ ev('fb_done_mail'); }
+    });
+  }
+  window.tmOnFinish=function(s,goal){
+    if(!s || s.leaked || !(s.stops>=goal)) return;
+    var n=0; try{ n=(+localStorage.getItem('tomeren-done-count')||0)+1; localStorage.setItem('tomeren-done-count',String(n)); }catch(e){ return; }
+    if(n%5!==0) return;
+    var tries=0, iv=setInterval(function(){ tries++; if(!document.querySelector('.tg-ov') && tries>8){ clearInterval(iv); doneSheet(n); } if(tries>200) clearInterval(iv); },400);
+  };
 })();
 </script>
 </body>
