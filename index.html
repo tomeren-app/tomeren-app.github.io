@@ -260,6 +260,7 @@ h2{font-size:1.05rem;margin:0 0 10px}
 </style>
 <style>.tabs button span,.helpbtn span{white-space:nowrap;font-size:.56rem;letter-spacing:-.02em}</style>
 <style>.pi{width:1.1em;height:1.1em;display:inline-block;vertical-align:-.18em;margin:0 .15em}h1 .pi,h2 .pi{width:1em;height:1em;color:var(--sun)}</style>
+<style>.sharebtns{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}.sharebtns .ghost{font-size:.85rem;padding:10px 6px}.sharemsg{font-size:.85rem;margin:8px 0 0;min-height:1em;word-break:break-all}</style>
 </head>
 <body>
 <div id="splash" class="splash" role="dialog" aria-label="とめれん帳">
@@ -307,9 +308,22 @@ h2{font-size:1.05rem;margin:0 0 10px}
       <div class="helpmenu" id="helpMenu">
         <a href="#" id="helpGuide">💡 使い方を見る</a>
         <a href="https://form.jotform.com/262745742685065" target="_blank" rel="noopener">📮 お問い合わせ</a>
+        <a href="#share" id="helpShare">🔗 とめれん帳を教える</a>
       </div>
     </div>
   </nav>
+
+  <section data-tab="help" class="card about" id="share">
+    <h2>とめれん帳を教える 🔗</h2>
+    <p>同じことで悩んでる人がいたら、こっそり教えてあげてね。送られるのはアプリのリンクだけで、きみの記録は送られないよ🔒</p>
+    <div class="sharebtns">
+      <button type="button" class="ghost" data-share="native">🔗 共有する</button>
+      <button type="button" class="ghost" data-share="x">Xでポスト</button>
+      <button type="button" class="ghost" data-share="line">LINEで送る</button>
+      <button type="button" class="ghost" data-share="copy">📋 リンクをコピー</button>
+    </div>
+    <p class="sharemsg" id="shareMsg" aria-live="polite"></p>
+  </section>
 
   <section data-tab="help" class="card about">
     <h2>はじめに読んでね 📌</h2>
@@ -1907,9 +1921,10 @@ h2{font-size:1.05rem;margin:0 0 10px}
     bulb:'<path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2.1h5c0-.9.4-1.6 1-2.1A6 6 0 0 0 12 3z"/>',
     mail:'<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/>',
     arrow:'<path d="M5 12h14M13 6l6 6-6 6"/>',
+    link:'<path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/>',
     timer:'<circle cx="12" cy="13" r="8"/><path d="M10 2h4"/><path d="M10.5 10v6M13.5 10v6"/>'
   };
-  var M={'📌':'pin','🤔':'q','🌟':'star','🖼️':'img','🖼':'img','🎙️':'mic','🎙':'mic','📅':'cal','📈':'chart','🙏':'hands','🫶':'heart','💦':'drop','🎉':'spark','📋':'clip','🎁':'gift','✅':'check','🔈':'spk','🔊':'spkon','🔇':'mute','🌙':'moon','⬆':'up','🎬':'film','💭':'cloud','🤖':'bot','🏁':'flag','✕':'x','💡':'bulb','📮':'mail','→':'arrow','💪':'timer'};
+  var M={'📌':'pin','🤔':'q','🌟':'star','🖼️':'img','🖼':'img','🎙️':'mic','🎙':'mic','📅':'cal','📈':'chart','🙏':'hands','🫶':'heart','💦':'drop','🎉':'spark','📋':'clip','🎁':'gift','✅':'check','🔈':'spk','🔊':'spkon','🔇':'mute','🌙':'moon','⬆':'up','🎬':'film','💭':'cloud','🤖':'bot','🏁':'flag','✕':'x','💡':'bulb','📮':'mail','→':'arrow','💪':'timer','🔗':'link'};
   var keys=Object.keys(M).sort(function(a,b){return b.length-a.length}).map(function(k){return k.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')});
   var RE=new RegExp('('+keys.join('|')+')\uFE0F?','g');
   function svg(n){var e=document.createElementNS('http://www.w3.org/2000/svg','svg');e.setAttribute('viewBox','0 0 24 24');e.setAttribute('class','pi');e.setAttribute('aria-hidden','true');e.setAttribute('fill','none');e.setAttribute('stroke','currentColor');e.setAttribute('stroke-width','2');e.setAttribute('stroke-linecap','round');e.setAttribute('stroke-linejoin','round');e.innerHTML=P[n];return e;}
@@ -1928,6 +1943,28 @@ h2{font-size:1.05rem;margin:0 0 10px}
   }
   scan(document.body);
   new MutationObserver(function(ms){ ms.forEach(function(m){ if(m.type==='characterData') { if(m.target.parentElement&&m.target.parentElement.closest(SEL)) fixText(m.target); } else m.addedNodes.forEach(scan); }); }).observe(document.body,{childList:true,subtree:true,characterData:true});
+})();
+</script>
+
+<script>
+(function(){
+  var URL_='https://tomeren-app.github.io/?utm_source=share', TXT='ひとりでこっそり続けられる、練習の記録帳「とめれん帳」（無料・18歳以上向け）';
+  function msg(t){var m=document.getElementById('shareMsg'); if(m) m.textContent=t;}
+  function copy(){
+    var full=TXT+' '+URL_;
+    if(navigator.clipboard&&navigator.clipboard.writeText) navigator.clipboard.writeText(full).then(function(){msg('リンクをコピーしたよ♡ 送りたい人に貼り付けてね');},function(){msg(full);});
+    else msg(full);
+  }
+  function go(kind){
+    if(kind==='native'){ if(navigator.share) navigator.share({title:'とめれん帳',text:TXT,url:URL_}).catch(function(){}); else copy(); }
+    else if(kind==='x') window.open('https://x.com/intent/post?text='+encodeURIComponent(TXT)+'&url='+encodeURIComponent(URL_.replace('share','share_x')),'_blank','noopener');
+    else if(kind==='line') window.open('https://line.me/R/share?text='+encodeURIComponent(TXT+' '+URL_.replace('share','share_line')),'_blank','noopener');
+    else copy();
+  }
+  document.addEventListener('click',function(e){
+    var b=e.target.closest('[data-share]'); if(b){ go(b.getAttribute('data-share')); return; }
+    if(e.target.closest('#helpShare')){ e.preventDefault(); var t=document.querySelector('#tabs button[data-go="help"]'); if(t) t.click(); setTimeout(function(){var c=document.getElementById('share'); if(c) c.scrollIntoView({behavior:'smooth',block:'start'});},80); var hm=document.getElementById('helpMenu'); if(hm) hm.classList.remove('open'); }
+  });
 })();
 </script>
 </body>
