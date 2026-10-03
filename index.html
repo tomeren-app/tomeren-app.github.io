@@ -206,6 +206,7 @@ h2{font-size:1.05rem;margin:0 0 10px}
 .helpmenu a{display:block;padding:12px;color:var(--ink);font-weight:700;font-size:.95rem;text-decoration:none;border-radius:10px;white-space:nowrap}
 .helpmenu a:hover{background:var(--bg)}
 </style>
+<style>.tabs .ti{width:22px;height:22px;display:block}</style>
 </head>
 <body>
 <div id="splash" class="splash" role="dialog" aria-label="とめれん帳">
@@ -241,15 +242,15 @@ h2{font-size:1.05rem;margin:0 0 10px}
   <h1>とめれん帳 💪 <span class="h1sub">早漏トレーニング記録</span></h1>
   <p class="sub">早漏の悩みに向き合うための「止めて・また再開」練習のきろく〜</p>
   <nav class="tabs" id="tabs" aria-label="画面の切りかえ">
-    <button type="button" data-go="train">💪<span>練習</span></button>
-    <button type="button" data-go="next">📅<span>めやす</span></button>
-    <button type="button" data-go="day">📋<span>レポート</span></button>
-    <button type="button" data-go="log">📈<span>きろく</span></button>
-    <button type="button" data-go="voice">🎙️<span>声</span></button>
-    <button type="button" data-go="img">🖼️<span>画像</span></button>
-    <button type="button" data-go="help">💡<span>説明</span></button>
+    <button type="button" data-go="train"><svg class="ti" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="13" r="8"/><path d="M10 2h4"/><path d="M12 9v4l2.5 2"/></svg><span>練習</span></button>
+    <button type="button" data-go="next"><svg class="ti" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg><span>めやす</span></button>
+    <button type="button" data-go="day"><svg class="ti" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4h6v3H9zM9 12h6M9 16h4"/></svg><span>レポート</span></button>
+    <button type="button" data-go="log"><svg class="ti" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V4M4 20h16"/><path d="M7 15l4-4 3 3 5-6"/></svg><span>きろく</span></button>
+    <button type="button" data-go="voice"><svg class="ti" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg><span>声</span></button>
+    <button type="button" data-go="img"><svg class="ti" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><path d="M21 17l-5-5-9 8"/></svg><span>画像</span></button>
+    <button type="button" data-go="help"><svg class="ti" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5a2 2 0 0 1 2-2h12v16H6a2 2 0 0 0-2 2z"/><path d="M4 21V5M8 7h6"/></svg><span>説明</span></button>
     <div class="helpwrap">
-      <a href="#" class="helpbtn" id="helpBtn" role="button" aria-label="ヘルプ" aria-expanded="false" aria-controls="helpMenu">❓<span>ヘルプ</span></a>
+      <a href="#" class="helpbtn" id="helpBtn" role="button" aria-label="ヘルプ" aria-expanded="false" aria-controls="helpMenu"><svg class="ti" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .9-1 1.6v.6"/><circle cx="12" cy="17" r=".6" fill="currentColor"/></svg><span>ヘルプ</span></a>
       <div class="helpmenu" id="helpMenu">
         <a href="#" id="helpGuide">💡 使い方を見る</a>
         <a href="https://form.jotform.com/262745742685065" target="_blank" rel="noopener">📮 お問い合わせ</a>
