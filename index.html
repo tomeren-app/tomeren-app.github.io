@@ -2638,7 +2638,12 @@ button:active,.ddbtn:active,.helpbtn:active{transform:scale(.95);filter:brightne
     turtle:SV('<path d="M4 15a8 6 0 0 1 16 0z"/><path d="M20 13h2M6 15l-1 3M18 15l1 3M9 12l3-3 3 3"/>'),
     king:SV('<path d="M5 9l3 3 4-6 4 6 3-3-1 9H6z"/><path d="M6 21h12"/><circle cx="12" cy="14" r="1.2" fill="currentColor"/>'),
     lock:SV('<rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/>'),
-    flag:SV('<path d="M5 21V4M5 4h11l-2 4 2 4H5"/>')
+    flag:SV('<path d="M5 21V4M5 4h11l-2 4 2 4H5"/>'),
+    squirrel:SV('<path d="M16 20c-5 0-8-3-8-7a4 4 0 0 1 4-4h1"/><path d="M13 9a4 4 0 1 1 4 4"/><path d="M17 13c3 0 4 3 3 6-2 0-3-1-4-2"/><circle cx="12" cy="7" r=".8" fill="currentColor"/><path d="M11 4l1 2"/>'),
+    bee:SV('<ellipse cx="12" cy="14" rx="5" ry="6"/><path d="M7.5 12h9M7.5 15.5h9"/><path d="M10 8c-2-3-6-2-5 1s4 2 5-1zM14 8c2-3 6-2 5 1s-4 2-5-1z"/><path d="M12 20v2"/>'),
+    fox:SV('<path d="M4 4l4 5h8l4-5-1 8-7 8-7-8z"/><circle cx="9.5" cy="12" r=".8" fill="currentColor"/><circle cx="14.5" cy="12" r=".8" fill="currentColor"/><path d="M11 15.5h2"/>'),
+    owl:SV('<path d="M6 5l2 2h8l2-2v10a6 6 0 0 1-12 0z"/><circle cx="9.5" cy="11" r="2"/><circle cx="14.5" cy="11" r="2"/><path d="M11.3 14l.7 1 .7-1"/>'),
+    wolf:SV('<path d="M5 3l3 5h8l3-5 1 9-3 5-5 4-5-4-3-5z"/><circle cx="9.5" cy="11.5" r=".8" fill="currentColor"/><circle cx="14.5" cy="11.5" r=".8" fill="currentColor"/><path d="M10.5 15.5L12 17l1.5-1.5"/>')
   };
   var WORLDS=[
     {id:1,name:'はじまりの草原',desc:'せっかちな敵たちがうろつく、はじまりの場所',stages:[
@@ -2649,7 +2654,14 @@ button:active,.ddbtn:active,.helpbtn:active{transform:scale(.95);filter:brightne
       {id:'1-5',en:'king',  name:'ボス・秒殺キング',  sec:300, stops:3, d:'5分続けて、3回止めよう。出ちゃったら負け', boss:true}
     ]}
   ];
-  for(var w=2;w<=9;w++) WORLDS.push({id:w,name:'ステージ'+w,desc:'準備中…',stages:[]});
+  WORLDS.push({id:2,name:'あせりの森',desc:'気がはやる敵たちがひそむ、ざわざわした森',stages:[
+      {id:'2-1',en:'squirrel',name:'早送りリス',     sec:360, stops:3, d:'6分続けて、3回止めよう'},
+      {id:'2-2',en:'bee',     name:'せかせかハチ',   sec:420, stops:3, d:'7分続けて、3回止めよう'},
+      {id:'2-3',en:'fox',     name:'フライングキツネ',sec:480, stops:3, d:'8分続けて、3回止めよう'},
+      {id:'2-4',en:'owl',     name:'そわそわフクロウ',sec:540, stops:4, d:'9分続けて、4回止めよう'},
+      {id:'2-5',en:'wolf',    name:'ボス・早撃ちオオカミ',sec:600, stops:4, d:'10分続けて、4回止めよう。出ちゃったら負け', boss:true}
+    ]});
+  for(var w=3;w<=9;w++) WORLDS.push({id:w,name:'ステージ'+w,desc:'準備中…',stages:[]});
   var POS=[[18,88],[45,80],[75,72],[78,52],[48,48],[20,40],[25,18],[55,14],[82,10]];
   function st(){ var d={cleared:{}}; try{ d=JSON.parse(localStorage.getItem('tomeren-battle')||'{"cleared":{}}'); }catch(e){} d.cleared=d.cleared||{}; return d; }
   function save(d){ try{ localStorage.setItem('tomeren-battle',JSON.stringify(d)); }catch(e){} }
@@ -2680,12 +2692,13 @@ button:active,.ddbtn:active,.helpbtn:active{transform:scale(.95);filter:brightne
     if(!b){ b=document.createElement('div'); b.id='btBanner'; b.className='bt-banner'; stg.insertBefore(b,stg.firstChild); }
     b.innerHTML='<div class="bt-en">'+EN[s.en]+'</div><div><b>'+s.id+' '+s.name+'</b><br>'+fmt(s.sec)+'続けて・'+s.stops+'回止めればたおせる</div><button type="button" id="btQuit">バトルをやめる</button>';
   }
+  function bossMsg(s){ var wn=+s.id.split('-')[0], nx=WORLDS[wn]; return 'ステージ'+wn+'のボスをたおしたよ！'+(nx&&nx.stages.length?'「ステージ'+nx.id+'　'+nx.name+'」が開いたよ！':'次のステージは準備中、お楽しみに！'); }
   function result(s,win,res){
     var ov=document.createElement('div'); ov.className='br-ov '+(win?'br-win':'br-lose');
     var why=win?'':(res.leaked?'出ちゃった…今回はおあずけ':(res.active<s.sec?'あと'+fmt(Math.max(1,s.sec-res.active))+'足りなかった！':'止めた回数があと'+(s.stops-res.stops)+'回足りなかった！'));
-    ov.innerHTML='<div class="br-box"><div class="br-k">'+(win?'Y O U　W I N':'L O S E')+'</div><div class="br-en">'+EN[s.en]+'</div><div class="br-t">'+(win?s.name+'をたおした！':s.name+'に負けた…')+'</div><div class="br-d">'+(win?(s.boss?'ステージ1のボスをたおしたよ！次のステージは準備中、お楽しみに！':'次のステージが開いたよ！'):why+'<br>何度でも挑戦できるよ。')+'</div><button type="button" class="tg-btn">'+(win?'マップにもどる':'もう一回')+'</button></div>';
+    ov.innerHTML='<div class="br-box"><div class="br-k">'+(win?'Y O U　W I N':'L O S E')+'</div><div class="br-en">'+EN[s.en]+'</div><div class="br-t">'+(win?s.name+'をたおした！':s.name+'に負けた…')+'</div><div class="br-d">'+(win?(s.boss?bossMsg(s):'次のステージが開いたよ！'):why+'<br>何度でも挑戦できるよ。')+'</div><button type="button" class="tg-btn">'+(win?'マップにもどる':'もう一回')+'</button></div>';
     document.body.appendChild(ov);
-    ov.querySelector('.tg-btn').addEventListener('click',function(){ ov.remove(); var t=document.querySelector('#tabs button[data-go="battle"]'); if(win && t) t.click(); render(); });
+    ov.querySelector('.tg-btn').addEventListener('click',function(){ ov.remove(); if(win && s.boss){ var wn=+s.id.split('-')[0]; if(WORLDS[wn] && WORLDS[wn].stages.length) selW=wn+1; } var t=document.querySelector('#tabs button[data-go="battle"]'); if(win && t) t.click(); render(); });
   }
   var prevFinish=window.tmOnFinish;
   window.tmOnFinish=function(res,goal){
