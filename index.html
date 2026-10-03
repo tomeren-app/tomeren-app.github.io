@@ -117,7 +117,7 @@ h1{font-size:1.5rem;font-weight:800;margin:4px 0 2px}
 .nextdays span{font-size:.75rem;color:var(--soft)}
 .nextmsg{font-size:.92rem;margin:0 0 10px;line-height:1.6}
 .nextnote{font-size:.8rem;color:var(--soft);margin:8px 0 0;line-height:1.5}
-.tabs{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;display:grid;grid-template-columns:repeat(6,1fr);gap:6px;background:var(--bg);padding:8px 0 12px;margin-bottom:4px}
+.tabs{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;display:grid;grid-template-columns:repeat(7,1fr);gap:6px;background:var(--bg);padding:8px 0 12px;margin-bottom:4px}
 .tabs button{border:2px solid var(--line);background:var(--card);color:var(--ink);border-radius:14px;padding:8px 2px 6px;font:inherit;font-size:1.1rem;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px}
 .tabs button span{font-size:.62rem;font-weight:800}
 .tabs button.on{border-color:var(--sun);background:var(--sun);color:var(--sunInk)}
@@ -444,6 +444,45 @@ button:active,.ddbtn:active,.helpbtn:active{transform:scale(.95);filter:brightne
 .tt-next{margin-left:auto;border:none;border-radius:999px;padding:10px 22px;font:inherit;font-weight:800;background:var(--sun);color:var(--sunInk);cursor:pointer}
 .tt-dots{display:flex;gap:4px}.tt-dots i{width:6px;height:6px;border-radius:50%;background:var(--line)}.tt-dots i.on{background:var(--sun)}
 </style>
+<style>
+.bt-lead{font-size:.85rem;color:var(--soft);margin:0 0 10px}
+.bt-map{position:relative;height:420px;border-radius:18px;background:linear-gradient(180deg,#1E2A22,#16201A);overflow:hidden}
+.bt-map svg.path{position:absolute;inset:0;width:100%;height:100%}
+.bt-node{position:absolute;width:54px;height:54px;margin:-27px 0 0 -27px;border-radius:50%;border:3px solid #3A4A3E;background:#22302A;color:#8FA596;font:inherit;font-weight:900;font-size:1.1rem;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer}
+.bt-node small{font-size:.55rem;font-weight:700;line-height:1}
+.bt-node.open{border-color:var(--sun);background:#2B3A2F;color:#fff;box-shadow:0 0 0 4px rgba(244,181,59,.25)}
+.bt-node.clear{border-color:#7AD99B;color:#7AD99B}
+.bt-node.sel{transform:scale(1.12)}
+.bt-node .ti{width:16px;height:16px}
+.bt-world{margin-top:14px}
+.bt-wh{font-weight:900;font-size:1.05rem;margin:0 0 2px}
+.bt-wd{font-size:.8rem;color:var(--soft);margin:0 0 10px}
+.bt-st{display:flex;align-items:center;gap:12px;padding:12px;border:2px solid var(--line);border-radius:14px;margin-bottom:8px;background:var(--card)}
+.bt-st.lock{opacity:.45}
+.bt-st.clear{border-color:#7AD99B}
+.bt-en{width:46px;height:46px;flex:none;border-radius:12px;background:var(--bg);display:flex;align-items:center;justify-content:center;color:var(--sun)}
+.bt-en svg{width:34px;height:34px}
+.bt-sx{flex:1;min-width:0}
+.bt-sn{font-weight:900;font-size:.95rem}
+.bt-sc{font-size:.75rem;color:var(--soft)}
+.bt-go{border:none;border-radius:999px;padding:9px 14px;font:inherit;font-weight:800;font-size:.85rem;background:var(--sun);color:var(--sunInk);cursor:pointer;flex:none}
+.bt-go:disabled{background:var(--line);color:var(--soft)}
+.bt-soon{padding:18px;text-align:center;color:var(--soft);font-size:.9rem;border:2px dashed var(--line);border-radius:14px}
+.bt-banner{display:flex;align-items:center;gap:10px;margin:0 0 10px;padding:8px 10px;border-radius:12px;background:rgba(244,181,59,.14);border:2px solid var(--sun);text-align:left;font-size:.8rem}
+.bt-banner b{font-size:.9rem}
+.bt-banner .bt-en{width:36px;height:36px}.bt-banner .bt-en svg{width:26px;height:26px}
+.bt-banner button{margin-left:auto;background:none;border:none;color:var(--soft);font:inherit;font-size:.75rem;text-decoration:underline;cursor:pointer;flex:none}
+.br-ov{position:fixed;inset:0;z-index:47;display:flex;align-items:center;justify-content:center;background:rgba(8,10,14,.9);padding:24px}
+.br-box{text-align:center;color:#fff;animation:tgPop .6s cubic-bezier(.2,1.6,.4,1) both;max-width:360px}
+.br-k{font-size:1rem;font-weight:900;letter-spacing:.3em}
+.br-en{width:110px;height:110px;margin:14px auto;border-radius:50%;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.08)}
+.br-en svg{width:70px;height:70px}
+.br-t{font-size:2.2rem;font-weight:900;margin:4px 0}
+.br-d{font-size:.9rem;opacity:.85;line-height:1.6;margin-bottom:18px}
+.br-win .br-k{color:#7AD99B}.br-win .br-en svg{color:#7AD99B}
+.br-lose .br-k{color:#FF8A8A}.br-lose .br-en svg{color:#FF8A8A;animation:brShake .5s ease-in-out .3s 2}
+@keyframes brShake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+</style>
 </head>
 <body>
 <div id="splash" class="splash" role="dialog" aria-label="とめれん帳">
@@ -485,6 +524,7 @@ button:active,.ddbtn:active,.helpbtn:active{transform:scale(.95);filter:brightne
   <p class="sub">早漏の悩みに向き合うための「止めて・また再開」練習のきろく〜</p>
   <nav class="tabs" id="tabs" aria-label="画面の切りかえ">
     <button type="button" data-go="train"><svg class="ti" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="13" r="8"/><path d="M10 2h4"/><path d="M12 9v4l2.5 2"/></svg><span>練習</span></button>
+    <button type="button" data-go="battle"><svg class="ti" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.5 3.5L20 3l-.5 5.5L9 19l-4-4z"/><path d="M5 15l-2 2 4 4 2-2M7 13l4 4"/></svg><span>バトル</span></button>
     <button type="button" data-go="next"><svg class="ti" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg><span>めやす</span></button>
     <div class="ddwrap">
       <a href="#" class="ddbtn" role="button" aria-haspopup="true" aria-expanded="false"><svg class="ti" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V4M4 20h16"/><path d="M7 15l4-4 3 3 5-6"/></svg><span>きろく▾</span></a>
@@ -613,6 +653,13 @@ button:active,.ddbtn:active,.helpbtn:active{transform:scale(.95);filter:brightne
       <li><b>自分の体がわかるようになる</b>：どのくらいで出そうになるか感覚でつかめると、コントロールがうまくなる✨</li>
     </ul>
     <p style="color:var(--soft);font-size:.85rem;margin-bottom:0">効果が出るまでは何週間かかかるよ〜。コツコツ続けた人がいちばん変わるから、グラフのびてくの楽しみにしよ📈</p>
+  </section>
+
+  <section data-tab="battle" class="card" id="battleCard">
+    <h2>バトルモード ⚔️</h2>
+    <p class="bt-lead">練習でステージの敵をたおしていこう。クリアすると次のステージが開くよ。</p>
+    <div id="btMap" class="bt-map"></div>
+    <div id="btWorld" class="bt-world"></div>
   </section>
 
   <section data-tab="train" class="card tip" id="tip"></section>
@@ -2183,7 +2230,7 @@ button:active,.ddbtn:active,.helpbtn:active{transform:scale(.95);filter:brightne
     upload:'<path d="M12 15V3M7 8l5-5 5 5"/><path d="M4 17v3h16v-3"/>',
     timer:'<circle cx="12" cy="13" r="8"/><path d="M10 2h4"/><path d="M10.5 10v6M13.5 10v6"/>'
   };
-  var M={'📌':'pin','🤔':'q','🌟':'star','🖼️':'img','🖼':'img','🎙️':'mic','🎙':'mic','📅':'cal','📈':'chart','🙏':'hands','🫶':'heart','💦':'drop','🎉':'spark','📋':'clip','🎁':'gift','✅':'check','🔈':'spk','🔊':'spkon','🔇':'mute','🌙':'moon','⬆':'up','🎬':'film','💭':'cloud','🤖':'bot','🏁':'flag','✕':'x','💡':'bulb','📮':'mail','📩':'mail','→':'arrow','💪':'timer','🔗':'link','🔔':'bell','💾':'save','📲':'phone','📤':'upload','🎓':'star'};
+  var M={'📌':'pin','🤔':'q','🌟':'star','🖼️':'img','🖼':'img','🎙️':'mic','🎙':'mic','📅':'cal','📈':'chart','🙏':'hands','🫶':'heart','💦':'drop','🎉':'spark','📋':'clip','🎁':'gift','✅':'check','🔈':'spk','🔊':'spkon','🔇':'mute','🌙':'moon','⬆':'up','🎬':'film','💭':'cloud','🤖':'bot','🏁':'flag','✕':'x','💡':'bulb','📮':'mail','📩':'mail','→':'arrow','💪':'timer','🔗':'link','🔔':'bell','💾':'save','📲':'phone','📤':'upload','🎓':'star','⚔️':'flag','⚔':'flag'};
   var keys=Object.keys(M).sort(function(a,b){return b.length-a.length}).map(function(k){return k.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')});
   var RE=new RegExp('('+keys.join('|')+')\uFE0F?','g');
   function svg(n){var e=document.createElementNS('http://www.w3.org/2000/svg','svg');e.setAttribute('viewBox','0 0 24 24');e.setAttribute('class','pi');e.setAttribute('aria-hidden','true');e.setAttribute('fill','none');e.setAttribute('stroke','currentColor');e.setAttribute('stroke-width','2');e.setAttribute('stroke-linecap','round');e.setAttribute('stroke-linejoin','round');e.innerHTML=P[n];return e;}
@@ -2578,6 +2625,84 @@ button:active,.ddbtn:active,.helpbtn:active{transform:scale(.95);filter:brightne
   var first=false; try{ var lg=JSON.parse(localStorage.getItem('tomeren-log')||'{}'); first=!localStorage.getItem('tomeren-tut') && !((lg.sessions||[]).length); }catch(e){}
   try{ if(new URLSearchParams(location.search).get('tut')==='1') first=true; }catch(e){}
   if(first){ var tries=0, iv=setInterval(function(){ tries++; var sp=document.getElementById('splash'), g=document.getElementById('gate'); if(!sp && (!g||g.hidden)){ clearInterval(iv); setTimeout(start,500); } if(tries>400) clearInterval(iv); },300); }
+})();
+</script>
+
+<script>
+(function(){
+  var SV=function(d){return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+d+'</svg>';};
+  var EN={
+    slime:SV('<path d="M4 18c0-6 3.5-11 8-11s8 5 8 11z"/><circle cx="9.5" cy="13" r="1" fill="currentColor"/><circle cx="14.5" cy="13" r="1" fill="currentColor"/><path d="M10 16c1.2.8 2.8.8 4 0"/>'),
+    rabbit:SV('<path d="M9 9V3.5c0-1 2-1 2 0V9M13 9V3.5c0-1 2-1 2 0V9"/><circle cx="12" cy="14" r="5.5"/><circle cx="10" cy="13" r=".8" fill="currentColor"/><circle cx="14" cy="13" r=".8" fill="currentColor"/>'),
+    parrot:SV('<path d="M15 4a5 5 0 0 0-5 5v4l-4 7h8a5 5 0 0 0 5-5V9"/><path d="M15 4c2 0 4 1.5 4 4h-4"/><circle cx="14" cy="8" r=".8" fill="currentColor"/>'),
+    turtle:SV('<path d="M4 15a8 6 0 0 1 16 0z"/><path d="M20 13h2M6 15l-1 3M18 15l1 3M9 12l3-3 3 3"/>'),
+    king:SV('<path d="M5 9l3 3 4-6 4 6 3-3-1 9H6z"/><path d="M6 21h12"/><circle cx="12" cy="14" r="1.2" fill="currentColor"/>'),
+    lock:SV('<rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/>'),
+    flag:SV('<path d="M5 21V4M5 4h11l-2 4 2 4H5"/>')
+  };
+  var WORLDS=[
+    {id:1,name:'はじまりの草原',desc:'せっかちな敵たちがうろつく、はじまりの場所',stages:[
+      {id:'1-1',en:'slime', name:'せっかちスライム',  sec:60,  stops:1, d:'1分続けて、1回止めればたおせる'},
+      {id:'1-2',en:'rabbit',name:'あわてんぼうウサギ',sec:120, stops:2, d:'2分続けて、2回止めよう'},
+      {id:'1-3',en:'parrot',name:'早口オウム',        sec:180, stops:2, d:'3分続けて、2回止めよう'},
+      {id:'1-4',en:'turtle',name:'いそぎカメ',        sec:240, stops:3, d:'4分続けて、3回止めよう'},
+      {id:'1-5',en:'king',  name:'ボス・秒殺キング',  sec:300, stops:3, d:'5分続けて、3回止めよう。出ちゃったら負け', boss:true}
+    ]}
+  ];
+  for(var w=2;w<=9;w++) WORLDS.push({id:w,name:'ステージ'+w,desc:'準備中…',stages:[]});
+  var POS=[[18,88],[45,80],[75,72],[78,52],[48,48],[20,40],[25,18],[55,14],[82,10]];
+  function st(){ var d={cleared:{}}; try{ d=JSON.parse(localStorage.getItem('tomeren-battle')||'{"cleared":{}}'); }catch(e){} d.cleared=d.cleared||{}; return d; }
+  function save(d){ try{ localStorage.setItem('tomeren-battle',JSON.stringify(d)); }catch(e){} }
+  function active(){ try{ return localStorage.getItem('tomeren-battle-active'); }catch(e){ return null; } }
+  function setActive(id){ try{ if(id) localStorage.setItem('tomeren-battle-active',id); else localStorage.removeItem('tomeren-battle-active'); }catch(e){} }
+  function stage(id){ var r=null; WORLDS.forEach(function(w){ w.stages.forEach(function(s){ if(s.id===id) r=s; }); }); return r; }
+  function stageOpen(s,d,list){ var i=list.indexOf(s); return i===0 || !!d.cleared[list[i-1].id]; }
+  function worldOpen(w,d){ if(w.id===1) return true; var p=WORLDS[w.id-2]; return p.stages.length && p.stages.every(function(s){return d.cleared[s.id];}) && w.stages.length>0; }
+  function worldClear(w,d){ return w.stages.length && w.stages.every(function(s){return d.cleared[s.id];}); }
+  var selW=1;
+  function fmt(sec){ return sec%60? (Math.floor(sec/60)+'分'+(sec%60)+'秒') : (sec/60+'分'); }
+  function render(){
+    var d=st(), map=document.getElementById('btMap'), box=document.getElementById('btWorld'); if(!map) return;
+    var path='M'+POS.map(function(p){return (p[0]*3.6)+' '+(p[1]*4.2);}).join(' L');
+    var h='<svg class="path" viewBox="0 0 360 420" preserveAspectRatio="none"><path d="'+path+'" fill="none" stroke="#3A4A3E" stroke-width="6" stroke-dasharray="2 12" stroke-linecap="round"/></svg>';
+    WORLDS.forEach(function(w,i){ var o=worldOpen(w,d), c=worldClear(w,d); h+='<button type="button" class="bt-node'+(o?' open':'')+(c?' clear':'')+(selW===w.id?' sel':'')+'" data-w="'+w.id+'" style="left:'+POS[i][0]+'%;top:'+POS[i][1]+'%">'+(o?w.id:EN.lock)+'<small>'+(c?'クリア':(o?'ステージ':'準備中'))+'</small></button>'; });
+    map.innerHTML=h;
+    var W=WORLDS[selW-1], x='<div class="bt-wh">ステージ'+W.id+'　'+(W.stages.length?W.name:'')+'</div><div class="bt-wd">'+W.desc+'</div>';
+    if(!W.stages.length){ x+='<div class="bt-soon">このステージは準備中だよ。お楽しみに！</div>'; }
+    else W.stages.forEach(function(s){ var o=stageOpen(s,d,W.stages), c=!!d.cleared[s.id];
+      x+='<div class="bt-st'+(o?'':' lock')+(c?' clear':'')+'"><div class="bt-en">'+(o?EN[s.en]:EN.lock)+'</div><div class="bt-sx"><div class="bt-sn">'+s.id+'　'+(o?s.name:'？？？')+(s.boss?'　BOSS':'')+'</div><div class="bt-sc">'+(o?(fmt(s.sec)+'続けて・'+s.stops+'回止める'+(c?'　クリア済み':'')):'前のステージをクリアすると開くよ')+'</div></div><button type="button" class="bt-go" data-st="'+s.id+'"'+(o?'':' disabled')+'>'+(c?'再戦':'たたかう')+'</button></div>'; });
+    box.innerHTML=x;
+  }
+  function banner(){
+    var stg=document.getElementById('stage'); if(!stg) return;
+    var b=document.getElementById('btBanner'), id=active(), s=id?stage(id):null;
+    if(!s){ if(b) b.remove(); return; }
+    if(!b){ b=document.createElement('div'); b.id='btBanner'; b.className='bt-banner'; stg.insertBefore(b,stg.firstChild); }
+    b.innerHTML='<div class="bt-en">'+EN[s.en]+'</div><div><b>'+s.id+' '+s.name+'</b><br>'+fmt(s.sec)+'続けて・'+s.stops+'回止めればたおせる</div><button type="button" id="btQuit">バトルをやめる</button>';
+  }
+  function result(s,win,res){
+    var ov=document.createElement('div'); ov.className='br-ov '+(win?'br-win':'br-lose');
+    var why=win?'':(res.leaked?'出ちゃった…今回はおあずけ':(res.active<s.sec?'あと'+fmt(Math.max(1,s.sec-res.active))+'足りなかった！':'止めた回数があと'+(s.stops-res.stops)+'回足りなかった！'));
+    ov.innerHTML='<div class="br-box"><div class="br-k">'+(win?'Y O U　W I N':'L O S E')+'</div><div class="br-en">'+EN[s.en]+'</div><div class="br-t">'+(win?s.name+'をたおした！':s.name+'に負けた…')+'</div><div class="br-d">'+(win?(s.boss?'ステージ1のボスをたおしたよ！次のステージは準備中、お楽しみに！':'次のステージが開いたよ！'):why+'<br>何度でも挑戦できるよ。')+'</div><button type="button" class="tg-btn">'+(win?'マップにもどる':'もう一回')+'</button></div>';
+    document.body.appendChild(ov);
+    ov.querySelector('.tg-btn').addEventListener('click',function(){ ov.remove(); var t=document.querySelector('#tabs button[data-go="battle"]'); if(win && t) t.click(); render(); });
+  }
+  var prevFinish=window.tmOnFinish;
+  window.tmOnFinish=function(res,goal){
+    try{ if(prevFinish) prevFinish(res,goal); }catch(e){}
+    var id=active(), s=id?stage(id):null; if(!s||!res) return;
+    var win=!res.leaked && res.active>=s.sec && res.stops>=s.stops;
+    if(win){ var d=st(); d.cleared[s.id]=true; save(d); setActive(null); }
+    try{ if(window.gtag) gtag('event','battle_'+(win?'win_':'lose_')+s.id.replace('-','_'),{}); }catch(e){}
+    var tries=0, iv=setInterval(function(){ tries++; if(!document.querySelector('.tg-ov') && tries>4){ clearInterval(iv); result(s,win,res); banner(); } if(tries>200) clearInterval(iv); },400);
+  };
+  document.addEventListener('click',function(e){
+    var n=e.target.closest('.bt-node'); if(n){ var w=+n.getAttribute('data-w'); selW=w; render(); return; }
+    var g=e.target.closest('.bt-go'); if(g && !g.disabled){ setActive(g.getAttribute('data-st')); var t=document.querySelector('#tabs button[data-go="train"]'); if(t) t.click(); banner(); window.scrollTo(0,0); return; }
+    if(e.target.closest('#btQuit')){ setActive(null); banner(); return; }
+    if(e.target.closest('#tabs button[data-go="battle"]')) setTimeout(render,30);
+  });
+  render(); banner();
 })();
 </script>
 </body>
