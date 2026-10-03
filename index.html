@@ -21,6 +21,8 @@
 </script>
 
 <meta name="google-site-verification" content="FCmD-84CzxalwmiYvkrNy-GakTUrBhXjcy1WsdveLQw" />
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="とめれん帳">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>とめれん帳｜早漏の悩みに、ひとりでできる止めて・再開トレーニング記録（無料・登録なし）</title>
 <meta name="description" content="早漏の悩みに向き合う人のための無料トレーニング記録アプリ。ストップ・スタート法（止めて・再開）をタイマー、声かけ、記録、レポートでサポート。登録不要で、データはスマホの中だけに保存されます。">
@@ -423,6 +425,12 @@ button:active,.ddbtn:active,.helpbtn:active{transform:scale(.95);filter:brightne
 .sh-msg{position:relative;font-size:.8rem;color:#FFD27A;margin-top:6px;min-height:1em}
 .tg-h .sh-row{animation:thFade 1s ease-out 5s both}.tg-h .sh-note{animation:thFade 1s ease-out 5.2s both}
 </style>
+<style>
+.sphome{margin:18px auto 0;max-width:300px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);border-radius:16px;padding:12px 14px;font-size:.82rem;line-height:1.6;display:flex;flex-direction:column;gap:4px}
+.sphome[hidden]{display:none}
+.sphome small{font-size:.7rem;opacity:.75}
+.sphome .pi{color:#FFD27A}
+</style>
 </head>
 <body>
 <div id="splash" class="splash" role="dialog" aria-label="とめれん帳">
@@ -432,7 +440,12 @@ button:active,.ddbtn:active,.helpbtn:active{transform:scale(.95);filter:brightne
     <div class="spsub">気持ちよさとなかよくなる、<br>止めて・再開トレーニング</div>
     <div class="spdots"><span></span><span></span><span></span></div>
     <div class="sptap">タップではじめる</div>
-    <div class="sptap" style="margin-top:6px;font-size:.7rem">ver.7</div>
+    <div class="sphome" id="spHome" hidden>
+      <b>📲 記録を消さないために</b>
+      <span>Safariの<b>共有ボタン</b> →「<b>ホーム画面に追加</b>」→ ホーム画面から開いてね</span>
+      <small>Safariで7日間開かないと、記録が消えることがあるよ。きろくタブで<b>バックアップ</b>もできるよ</small>
+    </div>
+    <div class="sptap" style="margin-top:6px;font-size:.7rem">ver.9</div>
   </div>
 </div>
 <div id="gate" class="gate" hidden>
@@ -480,6 +493,7 @@ button:active,.ddbtn:active,.helpbtn:active{transform:scale(.95);filter:brightne
       <div class="helpmenu" id="helpMenu">
         <a href="#" id="helpGuide">💡 使い方を見る</a>
         <a href="https://form.jotform.com/262745742685065" target="_blank" rel="noopener">📮 お問い合わせ</a>
+        <a href="#keep" id="helpKeep">💾 記録を守る方法</a>
         <a href="#news" id="helpNews">🔔 運営からのお知らせ</a>
         <a href="#share" id="helpShare">🔗 とめれん帳を教える</a>
       </div>
@@ -663,7 +677,18 @@ button:active,.ddbtn:active,.helpbtn:active{transform:scale(.95);filter:brightne
     <ul class="hist" id="hist"></ul>
   </section>
 
-  <p data-tab="log" class="foot">ver.8<br>きろくは自分だけが見れるよ🔒<br><a href="https://form.jotform.com/262745742685065" target="_blank" rel="noopener" style="color:var(--soft)">お問い合わせ</a><br><button class="linkbtn" id="resetAll">きろくを全部けす</button></p>
+  <section data-tab="log" class="card" id="backupCard">
+    <h2>記録のバックアップ 💾</h2>
+    <p style="font-size:.88rem;line-height:1.6">記録はこのスマホの中だけに保存されてるよ。ファイルに書き出しておけば、消えちゃったときや機種変更のときに戻せるよ。</p>
+    <div class="sharebtns">
+      <button type="button" class="ghost" id="bkOut">💾 書き出す</button>
+      <button type="button" class="ghost" id="bkIn">📤 読みこむ</button>
+    </div>
+    <input type="file" id="bkFile" accept=".json,application/json,text/plain" hidden>
+    <p class="sharemsg" id="bkMsg" aria-live="polite"></p>
+  </section>
+
+  <p data-tab="log" class="foot">ver.9<br>きろくは自分だけが見れるよ🔒<br><a href="https://form.jotform.com/262745742685065" target="_blank" rel="noopener" style="color:var(--soft)">お問い合わせ</a><br><button class="linkbtn" id="resetAll">きろくを全部けす</button></p>
 </main>
 
 <script>
@@ -675,7 +700,7 @@ button:active,.ddbtn:active,.helpbtn:active{transform:scale(.95);filter:brightne
     let done = false;
     const closeSplash = ()=>{ if (done) return; done = true; sp.classList.add('out'); setTimeout(()=>sp.remove(), 550); };
     sp.addEventListener('click', closeSplash);
-    setTimeout(closeSplash, 3000);
+    var __sa=(window.navigator.standalone===true)||(window.matchMedia&&matchMedia('(display-mode: standalone)').matches); if(!__sa){ var __h=document.getElementById('spHome'); if(__h) __h.hidden=false; } setTimeout(closeSplash, __sa?3000:7000);
     if (!ok){ g.hidden = false; document.querySelector('main').setAttribute('aria-hidden','true'); }
     document.getElementById('gateYes').onclick = ()=>{ try{ localStorage.setItem('tomeren-age','ok'); }catch(e){} g.hidden = true; document.querySelector('main').removeAttribute('aria-hidden'); };
     document.getElementById('gateNo').onclick = ()=>{ g.querySelector('.gatebox').innerHTML = '<h2>ごめんね🙏</h2><p>このページは18歳以上の人向けなんだ。体のことで心配があったら、おうちの人や学校の保健の先生、病院に相談してみてね。</p>'; };
@@ -2139,13 +2164,16 @@ button:active,.ddbtn:active,.helpbtn:active{transform:scale(.95);filter:brightne
     arrow:'<path d="M5 12h14M13 6l6 6-6 6"/>',
     link:'<path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/>',
     bell:'<path d="M6 16V11a6 6 0 0 1 12 0v5l2 2H4z"/><path d="M10 20a2 2 0 0 0 4 0"/>',
+    save:'<path d="M12 3v12M7 10l5 5 5-5"/><path d="M4 17v3h16v-3"/>',
+    phone:'<rect x="6" y="2" width="12" height="20" rx="2.5"/><path d="M10 18h4"/><path d="M12 7v6M9 10h6"/>',
+    upload:'<path d="M12 15V3M7 8l5-5 5 5"/><path d="M4 17v3h16v-3"/>',
     timer:'<circle cx="12" cy="13" r="8"/><path d="M10 2h4"/><path d="M10.5 10v6M13.5 10v6"/>'
   };
-  var M={'📌':'pin','🤔':'q','🌟':'star','🖼️':'img','🖼':'img','🎙️':'mic','🎙':'mic','📅':'cal','📈':'chart','🙏':'hands','🫶':'heart','💦':'drop','🎉':'spark','📋':'clip','🎁':'gift','✅':'check','🔈':'spk','🔊':'spkon','🔇':'mute','🌙':'moon','⬆':'up','🎬':'film','💭':'cloud','🤖':'bot','🏁':'flag','✕':'x','💡':'bulb','📮':'mail','📩':'mail','→':'arrow','💪':'timer','🔗':'link','🔔':'bell'};
+  var M={'📌':'pin','🤔':'q','🌟':'star','🖼️':'img','🖼':'img','🎙️':'mic','🎙':'mic','📅':'cal','📈':'chart','🙏':'hands','🫶':'heart','💦':'drop','🎉':'spark','📋':'clip','🎁':'gift','✅':'check','🔈':'spk','🔊':'spkon','🔇':'mute','🌙':'moon','⬆':'up','🎬':'film','💭':'cloud','🤖':'bot','🏁':'flag','✕':'x','💡':'bulb','📮':'mail','📩':'mail','→':'arrow','💪':'timer','🔗':'link','🔔':'bell','💾':'save','📲':'phone','📤':'upload'};
   var keys=Object.keys(M).sort(function(a,b){return b.length-a.length}).map(function(k){return k.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')});
   var RE=new RegExp('('+keys.join('|')+')\uFE0F?','g');
   function svg(n){var e=document.createElementNS('http://www.w3.org/2000/svg','svg');e.setAttribute('viewBox','0 0 24 24');e.setAttribute('class','pi');e.setAttribute('aria-hidden','true');e.setAttribute('fill','none');e.setAttribute('stroke','currentColor');e.setAttribute('stroke-width','2');e.setAttribute('stroke-linecap','round');e.setAttribute('stroke-linejoin','round');e.innerHTML=P[n];return e;}
-  var SEL='h1, h2, button, .chip, summary, .helpmenu a, .ghost';
+  var SEL='h1, h2, .sphome b, button, .chip, summary, .helpmenu a, .ghost';
   function fixText(t){
     var v=t.nodeValue; if(!v||!RE.test(v)) return; RE.lastIndex=0;
     var f=document.createDocumentFragment(), last=0, m;
@@ -2342,6 +2370,12 @@ button:active,.ddbtn:active,.helpbtn:active{transform:scale(.95);filter:brightne
 (function(){
   // ===== 運営からのお知らせ（新しいお知らせは、いちばん上に足してね）=====
   var NEWS=[
+    {v:'ver.9', d:'2026年10月3日', t:'記録を守る機能がつきました', items:[
+      'きろくタブのいちばん下で、記録をファイルに書き出し・読みこみできるよ（機種変更でも安心）',
+      'ホーム画面に追加して開くと、記録が勝手に消えにくくなるよ',
+      '称号ゲットのとき、Xや画像で共有できるようになったよ',
+      '今日のレポートのメッセージが、もった時間で変わるようになったよ'
+    ]},
     {v:'ver.8', d:'2026年10月3日', t:'とめれん帳がパワーアップしました', items:[
       '称号システムが登場！練習を続けると、流れ星から悟りまで9つの称号がもらえるよ',
       'アイコンをシンプルな線の絵に変えて、見やすくしたよ',
@@ -2431,6 +2465,50 @@ button:active,.ddbtn:active,.helpbtn:active{transform:scale(.95);filter:brightne
     if(n%5!==0) return;
     var tries=0, iv=setInterval(function(){ tries++; if(!document.querySelector('.tg-ov') && tries>8){ clearInterval(iv); doneSheet(n); } if(tries>200) clearInterval(iv); },400);
   };
+})();
+</script>
+
+<script>
+(function(){
+  var KEYS=['tomeren-log','tomeren-title','tomeren-houtou','tomeren-appid','tomeren-done-count'];
+  function msg(t){ var m=document.getElementById('bkMsg'); if(m) m.innerHTML=t; }
+  function today(){ var d=new Date(); return d.getFullYear()+String(d.getMonth()+1).padStart(2,'0')+String(d.getDate()).padStart(2,'0'); }
+  document.addEventListener('click',function(e){
+    if(e.target.closest('#bkOut')){
+      var data={app:'tomeren',v:1,at:Date.now(),items:{}};
+      KEYS.forEach(function(k){ try{ var v=localStorage.getItem(k); if(v!==null) data.items[k]=v; }catch(err){} });
+      var n=0; try{ n=(JSON.parse(data.items['tomeren-log']||'{}').sessions||[]).length; }catch(err){}
+      var blob=new Blob([JSON.stringify(data)],{type:'application/json'}), name='tomeren-backup-'+today()+'.json';
+      var file=null; try{ file=new File([blob],name,{type:'application/json'}); }catch(err){}
+      try{ localStorage.setItem('tomeren-lastbackup',String(Date.now())); }catch(err){}
+      if(file && navigator.canShare && navigator.canShare({files:[file]})){ navigator.share({files:[file]}).then(function(){ msg('書き出したよ（'+n+'回分）。「ファイルに保存」したところを覚えておいてね'); }).catch(function(){}); }
+      else { var u=URL.createObjectURL(blob); msg('<a href="'+u+'" download="'+name+'" style="color:inherit">ここを押して保存する</a>（'+n+'回分）'); }
+    }
+    if(e.target.closest('#bkIn')){ var f=document.getElementById('bkFile'); if(f) f.click(); }
+    if(e.target.closest('#helpKeep')){ e.preventDefault(); var hm=document.getElementById('helpMenu'); if(hm) hm.classList.remove('open');
+      var ov=document.createElement('div'); ov.className='fb-ov'; ov.innerHTML='<div class="fb-box" style="text-align:left"><div class="fb-t" style="text-align:center">記録を守る方法 💾</div><div class="fb-d" style="text-align:left"><b>① ホーム画面に追加する</b><br>Safariの共有ボタン →「ホーム画面に追加」→ ホーム画面のアイコンから開いてね。Safariで7日間開かないと記録が消えることがあるけど、これで防げるよ。<br><br><b>② ときどきバックアップする</b><br>きろくタブのいちばん下「記録のバックアップ」→「書き出す」でファイルに保存。消えちゃったときや機種変更のときは「読みこむ」で戻せるよ。<br><br><b>③ 同じ場所で開く</b><br>SafariとXのアプリの中では、記録が別々になるよ。いつも同じところから開いてね。</div><button type="button" class="fb-main">わかった</button></div>';
+      document.body.appendChild(ov); ov.addEventListener('click',function(ev){ if(ev.target===ov||ev.target.closest('.fb-main')) ov.remove(); }); }
+  });
+  document.addEventListener('change',function(e){
+    if(e.target.id!=='bkFile' || !e.target.files || !e.target.files[0]) return;
+    var fr=new FileReader(); fr.onload=function(){
+      try{
+        var d=JSON.parse(fr.result); if(!d||d.app!=='tomeren'||!d.items) throw 0;
+        var cur={sessions:[]}; try{ cur=JSON.parse(localStorage.getItem('tomeren-log')||'{"sessions":[]}'); }catch(err){}
+        var inc={sessions:[]}; try{ inc=JSON.parse(d.items['tomeren-log']||'{"sessions":[]}'); }catch(err){}
+        var seen={}, all=[]; (cur.sessions||[]).concat(inc.sessions||[]).forEach(function(x){ if(x&&!seen[x.t]){ seen[x.t]=1; all.push(x); } });
+        all.sort(function(a,b){return a.t-b.t;});
+        var added=all.length-(cur.sessions||[]).length;
+        localStorage.setItem('tomeren-log',JSON.stringify({sessions:all}));
+        ['tomeren-houtou','tomeren-appid'].forEach(function(k){ if(d.items[k]!=null && localStorage.getItem(k)===null) localStorage.setItem(k,d.items[k]); });
+        if(d.items['tomeren-houtou']==='1') localStorage.setItem('tomeren-houtou','1');
+        var t1=+localStorage.getItem('tomeren-title'), t2=+d.items['tomeren-title']; if(!isNaN(t2) && (isNaN(t1)||t2>t1)) localStorage.setItem('tomeren-title',String(t2));
+        var c1=+localStorage.getItem('tomeren-done-count')||0, c2=+d.items['tomeren-done-count']||0; localStorage.setItem('tomeren-done-count',String(Math.max(c1,c2)));
+        msg('読みこんだよ！'+added+'回分の記録をもどしたよ。画面を読みこみ直すね…');
+        setTimeout(function(){ location.reload(); },1400);
+      }catch(err){ msg('このファイルは読みこめなかったよ🙏 とめれん帳で書き出したファイルを選んでね'); }
+    }; fr.readAsText(e.target.files[0]); e.target.value='';
+  });
 })();
 </script>
 </body>
