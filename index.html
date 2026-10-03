@@ -115,7 +115,7 @@ h1{font-size:1.5rem;font-weight:800;margin:4px 0 2px}
 .nextdays span{font-size:.75rem;color:var(--soft)}
 .nextmsg{font-size:.92rem;margin:0 0 10px;line-height:1.6}
 .nextnote{font-size:.8rem;color:var(--soft);margin:8px 0 0;line-height:1.5}
-.tabs{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;display:grid;grid-template-columns:repeat(8,1fr);gap:6px;background:var(--bg);padding:8px 0 12px;margin-bottom:4px}
+.tabs{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;display:grid;grid-template-columns:repeat(6,1fr);gap:6px;background:var(--bg);padding:8px 0 12px;margin-bottom:4px}
 .tabs button{border:2px solid var(--line);background:var(--card);color:var(--ink);border-radius:14px;padding:8px 2px 6px;font:inherit;font-size:1.1rem;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px}
 .tabs button span{font-size:.62rem;font-weight:800}
 .tabs button.on{border-color:var(--sun);background:var(--sun);color:var(--sunInk)}
@@ -351,6 +351,18 @@ h2{font-size:1.05rem;margin:0 0 10px}
 @keyframes thRise{0%{transform:translateY(0);opacity:0}15%{opacity:1}100%{transform:translateY(-105vh);opacity:0}}
 @media (prefers-reduced-motion:reduce){.tg-wave,.tg-flash,.th-em{display:none}.th-glow,.th-flame svg,.th-name span,.th-sub,.th-sub2,.th-btn,.th-k,.th-lamp{animation:none}}
 </style>
+<style>
+.ddwrap{position:relative;display:flex}
+.ddbtn{flex:1;border:2px solid var(--line);background:var(--card);color:var(--ink);border-radius:14px;padding:8px 2px 6px;font:inherit;font-size:1.1rem;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px;text-decoration:none}
+.ddbtn span{font-size:.56rem;font-weight:800;white-space:nowrap}
+.tabs .ddbtn.on{border-color:var(--sun);background:var(--sun);color:var(--sunInk)}
+.ddmenu{position:absolute;top:calc(100% + 6px);left:50%;transform:translateX(-50%);z-index:31;background:var(--card);border:2px solid var(--line);border-radius:14px;padding:6px;min-width:150px;box-shadow:0 6px 20px rgba(0,0,0,.18);display:none}
+.ddwrap.open .ddmenu{display:block}
+.tabs .ddmenu button{display:flex!important;flex-direction:row!important;align-items:center;gap:10px;width:100%;border:none!important;border-radius:10px;padding:11px 12px!important;background:transparent;font-size:.95rem;font-weight:700;white-space:nowrap}
+.tabs .ddmenu button span{font-size:.95rem!important;letter-spacing:0}
+.tabs .ddmenu button .ti{width:20px;height:20px}
+.tabs .ddmenu button.on{background:var(--sun)!important;color:var(--sunInk)!important}
+</style>
 </head>
 <body>
 <div id="splash" class="splash" role="dialog" aria-label="とめれん帳">
@@ -388,10 +400,20 @@ h2{font-size:1.05rem;margin:0 0 10px}
   <nav class="tabs" id="tabs" aria-label="画面の切りかえ">
     <button type="button" data-go="train"><svg class="ti" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="13" r="8"/><path d="M10 2h4"/><path d="M12 9v4l2.5 2"/></svg><span>練習</span></button>
     <button type="button" data-go="next"><svg class="ti" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg><span>めやす</span></button>
-    <button type="button" data-go="day"><svg class="ti" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4h6v3H9zM9 12h6M9 16h4"/></svg><span>レポート</span></button>
+    <div class="ddwrap">
+      <a href="#" class="ddbtn" role="button" aria-haspopup="true" aria-expanded="false"><svg class="ti" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V4M4 20h16"/><path d="M7 15l4-4 3 3 5-6"/></svg><span>きろく▾</span></a>
+      <div class="ddmenu">
     <button type="button" data-go="log"><svg class="ti" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V4M4 20h16"/><path d="M7 15l4-4 3 3 5-6"/></svg><span>きろく</span></button>
+    <button type="button" data-go="day"><svg class="ti" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4h6v3H9zM9 12h6M9 16h4"/></svg><span>レポート</span></button>
+      </div>
+    </div>
+    <div class="ddwrap">
+      <a href="#" class="ddbtn" role="button" aria-haspopup="true" aria-expanded="false"><svg class="ti" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.9.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.9l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.9.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.9-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.9V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg><span>設定▾</span></a>
+      <div class="ddmenu">
     <button type="button" data-go="voice"><svg class="ti" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg><span>声</span></button>
     <button type="button" data-go="img"><svg class="ti" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><path d="M21 17l-5-5-9 8"/></svg><span>画像</span></button>
+      </div>
+    </div>
     <button type="button" data-go="help"><svg class="ti" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5a2 2 0 0 1 2-2h12v16H6a2 2 0 0 0-2 2z"/><path d="M4 21V5M8 7h6"/></svg><span>説明</span></button>
     <div class="helpwrap">
       <a href="#" class="helpbtn" id="helpBtn" role="button" aria-label="ヘルプ" aria-expanded="false" aria-controls="helpMenu"><svg class="ti" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .9-1 1.6v.6"/><circle cx="12" cy="17" r=".6" fill="currentColor"/></svg><span>ヘルプ</span></a>
@@ -2225,6 +2247,22 @@ h2{font-size:1.05rem;margin:0 0 10px}
     },300);
   }
   document.addEventListener('click',function(e){ if(e.target.closest('#helpNews')){ e.preventDefault(); var hm=document.getElementById('helpMenu'); if(hm) hm.classList.remove('open'); if(latest) show(latest); } });
+})();
+</script>
+
+<script>
+(function(){
+  var ws=document.querySelectorAll('#tabs .ddwrap');
+  function closeAll(ex){ ws.forEach(function(w){ if(w!==ex){ w.classList.remove('open'); var b=w.querySelector('.ddbtn'); if(b) b.setAttribute('aria-expanded','false'); } }); }
+  ws.forEach(function(w){
+    var b=w.querySelector('.ddbtn');
+    b.addEventListener('click',function(e){ e.preventDefault(); e.stopPropagation(); var o=!w.classList.contains('open'); closeAll(w); w.classList.toggle('open',o); b.setAttribute('aria-expanded',o?'true':'false'); var hm=document.getElementById('helpMenu'); if(hm) hm.classList.remove('open'); });
+    w.querySelectorAll('.ddmenu button').forEach(function(x){ x.addEventListener('click',function(){ setTimeout(function(){ closeAll(); },0); }); });
+  });
+  document.addEventListener('click',function(e){ if(!e.target.closest('#tabs .ddwrap')) closeAll(); });
+  function sync(){ ws.forEach(function(w){ var on=!!w.querySelector('.ddmenu button.on'); w.querySelector('.ddbtn').classList.toggle('on',on); }); }
+  ws.forEach(function(w){ w.querySelectorAll('.ddmenu button').forEach(function(x){ new MutationObserver(sync).observe(x,{attributes:true,attributeFilter:['class']}); }); });
+  sync();
 })();
 </script>
 </body>
