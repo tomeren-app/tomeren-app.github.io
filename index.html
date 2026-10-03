@@ -2576,6 +2576,7 @@ button:active,.ddbtn:active,.helpbtn:active{transform:scale(.95);filter:brightne
   window.tmTutorial=start;
   document.addEventListener('click',function(e){ if(e.target.closest('#helpTut')){ e.preventDefault(); var hm=document.getElementById('helpMenu'); if(hm) hm.classList.remove('open'); start(); } });
   var first=false; try{ var lg=JSON.parse(localStorage.getItem('tomeren-log')||'{}'); first=!localStorage.getItem('tomeren-tut') && !((lg.sessions||[]).length); }catch(e){}
+  try{ if(new URLSearchParams(location.search).get('tut')==='1') first=true; }catch(e){}
   if(first){ var tries=0, iv=setInterval(function(){ tries++; var sp=document.getElementById('splash'), g=document.getElementById('gate'); if(!sp && (!g||g.hidden)){ clearInterval(iv); setTimeout(start,500); } if(tries>400) clearInterval(iv); },300); }
 })();
 </script>
