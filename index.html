@@ -554,12 +554,12 @@ h2{font-size:1.05rem;margin:0 0 10px}
     <div class="tc-next" id="tcNext"></div>
     <div class="tc-review" id="tcReview" hidden>
       <div class="tc-rvh">「不滅の法灯」の審査に申請できるよ</div>
-      <p>千年消えない火の称号。きみの記録を運営が審査して、合格したら<b>認定コード</b>をメールで送るよ。</p>
+      <p>千年消えない火の称号。「審査に申請する」を押すと、記録が入ったメールができるよ。ひと言を書いて送ってね。合格したら<b>認定コード</b>を返信するよ。</p>
       <div class="tc-rvid">申請番号：<b id="rvId"></b></div>
       <div class="tc-rvsum" id="rvSum"></div>
       <div class="sharebtns">
-        <button type="button" class="ghost" id="rvCopy">📋 申請内容をコピー</button>
-        <a class="ghost" href="https://form.jotform.com/262753238845062" target="_blank" rel="noopener" style="text-align:center;text-decoration:none">申請フォームをひらく</a>
+        <button type="button" class="ghost" id="rvCopy">📋 内容をコピー</button>
+        <a class="ghost" id="rvMail" href="#" style="text-align:center;text-decoration:none;background:var(--sun);color:var(--sunInk,#14171C);border-color:var(--sun)">📩 審査に申請する</a>
       </div>
       <div class="tc-rvcode"><input id="rvCode" placeholder="認定コード（6文字）" autocomplete="off" maxlength="12"><button type="button" class="ghost" id="rvCheck">決定</button></div>
       <p class="sharemsg" id="rvMsg" aria-live="polite"></p>
@@ -2035,7 +2035,7 @@ h2{font-size:1.05rem;margin:0 0 10px}
     bell:'<path d="M6 16V11a6 6 0 0 1 12 0v5l2 2H4z"/><path d="M10 20a2 2 0 0 0 4 0"/>',
     timer:'<circle cx="12" cy="13" r="8"/><path d="M10 2h4"/><path d="M10.5 10v6M13.5 10v6"/>'
   };
-  var M={'📌':'pin','🤔':'q','🌟':'star','🖼️':'img','🖼':'img','🎙️':'mic','🎙':'mic','📅':'cal','📈':'chart','🙏':'hands','🫶':'heart','💦':'drop','🎉':'spark','📋':'clip','🎁':'gift','✅':'check','🔈':'spk','🔊':'spkon','🔇':'mute','🌙':'moon','⬆':'up','🎬':'film','💭':'cloud','🤖':'bot','🏁':'flag','✕':'x','💡':'bulb','📮':'mail','→':'arrow','💪':'timer','🔗':'link','🔔':'bell'};
+  var M={'📌':'pin','🤔':'q','🌟':'star','🖼️':'img','🖼':'img','🎙️':'mic','🎙':'mic','📅':'cal','📈':'chart','🙏':'hands','🫶':'heart','💦':'drop','🎉':'spark','📋':'clip','🎁':'gift','✅':'check','🔈':'spk','🔊':'spkon','🔇':'mute','🌙':'moon','⬆':'up','🎬':'film','💭':'cloud','🤖':'bot','🏁':'flag','✕':'x','💡':'bulb','📮':'mail','📩':'mail','→':'arrow','💪':'timer','🔗':'link','🔔':'bell'};
   var keys=Object.keys(M).sort(function(a,b){return b.length-a.length}).map(function(k){return k.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')});
   var RE=new RegExp('('+keys.join('|')+')\uFE0F?','g');
   function svg(n){var e=document.createElementNS('http://www.w3.org/2000/svg','svg');e.setAttribute('viewBox','0 0 24 24');e.setAttribute('class','pi');e.setAttribute('aria-hidden','true');e.setAttribute('fill','none');e.setAttribute('stroke','currentColor');e.setAttribute('stroke-width','2');e.setAttribute('stroke-linecap','round');e.setAttribute('stroke-linejoin','round');e.innerHTML=P[n];return e;}
@@ -2098,6 +2098,12 @@ h2{font-size:1.05rem;margin:0 0 10px}
   function fnv(str){ var h=2166136261>>>0; for(var i=0;i<str.length;i++){ h^=str.charCodeAt(i); h=Math.imul(h,16777619)>>>0; } return h; }
   function codeFor(id){ var a=fnv(id+'|tomeren-houtou|1200').toString(36).toUpperCase(); var b=fnv('k'+id).toString(36).toUpperCase(); return (a+b).replace(/[^0-9A-Z]/g,'').slice(0,6); }
   function appId(){ var v=null; try{ v=localStorage.getItem('tomeren-appid'); }catch(e){} if(!v){ v='T'+Date.now().toString(36).toUpperCase().slice(-5)+Math.random().toString(36).toUpperCase().slice(2,6); try{ localStorage.setItem('tomeren-appid',v); }catch(e){} } return v; }
+  var MAILTO='tomeren.app@gmail.com';
+  function titleFor(m,d){ var r=-1; for(var i=0;i<T.length;i++){ if(m>=T[i].m && d>=T[i].d) r=i; else break; } return r<0?'なし':T[r].n; }
+  function chk(id,m,d){ return fnv(id+'|'+m+'|'+d+'|'+titleFor(m,d)+'|chk-tomeren').toString(36).toUpperCase().slice(0,5); }
+  function mailBody(){ var st=stats(), r=rankOf(st), m=Math.floor(st.bestMin), d=st.days, id=appId();
+    return { subject:'【とめれん帳】不滅の法灯 審査申請（'+id+'）',
+      body:'申請番号：'+id+'\nいまの称号：'+(T[r]?T[r].n:'')+'\n最長の継続時間：'+m+'分\n練習した日数：'+d+'日\nチェック記号：'+chk(id,m,d)+'\n\n―――――\nひと言：\n（ここに書いてね）\n\n―――――\n・18歳以上です\n・記録は自分で正直につけたものです\n※上の数字とチェック記号は書きかえないでね' }; }
   function hasHoutou(){ try{ return localStorage.getItem('tomeren-houtou')==='1'; }catch(e){ return false; } }
   function stats(){
     var L=null; try{ L=JSON.parse(localStorage.getItem('tomeren-log')||'null'); }catch(e){}
@@ -2167,10 +2173,18 @@ h2{font-size:1.05rem;margin:0 0 10px}
     renderCard();
   }
   document.addEventListener('click',function(e){
-    if(e.target.closest('#rvCopy')){ var st=stats(), r=rankOf(st); var txt='申請番号：'+appId()+'\nいまの称号：'+(T[r]?T[r].n:'')+'\n最長の継続時間：'+Math.floor(st.bestMin)+'分\n練習した日数：'+st.days+'日'; var m=document.getElementById('rvMsg'); if(navigator.clipboard&&navigator.clipboard.writeText) navigator.clipboard.writeText(txt).then(function(){m.textContent='コピーしたよ。フォームの各欄に貼り付けてね';},function(){m.textContent=txt;}); else m.textContent=txt; }
+    if(e.target.closest('#rvMail')){ e.preventDefault(); var mb=mailBody(); location.href='mailto:'+MAILTO+'?subject='+encodeURIComponent(mb.subject)+'&body='+encodeURIComponent(mb.body); return; }
+    if(e.target.closest('#rvCopy')){ var mb2=mailBody(), m2=document.getElementById('rvMsg'), full='宛先：'+MAILTO+'\n件名：'+mb2.subject+'\n\n'+mb2.body; if(navigator.clipboard&&navigator.clipboard.writeText) navigator.clipboard.writeText(full).then(function(){m2.textContent='コピーしたよ。'+MAILTO+' 宛てにメールで送ってね';},function(){m2.textContent=full;}); else m2.textContent=full; return; }
+    if(false && e.target.closest('#rvCopy')){ var st=stats(), r=rankOf(st); var txt='申請番号：'+appId()+'\nいまの称号：'+(T[r]?T[r].n:'')+'\n最長の継続時間：'+Math.floor(st.bestMin)+'分\n練習した日数：'+st.days+'日'; var m=document.getElementById('rvMsg'); if(navigator.clipboard&&navigator.clipboard.writeText) navigator.clipboard.writeText(txt).then(function(){m.textContent='コピーしたよ。フォームの各欄に貼り付けてね';},function(){m.textContent=txt;}); else m.textContent=txt; }
     if(e.target.closest('#rvCheck')){ var v=(document.getElementById('rvCode').value||'').trim().toUpperCase(); var m=document.getElementById('rvMsg'); if(v && v===codeFor(appId())){ try{ localStorage.setItem('tomeren-houtou','1'); }catch(err){} m.textContent=''; renderCard(); celebrate('houtou'); } else { m.textContent='コードがちがうみたい。もう一度たしかめてね'; } }
   });
-  try{ if(new URLSearchParams(location.search).get('admin')==='houtou'){ var ad=document.createElement('div'); ad.className='card'; ad.style.cssText='margin:12px;padding:14px;border:2px dashed var(--sun)'; ad.innerHTML='<b>運営用：認定コードを作る</b><p style="font-size:.85rem;margin:6px 0">申請番号を入れると、その人用の認定コードが出るよ</p><input id="adId" placeholder="申請番号" style="width:100%;padding:10px;font:inherit;box-sizing:border-box"><p style="font-size:1.6rem;font-weight:900;letter-spacing:.2em;margin:10px 0 0" id="adOut"></p>'; document.body.insertBefore(ad,document.body.firstChild); ad.querySelector('#adId').addEventListener('input',function(){ var v=this.value.trim().toUpperCase(); ad.querySelector('#adOut').textContent=v?codeFor(v):''; }); } }catch(e){}
+  try{ if(new URLSearchParams(location.search).get('admin')==='houtou'){ var ad=document.createElement('div'); ad.className='card'; ad.style.cssText='margin:12px;padding:14px;border:2px dashed var(--sun)'; ad.innerHTML='<b>運営用：審査ツール</b><p style="font-size:.85rem;margin:6px 0">申請メールの数字をそのまま入れてね</p><input id="adId" placeholder="申請番号" style="width:100%;padding:10px;font:inherit;box-sizing:border-box;margin-bottom:6px"><input id="adM" placeholder="最長の継続時間（分）" inputmode="numeric" style="width:100%;padding:10px;font:inherit;box-sizing:border-box;margin-bottom:6px"><input id="adD" placeholder="練習した日数" inputmode="numeric" style="width:100%;padding:10px;font:inherit;box-sizing:border-box"><p style="font-size:.95rem;margin:10px 0 0" id="adChk"></p><p style="font-size:.85rem;margin:8px 0 0">認定コード（合格なら返信する）</p><p style="font-size:1.6rem;font-weight:900;letter-spacing:.2em;margin:2px 0 0" id="adOut"></p><hr style="margin:14px 0;border:none;border-top:1px solid var(--line)"><b>返信メールを作る</b><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px"><button type="button" class="ghost" id="adOk">🪔 合格の返信</button><button type="button" class="ghost" id="adNg">不合格の返信</button></div><select id="adWhy" style="width:100%;margin-top:8px;padding:10px;font:inherit"><option value="0">不合格の理由：嘘ついたらあかんで</option><option value="1">不合格の理由：ひと言が書かれていない</option><option value="2">不合格の理由：君はまだ悟りに到達していない</option><option value="3">不合格の理由：もう一度送ってね</option></select><p style="font-size:.85rem;margin:8px 0 0" id="adMsg"></p>'; document.body.insertBefore(ad,document.body.firstChild); var upd=function(){ var v=ad.querySelector('#adId').value.trim().toUpperCase(), m=ad.querySelector('#adM').value.trim(), d=ad.querySelector('#adD').value.trim(); ad.querySelector('#adOut').textContent=v?codeFor(v):''; ad.querySelector('#adChk').innerHTML=(v&&m&&d)?('この数字なら称号は<b>'+titleFor(+m,+d)+'</b><br>チェック記号の正解：<b>'+chk(v,+m,+d)+'</b><br>メールの称号とチェック記号が両方同じなら、書きかえなし✅'):''; }; ['#adId','#adM','#adD'].forEach(function(q){ ad.querySelector(q).addEventListener('input',upd); });
+    var WHY=['嘘ついたらあかんで！ぷんぷん！\n（記録の数字と、チェック記号が一致しませんでした）','「ひと言」が書かれていませんでした。','君はまだ悟りに到達していない。\n（20分継続・365日間に届いていませんでした）','申請内容を確認できませんでした。お手数ですが、アプリの「審査に申請する」から、もう一度送ってください。'];
+    var copyOut=function(txt){ var m=ad.querySelector('#adMsg'); if(navigator.clipboard&&navigator.clipboard.writeText) navigator.clipboard.writeText(txt).then(function(){m.textContent='コピーしたよ！申請メールに「返信」して貼りつけてね';},function(){m.textContent=txt;}); else m.textContent=txt; };
+    ad.querySelector('#adOk').addEventListener('click',function(){ var v=ad.querySelector('#adId').value.trim().toUpperCase(); if(!v){ ad.querySelector('#adMsg').textContent='先に申請番号を入れてね'; return; }
+      copyOut('このたびは、称号「不滅の法灯」の審査にご申請いただき、ありがとうございます。\n\n審査の結果、合格となりました。おめでとうございます。\n\n━━━━━━━━━━\n認定コード：'+codeFor(v)+'\n━━━━━━━━━━\n\n【受け取り方】\nとめれん帳の「きろく」タブを開き、「不滅の法灯」の欄に認定コードを入れて「決定」を押してください。\n※認定コードは、申請したスマホ・アプリでのみ使えます。\n\n365日、毎日の練習を積み重ねてきたこと、本当に尊敬します。\n千年消えない火のように、これからも自分のペースで。\n\nとめれん帳 運営'); });
+    ad.querySelector('#adNg').addEventListener('click',function(){ var w=WHY[+ad.querySelector('#adWhy').value]||WHY[3];
+      copyOut('このたびは、称号「不滅の法灯」の審査にご申請いただき、ありがとうございます。\n\n慎重に審査いたしましたが、今回は合格を見送らせていただくことになりました。\n\n【理由】\n'+w+'\n\n記録を続けていただければ、何度でも申請できます。\nアプリの「審査に申請する」から、もう一度メールを作って送ってください。\n\nここまで続けてきたことは、それだけで立派な記録です。\nまた申請をお待ちしています。\n\nとめれん帳 運営'); }); } }catch(e){}
   var first=stats(); if(stored()===null) setStored(rankOf(first));
   renderCard();
   var stage=document.getElementById('stage');
