@@ -431,6 +431,19 @@ button:active,.ddbtn:active,.helpbtn:active{transform:scale(.95);filter:brightne
 .sphome small{font-size:.7rem;opacity:.75}
 .sphome .pi{color:#FFD27A}
 </style>
+<style>
+.tt-ov{position:fixed;inset:0;z-index:48}
+.tt-hole{position:fixed;border-radius:16px;box-shadow:0 0 0 9999px rgba(8,10,14,.72);transition:all .3s ease;pointer-events:none;outline:3px solid var(--sun);outline-offset:3px}
+.tt-hole.none{width:0!important;height:0!important;left:50%!important;top:45%!important;outline:none}
+.tt-tip{position:fixed;left:16px;right:16px;max-width:420px;margin:0 auto;background:var(--card);color:var(--ink);border-radius:18px;padding:16px 16px 12px;box-shadow:0 10px 40px rgba(0,0,0,.35);transition:top .3s ease}
+.tt-step{font-size:.72rem;letter-spacing:.2em;color:var(--sun);font-weight:800}
+.tt-t{font-size:1.05rem;font-weight:900;margin:4px 0 4px}
+.tt-d{font-size:.88rem;line-height:1.6;color:var(--ink)}
+.tt-btns{display:flex;gap:8px;margin-top:12px;align-items:center}
+.tt-skip{background:none;border:none;color:var(--soft);font:inherit;font-size:.82rem;cursor:pointer;padding:8px}
+.tt-next{margin-left:auto;border:none;border-radius:999px;padding:10px 22px;font:inherit;font-weight:800;background:var(--sun);color:var(--sunInk);cursor:pointer}
+.tt-dots{display:flex;gap:4px}.tt-dots i{width:6px;height:6px;border-radius:50%;background:var(--line)}.tt-dots i.on{background:var(--sun)}
+</style>
 </head>
 <body>
 <div id="splash" class="splash" role="dialog" aria-label="とめれん帳">
@@ -493,6 +506,7 @@ button:active,.ddbtn:active,.helpbtn:active{transform:scale(.95);filter:brightne
       <div class="helpmenu" id="helpMenu">
         <a href="#" id="helpGuide">💡 使い方を見る</a>
         <a href="https://form.jotform.com/262745742685065" target="_blank" rel="noopener">📮 お問い合わせ</a>
+        <a href="#tut" id="helpTut">🎓 チュートリアルをもう一度</a>
         <a href="#keep" id="helpKeep">💾 記録を守る方法</a>
         <a href="#news" id="helpNews">🔔 運営からのお知らせ</a>
         <a href="#share" id="helpShare">🔗 とめれん帳を教える</a>
@@ -2169,7 +2183,7 @@ button:active,.ddbtn:active,.helpbtn:active{transform:scale(.95);filter:brightne
     upload:'<path d="M12 15V3M7 8l5-5 5 5"/><path d="M4 17v3h16v-3"/>',
     timer:'<circle cx="12" cy="13" r="8"/><path d="M10 2h4"/><path d="M10.5 10v6M13.5 10v6"/>'
   };
-  var M={'📌':'pin','🤔':'q','🌟':'star','🖼️':'img','🖼':'img','🎙️':'mic','🎙':'mic','📅':'cal','📈':'chart','🙏':'hands','🫶':'heart','💦':'drop','🎉':'spark','📋':'clip','🎁':'gift','✅':'check','🔈':'spk','🔊':'spkon','🔇':'mute','🌙':'moon','⬆':'up','🎬':'film','💭':'cloud','🤖':'bot','🏁':'flag','✕':'x','💡':'bulb','📮':'mail','📩':'mail','→':'arrow','💪':'timer','🔗':'link','🔔':'bell','💾':'save','📲':'phone','📤':'upload'};
+  var M={'📌':'pin','🤔':'q','🌟':'star','🖼️':'img','🖼':'img','🎙️':'mic','🎙':'mic','📅':'cal','📈':'chart','🙏':'hands','🫶':'heart','💦':'drop','🎉':'spark','📋':'clip','🎁':'gift','✅':'check','🔈':'spk','🔊':'spkon','🔇':'mute','🌙':'moon','⬆':'up','🎬':'film','💭':'cloud','🤖':'bot','🏁':'flag','✕':'x','💡':'bulb','📮':'mail','📩':'mail','→':'arrow','💪':'timer','🔗':'link','🔔':'bell','💾':'save','📲':'phone','📤':'upload','🎓':'star'};
   var keys=Object.keys(M).sort(function(a,b){return b.length-a.length}).map(function(k){return k.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')});
   var RE=new RegExp('('+keys.join('|')+')\uFE0F?','g');
   function svg(n){var e=document.createElementNS('http://www.w3.org/2000/svg','svg');e.setAttribute('viewBox','0 0 24 24');e.setAttribute('class','pi');e.setAttribute('aria-hidden','true');e.setAttribute('fill','none');e.setAttribute('stroke','currentColor');e.setAttribute('stroke-width','2');e.setAttribute('stroke-linecap','round');e.setAttribute('stroke-linejoin','round');e.innerHTML=P[n];return e;}
@@ -2396,6 +2410,7 @@ button:active,.ddbtn:active,.helpbtn:active{transform:scale(.95);filter:brightne
     document.body.appendChild(ov);
   }
   var latest=NEWS[0], seen=null; try{ seen=localStorage.getItem(KEY); }catch(e){}
+  try{ var _lg=JSON.parse(localStorage.getItem('tomeren-log')||'{}'); var _first=!localStorage.getItem('tomeren-tut') && !((_lg.sessions||[]).length); if(_first && latest){ localStorage.setItem(KEY,latest.v); seen=latest.v; } }catch(e){}
   if(latest && seen!==latest.v){
     var tries=0, iv=setInterval(function(){
       tries++; var sp=document.getElementById('splash'), g=document.getElementById('gate');
@@ -2509,6 +2524,59 @@ button:active,.ddbtn:active,.helpbtn:active{transform:scale(.95);filter:brightne
       }catch(err){ msg('このファイルは読みこめなかったよ🙏 とめれん帳で書き出したファイルを選んでね'); }
     }; fr.readAsText(e.target.files[0]); e.target.value='';
   });
+})();
+</script>
+
+<script>
+(function(){
+  var STEPS=[
+    {sel:null, t:'とめれん帳へようこそ！', d:'はじめての人向けに、30秒で使い方を案内するね。ひとりで、こっそり、自分のペースで続けられる練習の記録帳だよ。'},
+    {sel:'#stage .opts .chips', tab:'train', t:'① 見るものをえらぶ', d:'動画を見ながら、最初だけ動画、想像だけ、から選べるよ。慣れてきたら少しずつ想像だけにしていくのがおすすめ。'},
+    {sel:'#controls .big', tab:'train', t:'② 準備ができたら「はじめる」', d:'時計が動きだすよ。リングは5分でちょうど一周するよ。'},
+    {sel:'#stage .clock', tab:'train', t:'③ 高まってきたら「とめた！」', d:'気持ちよさが7くらいになったら「とめた！」で手を止めて、落ち着いたら「再開」。これを3回できたらゴールだよ。練習中は、今の気持ちよさを1〜10で押すと、声で合図してくれるよ。'},
+    {sel:'#tabs button[data-go="next"]', t:'④ めやす', d:'次に練習する日の目安がわかるよ。毎日じゃなくて、週3回くらいがちょうどいいよ。'},
+    {sel:'#tabs .ddwrap .ddbtn', idx:0, t:'⑤ きろく', d:'これまでの記録、今日のレポート、そして称号がここで見られるよ。続けるほど称号が上がっていくよ。'},
+    {sel:'#tabs .ddwrap .ddbtn', idx:1, t:'⑥ 設定', d:'声かけの声や、練習中に出る画像を自分好みに変えられるよ。'},
+    {sel:'#helpBtn', t:'⑦ ヘルプ', d:'使い方、お問い合わせ、お知らせ、記録を守る方法はここから。このチュートリアルも、ここからもう一度見られるよ。'},
+    {sel:null, t:'準備OK！さっそく始めよう', d:'記録はこのスマホの中だけに保存されて、誰にも見られないよ。ホーム画面に追加して開くと、記録が消えにくくなるよ。'}
+  ];
+  var ov,hole,tip,i=0;
+  function el(st){ if(!st.sel) return null; var a=document.querySelectorAll(st.sel); return a[st.idx||0]||null; }
+  function place(){
+    var st=STEPS[i], e=el(st);
+    tip.querySelector('.tt-step').textContent=(i+1)+' / '+STEPS.length;
+    tip.querySelector('.tt-t').textContent=st.t; tip.querySelector('.tt-d').textContent=st.d;
+    tip.querySelector('.tt-next').textContent=i===STEPS.length-1?'はじめる':'次へ';
+    tip.querySelector('.tt-dots').innerHTML=STEPS.map(function(_,k){return '<i class="'+(k===i?'on':'')+'"></i>';}).join('');
+    if(!e){ hole.className='tt-hole none'; tip.style.top='34%'; return; }
+    e.scrollIntoView({block:'center'});
+    setTimeout(function(){
+      var r=e.getBoundingClientRect(), pad=6;
+      hole.className='tt-hole'; hole.style.left=(r.left-pad)+'px'; hole.style.top=(r.top-pad)+'px'; hole.style.width=(r.width+pad*2)+'px'; hole.style.height=(r.height+pad*2)+'px';
+      var vh=window.innerHeight, th=tip.offsetHeight||190;
+      tip.style.top = (r.bottom+16+th < vh) ? (r.bottom+16)+'px' : Math.max(12, r.top-16-th)+'px';
+    },60);
+  }
+  function go(n){
+    i=n; if(i>=STEPS.length){ end(); return; }
+    var st=STEPS[i]; if(st.tab){ var b=document.querySelector('#tabs button[data-go="'+st.tab+'"]'); if(b && !b.classList.contains('on')) b.click(); }
+    place();
+  }
+  function end(){ try{ localStorage.setItem('tomeren-tut','done'); }catch(e){} if(ov) ov.remove(); ov=null; var b=document.querySelector('#tabs button[data-go="train"]'); if(b) b.click(); window.scrollTo(0,0); }
+  function start(){
+    if(ov) return; i=0;
+    ov=document.createElement('div'); ov.className='tt-ov'; ov.setAttribute('role','dialog'); ov.setAttribute('aria-label','チュートリアル');
+    ov.innerHTML='<div class="tt-hole none"></div><div class="tt-tip"><div class="tt-step"></div><div class="tt-t"></div><div class="tt-d"></div><div class="tt-btns"><button type="button" class="tt-skip">スキップ</button><div class="tt-dots"></div><button type="button" class="tt-next">次へ</button></div></div>';
+    document.body.appendChild(ov); hole=ov.querySelector('.tt-hole'); tip=ov.querySelector('.tt-tip');
+    ov.querySelector('.tt-next').addEventListener('click',function(){ go(i+1); });
+    ov.querySelector('.tt-skip').addEventListener('click',end);
+    window.addEventListener('resize',function(){ if(ov) place(); });
+    go(0);
+  }
+  window.tmTutorial=start;
+  document.addEventListener('click',function(e){ if(e.target.closest('#helpTut')){ e.preventDefault(); var hm=document.getElementById('helpMenu'); if(hm) hm.classList.remove('open'); start(); } });
+  var first=false; try{ var lg=JSON.parse(localStorage.getItem('tomeren-log')||'{}'); first=!localStorage.getItem('tomeren-tut') && !((lg.sessions||[]).length); }catch(e){}
+  if(first){ var tries=0, iv=setInterval(function(){ tries++; var sp=document.getElementById('splash'), g=document.getElementById('gate'); if(!sp && (!g||g.hidden)){ clearInterval(iv); setTimeout(start,500); } if(tries>400) clearInterval(iv); },300); }
 })();
 </script>
 </body>
