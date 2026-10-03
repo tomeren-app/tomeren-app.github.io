@@ -2,6 +2,16 @@
 <html lang="ja">
 <head>
 <meta charset="utf-8">
+<script>
+  (function(){
+    try{
+      var q=new URLSearchParams(location.search).get('me');
+      if(q==='1') localStorage.setItem('tomeren-me','1');
+      if(q==='0') localStorage.removeItem('tomeren-me');
+      if(localStorage.getItem('tomeren-me')==='1') window['ga-disable-G-PSHZSB36VV']=true;
+    }catch(e){}
+  })();
+</script>
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-PSHZSB36VV"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -207,6 +217,49 @@ h2{font-size:1.05rem;margin:0 0 10px}
 .helpmenu a:hover{background:var(--bg)}
 </style>
 <style>.tabs .ti{width:22px;height:22px;display:block}</style>
+<style>
+.stage.idle{padding-top:30px}
+.stage.idle .state{font-size:.78rem;letter-spacing:.3em;color:var(--soft)}
+.stage.idle .live{display:none}
+.stage.idle .clock{width:200px;height:200px;margin:14px auto 18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:3.4rem;background:radial-gradient(closest-side,var(--card) 88%,transparent 89% 100%),conic-gradient(var(--sun) 0 22%,var(--line) 22% 100%);animation:tmBreath 4s ease-in-out infinite}
+@keyframes tmBreath{0%,100%{transform:scale(1)}50%{transform:scale(1.03)}}
+@media (prefers-reduced-motion:reduce){.stage.idle .clock{animation:none}}
+.stage.idle .counts{margin:0 0 6px}
+.stage.idle .dot{width:12px;height:12px;border-width:2px}
+.stage.idle .countTxt{margin:0 0 22px;font-size:.82rem}
+.stage.idle .opts .lab{text-align:center}
+.stage.idle .opts .chips{justify-content:center}
+.stage.idle .opts > p{text-align:center}
+.vset{margin-top:14px;border-top:1px solid var(--line);padding-top:10px}
+.vset summary{cursor:pointer;font-size:.85rem;font-weight:700;color:var(--soft);list-style:none;text-align:center;padding:4px 0}
+.vset summary::-webkit-details-marker{display:none}
+.vset summary::after{content:' ▾'}
+.vset[open] summary::after{content:' ▴'}
+.vset .lab{text-align:left!important}
+.vset .chips{justify-content:flex-start!important}
+</style>
+<style>
+.stage.run{display:flex;flex-direction:column}
+.stage.run .state{order:1;font-size:.85rem;line-height:1.55;min-height:0;margin:0 auto 4px;max-width:30em}
+.stage.run .stageimg{order:2}
+.stage.run .clock{order:3;width:190px;height:190px;margin:12px auto 14px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:3.2rem;background:radial-gradient(closest-side,var(--card) 88%,transparent 89% 100%),conic-gradient(var(--sun) 0 var(--prog,0%),var(--line) var(--prog,0%) 100%)}
+.stage.resting .clock{background:radial-gradient(closest-side,var(--card) 88%,transparent 89% 100%),conic-gradient(var(--rest) 0 100%);opacity:.85}
+.stage.run .counts{order:4;margin:0 0 4px}
+.stage.run .dot{width:14px;height:14px;border-width:2px}
+.stage.run .countTxt{order:5;margin:0 0 14px;font-size:.82rem}
+.stage.run #controls{order:6}
+.stage.run #controls .row{margin-top:8px}
+.stage.run #controls .row .ghost{font-size:.8rem;padding:8px 4px}
+.stage.run #controls > .ghost{font-size:.82rem;padding:8px;margin-top:8px!important}
+.stage.run .lv{order:7;margin:16px 0 0}
+.stage.run .lvq{font-size:.85rem}
+.stage.run .lvmsg{font-size:.8rem}
+.stage.run .hand{order:8;margin:10px 0 0;font-size:.85rem}
+.stage.run .live{order:9;min-height:0;margin:10px 0 0;font-size:.9rem}
+.stage.run .live:empty{display:none}
+</style>
+<style>.tabs button span,.helpbtn span{white-space:nowrap;font-size:.56rem;letter-spacing:-.02em}</style>
+<style>.pi{width:1.1em;height:1.1em;display:inline-block;vertical-align:-.18em;margin:0 .15em}h1 .pi,h2 .pi{width:1em;height:1em;color:var(--sun)}</style>
 </head>
 <body>
 <div id="splash" class="splash" role="dialog" aria-label="とめれん帳">
@@ -1265,8 +1318,12 @@ h2{font-size:1.05rem;margin:0 0 10px}
     const c = $('controls');
     const stage = $('stage');
     stage.classList.toggle('done', mode==='done');
+    stage.classList.toggle('idle', mode==='idle');
+    stage.classList.toggle('run', mode==='active'||mode==='rest');
+    stage.classList.toggle('resting', mode==='rest');
+    stage.style.setProperty('--prog', String(Math.min(stops/GOAL,1)*100)+'%');
     if (mode==='idle'){
-      $('state').textContent = 'じゅんびOK？';
+      $('state').textContent = 'スタンバイOK';
       $('clock').textContent = '0:00';
       $('countTxt').textContent = '目標：'+GOAL+'回止める';
       const rec = recommendStyle();
@@ -1340,7 +1397,11 @@ h2{font-size:1.05rem;margin:0 0 10px}
         vh.textContent = '「自然」マークの声がいちばん人っぽいよ。iPhoneなら「設定→アクセシビリティ→読み上げコンテンツ→声→日本語」で「プレミアム」や「拡張」の声をダウンロードすると、ぐっと自然になるよ♡ それでも気になるときは声をOFFにして、画面とブルっだけでも大丈夫';
         extras.push(l3, vch, l4, rch, vh);
       }
-      box.append(l1, ch, d, l2, vc, kc, kn, tout, ...(voiceKind==='tts' ? extras : []), ...(voiceKind==='tts' ? [vp, th] : []));
+      const det = document.createElement('details'); det.className='vset'; if (window.__vsetOpen) det.open = true;
+      det.addEventListener('toggle', ()=>{ window.__vsetOpen = det.open; });
+      const sm = document.createElement('summary'); sm.textContent = '声の設定（'+(voiceOn ? (voiceKind==='natural' ? '自然な声' : '読み上げ') : 'OFF')+'）';
+      det.append(sm, l2, vc, kc, kn, tout, ...(voiceKind==='tts' ? extras : []), ...(voiceKind==='tts' ? [vp, th] : []));
+      box.append(l1, ch, d, det);
       const wb = document.createElement('button'); wb.type='button'; wb.className='ghost'; wb.style.width='100%'; wb.style.marginTop='10px';
       wb.textContent = '🌙 じゅんびモード（スタンバイ用）'; wb.onclick = startWarm;
       $('live').textContent = '';
@@ -1813,6 +1874,60 @@ h2{font-size:1.05rem;margin:0 0 10px}
     e.preventDefault(); set(false);
     var b=document.querySelector('#tabs button[data-go="help"]'); if(b) b.click();
   });
+})();
+</script>
+
+<script>
+(function(){
+  var P={
+    pin:'<path d="M12 17v5"/><path d="M9 3h6l-1 6 3 3v2H7v-2l3-3z"/>',
+    q:'<circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .9-1 1.6v.6"/><path d="M12 17h.01"/>',
+    star:'<path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/>',
+    img:'<rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><path d="M21 17l-5-5-9 8"/>',
+    mic:'<rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/>',
+    cal:'<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/>',
+    chart:'<path d="M4 20V4M4 20h16"/><path d="M7 15l4-4 3 3 5-6"/>',
+    hands:'<path d="M12 21s-7-4.4-9-9a5 5 0 0 1 9-3 5 5 0 0 1 9 3c-2 4.6-9 9-9 9z"/>',
+    heart:'<path d="M12 21s-7-4.4-9-9a5 5 0 0 1 9-3 5 5 0 0 1 9 3c-2 4.6-9 9-9 9z"/>',
+    drop:'<path d="M12 3s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11z"/>',
+    spark:'<path d="M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2.5 2.5M15.5 15.5L18 18M6 18l2.5-2.5M15.5 8.5L18 6"/>',
+    clip:'<rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4h6v3H9zM9 12h6M9 16h4"/>',
+    gift:'<rect x="3" y="8" width="18" height="5" rx="1"/><path d="M5 13v8h14v-8M12 8v13M12 8S10 3 7.5 4.5 9 8 12 8zM12 8s2-5 4.5-3.5S15 8 12 8z"/>',
+    check:'<circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-6"/>',
+    spk:'<path d="M4 9v6h4l5 4V5L8 9z"/>',
+    spkon:'<path d="M4 9v6h4l5 4V5L8 9z"/><path d="M16 9a4 4 0 0 1 0 6M18.5 6.5a8 8 0 0 1 0 11"/>',
+    mute:'<path d="M4 9v6h4l5 4V5L8 9z"/><path d="M17 9l4 6M21 9l-4 6"/>',
+    moon:'<path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/>',
+    up:'<path d="M12 19V5M6 11l6-6 6 6"/>',
+    film:'<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M7 5v14M17 5v14M3 9h4M3 15h4M17 9h4M17 15h4"/>',
+    cloud:'<path d="M7 18a4 4 0 0 1-.5-8A5.5 5.5 0 0 1 17 9a4.5 4.5 0 0 1 .5 9z"/>',
+    bot:'<rect x="4" y="8" width="16" height="11" rx="3"/><path d="M12 4v4M9 13h.01M15 13h.01"/>',
+    flag:'<path d="M5 21V4M5 4h11l-2 4 2 4H5"/>',
+    x:'<path d="M6 6l12 12M18 6L6 18"/>',
+    bulb:'<path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2.1h5c0-.9.4-1.6 1-2.1A6 6 0 0 0 12 3z"/>',
+    mail:'<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/>',
+    arrow:'<path d="M5 12h14M13 6l6 6-6 6"/>',
+    timer:'<circle cx="12" cy="13" r="8"/><path d="M10 2h4"/><path d="M10.5 10v6M13.5 10v6"/>'
+  };
+  var M={'📌':'pin','🤔':'q','🌟':'star','🖼️':'img','🖼':'img','🎙️':'mic','🎙':'mic','📅':'cal','📈':'chart','🙏':'hands','🫶':'heart','💦':'drop','🎉':'spark','📋':'clip','🎁':'gift','✅':'check','🔈':'spk','🔊':'spkon','🔇':'mute','🌙':'moon','⬆':'up','🎬':'film','💭':'cloud','🤖':'bot','🏁':'flag','✕':'x','💡':'bulb','📮':'mail','→':'arrow','💪':'timer'};
+  var keys=Object.keys(M).sort(function(a,b){return b.length-a.length}).map(function(k){return k.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')});
+  var RE=new RegExp('('+keys.join('|')+')\uFE0F?','g');
+  function svg(n){var e=document.createElementNS('http://www.w3.org/2000/svg','svg');e.setAttribute('viewBox','0 0 24 24');e.setAttribute('class','pi');e.setAttribute('aria-hidden','true');e.setAttribute('fill','none');e.setAttribute('stroke','currentColor');e.setAttribute('stroke-width','2');e.setAttribute('stroke-linecap','round');e.setAttribute('stroke-linejoin','round');e.innerHTML=P[n];return e;}
+  var SEL='h1, h2, button, .chip, summary, .helpmenu a, .ghost';
+  function fixText(t){
+    var v=t.nodeValue; if(!v||!RE.test(v)) return; RE.lastIndex=0;
+    var f=document.createDocumentFragment(), last=0, m;
+    while((m=RE.exec(v))){ if(m.index>last) f.appendChild(document.createTextNode(v.slice(last,m.index))); f.appendChild(svg(M[m[1]])); last=m.index+m[0].length; }
+    if(last<v.length) f.appendChild(document.createTextNode(v.slice(last)));
+    t.parentNode.replaceChild(f,t);
+  }
+  function scan(root){
+    var els=[]; if(root.nodeType===1){ if(root.matches&&root.matches(SEL)) els.push(root); els=els.concat([].slice.call(root.querySelectorAll(SEL))); }
+    else if(root.nodeType===3 && root.parentElement && root.parentElement.closest(SEL)){ fixText(root); return; }
+    els.forEach(function(el){ if(el.closest('svg')) return; var w=document.createTreeWalker(el,NodeFilter.SHOW_TEXT,null),n,a=[]; while((n=w.nextNode())) a.push(n); a.forEach(fixText); });
+  }
+  scan(document.body);
+  new MutationObserver(function(ms){ ms.forEach(function(m){ if(m.type==='characterData') { if(m.target.parentElement&&m.target.parentElement.closest(SEL)) fixText(m.target); } else m.addedNodes.forEach(scan); }); }).observe(document.body,{childList:true,subtree:true,characterData:true});
 })();
 </script>
 </body>
