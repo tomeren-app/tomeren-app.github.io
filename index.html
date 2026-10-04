@@ -3140,11 +3140,7 @@ body.battle.running .ba-side.en .ba-en{width:72px;height:72px}
   }
   // ===== キャラクター設定 =====
   var AV_OPT={
-    style:[['canva','高画質'],['custom','カスタム']],
     sex:[['m','男'],['f','女']],
-    face:[['normal','ぱっちり'],['tare','たれ目'],['tsuri','つり目'],['smile','にっこり']],
-    hair:[['short','短め'],['spiky','ツンツン'],['bob','ボブ'],['long','ロング'],['pony','ポニーテール']],
-    hcol:[['#6B4A2E','茶'],['#2B2522','黒'],['#D9A441','金'],['#E58FA6','桃']],
     build:[['thin','細身'],['normal','ふつう'],['sturdy','がっしり']],
     height:[['low','低め'],['mid','ふつう'],['tall','高め']]
   };
@@ -3201,7 +3197,7 @@ body.battle.running .ba-side.en .ba-en{width:72px;height:72px}
     if(a.hair==='pony') h+='<circle cx="75" cy="15" r="2.2" fill="#E58FA6"/>';
     return h+'</g>';
   }
-  function useArt(a){ return (a.style||'canva')==='canva' && !!CHAR[a.sex]; }
+  function useArt(a){ return !!CHAR[a.sex]; }
   function artImg(a,cls){ var sx={thin:.92,normal:1,sturdy:1.08}[a.build]||1, s={low:.92,mid:1,tall:1.05}[a.height]||1; return '<img class="'+cls+'" src="'+CHAR[a.sex]+'" alt="" style="transform:scale('+(s*sx)+','+s+')">'; }
   function avXf(a){ var sx={thin:.9,normal:1,sturdy:1.12}[a.build]||1, s={low:.92,mid:1,tall:1.06}[a.height]||1; return {body:'translate(60 0) scale('+sx+' 1) translate(-60 0)', all:'translate(60 195) scale('+s+') translate(-60 -195)'}; }
   function avatarSheet(onDone){
@@ -3212,7 +3208,6 @@ body.battle.running .ba-side.en .ba-en{width:72px;height:72px}
       var prev=useArt(cur)?'<div class="av-art">'+artImg(cur,'av-img')+'</div>':'<svg viewBox="0 -6 120 206" class="av-prev"><g transform="'+x.all+'"><g transform="'+x.body+'">'+avBody(cur)+'</g>'+avHead(cur)+'</g></svg>';
       var h='<div class="fb-box av-box'+(ov.__drawn?' noanim':'')+'"><div class="fb-t">'+(first?'キャラクターをつくろう':'キャラクター設定')+'</div><div class="av-grid"><div class="av-pv">'+prev+'</div><div class="av-opts">';
       Object.keys(AV_OPT).forEach(function(k){ if(useArt(cur) && (k==='face'||k==='hair'||k==='hcol')) return; h+='<div class="av-g"><div class="av-l">'+AV_LB[k]+'</div><div class="av-btns">'+AV_OPT[k].map(function(o){ return '<button type="button" class="av-b'+(cur[k]===o[0]?' on':'')+'" data-k="'+k+'" data-v="'+o[0]+'"'+(k==='hcol'?' style="--hc:'+o[0]+'"':'')+'>'+(k==='hcol'?'<i></i>':'')+o[1]+'</button>'; }).join('')+'</div></div>'; });
-      if((cur.style||'canva')==='canva' && !CHAR[cur.sex]) h+='<div class="av-note">この性別の高画質イラストは準備中だよ。いまはカスタムの絵で表示するね</div>';
       h+='</div></div><button type="button" class="fb-main" data-av="ok">'+(first?'この見た目ではじめる':'決定')+'</button>'+(first?'':'<button type="button" class="fb-sub" data-av="cancel">やめる</button>')+'</div>';
       ov.innerHTML=h;
     }
