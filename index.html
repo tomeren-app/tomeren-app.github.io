@@ -842,6 +842,10 @@ body.running.battle .ba-msg{margin-top:0}
 .sb-v{font-size:.82rem;font-weight:800;color:#F4F1EA;white-space:nowrap}
 .sb-sep{width:1px;align-self:stretch;background:rgba(255,255,255,.14)}
 body.battle .stage.idle .sb-info{display:none}
+.yomi-a{display:grid;grid-template-columns:34px 1fr;column-gap:8px;align-items:center;text-decoration:none;color:var(--ink);border:1px solid var(--line);border-radius:14px;padding:10px 12px;margin:8px 0}
+.yomi-a span{grid-row:1/3;font-size:1.4rem;text-align:center}
+.yomi-a b{font-size:.95rem}
+.yomi-a small{color:var(--soft);font-size:.78rem}
 .stage.idle .clock .ck-t{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;line-height:1.15;letter-spacing:0;font-variant-numeric:normal}
 .ck-ic{width:34px;height:34px;display:flex;align-items:center;justify-content:center;color:#FFC98A}
 .ck-ic:empty{display:none}
@@ -936,6 +940,15 @@ body.battle .ck-l{color:rgba(255,255,255,.7)}
     </div>
     <p class="sharemsg" id="shareMsg" aria-live="polite"></p>
   </section>
+  <section data-tab="help" class="card yomi">
+    <h2>読みもの 📖</h2>
+    <p style="font-size:.85rem;color:var(--soft);margin:0 0 10px">練習のやり方や、早漏の悩みについてくわしくまとめたよ</p>
+    <a class="yomi-a" href="/stop-start.html"><span>🔁</span><b>ストップ・スタート法のやり方</b><small>4週間で身につける進め方</small></a>
+    <a class="yomi-a" href="/souro-time.html"><span>⏱️</span><b>早漏は何分から？</b><small>平均の時間と「気にしすぎ」の目安</small></a>
+    <a class="yomi-a" href="/squeeze.html"><span>✊</span><b>スクイーズ法のやり方</b><small>指のあて方と力加減</small></a>
+    <a class="yomi-a" href="/kotsuban.html"><span>🧘</span><b>骨盤底筋トレーニング</b><small>いつでもどこでもできる筋トレ</small></a>
+  </section>
+
 
   <section data-tab="help" class="card about">
     <h2>はじめに読んでね 📌</h2>
