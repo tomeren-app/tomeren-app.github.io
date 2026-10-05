@@ -46,7 +46,11 @@
 <meta property="og:description" content="早漏の悩みに向き合う人のための無料トレーニング記録アプリ。ストップ・スタート法（止めて・再開）をタイマー、声かけ、記録、レポートでサポート。登録不要で、データはスマホの中だけに保存されます。">
 <meta property="og:url" content="https://tomeren-app.github.io/">
 <meta property="og:locale" content="ja_JP">
-<meta name="twitter:card" content="summary">
+<meta property="og:image" content="https://tomeren-app.github.io/ogp.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://tomeren-app.github.io/ogp.png">
 <meta name="twitter:title" content="とめれん帳｜早漏の悩みに、ひとりでできる止めて・再開トレーニング記録（無料・登録なし）">
 <meta name="twitter:description" content="早漏の悩みに向き合う人のための無料トレーニング記録アプリ。ストップ・スタート法（止めて・再開）をタイマー、声かけ、記録、レポートでサポート。登録不要で、データはスマホの中だけに保存されます。">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%92%AA%3C/text%3E%3C/svg%3E">
@@ -128,7 +132,7 @@ h1{font-size:1.5rem;font-weight:800;margin:4px 0 2px}
 .nextdays span{font-size:.75rem;color:var(--soft)}
 .nextmsg{font-size:.92rem;margin:0 0 10px;line-height:1.6}
 .nextnote{font-size:.8rem;color:var(--soft);margin:8px 0 0;line-height:1.5}
-.tabs{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;display:grid;grid-template-columns:repeat(7,1fr);gap:6px;background:var(--bg);padding:8px 0 12px;margin-bottom:4px}
+.tabs{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;display:grid;grid-template-columns:repeat(8,1fr);gap:5px;background:var(--bg);padding:8px 0 12px;margin-bottom:4px}
 .tabs button{border:2px solid var(--line);background:var(--card);color:var(--ink);border-radius:14px;padding:8px 2px 6px;font:inherit;font-size:1.1rem;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px}
 .tabs button span{font-size:.62rem;font-weight:800}
 .tabs button.on{border-color:var(--sun);background:var(--sun);color:var(--sunInk)}
@@ -913,6 +917,7 @@ body.battle .ck-l{color:rgba(255,255,255,.7)}
       </div>
     </div>
     <button type="button" data-go="help"><svg class="ti" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5a2 2 0 0 1 2-2h12v16H6a2 2 0 0 0-2 2z"/><path d="M4 21V5M8 7h6"/></svg><span>説明</span></button>
+    <button type="button" data-go="column"><svg class="ti" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h13v16H6a2 2 0 0 1-2-2z"/><path d="M17 8h3v10a2 2 0 0 1-2 2"/><path d="M8 8h5M8 12h5M8 16h3"/></svg><span>コラム</span></button>
     <div class="helpwrap">
       <a href="#" class="helpbtn" id="helpBtn" role="button" aria-label="ヘルプ" aria-expanded="false" aria-controls="helpMenu"><svg class="ti" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .9-1 1.6v.6"/><circle cx="12" cy="17" r=".6" fill="currentColor"/></svg><span>ヘルプ</span></a>
       <div class="helpmenu" id="helpMenu">
@@ -940,9 +945,10 @@ body.battle .ck-l{color:rgba(255,255,255,.7)}
     </div>
     <p class="sharemsg" id="shareMsg" aria-live="polite"></p>
   </section>
-  <section data-tab="help" class="card yomi">
-    <h2>読みもの 📖</h2>
+  <section data-tab="column" class="card yomi">
+    <h2>コラム 📖</h2>
     <p style="font-size:.85rem;color:var(--soft);margin:0 0 10px">練習のやり方や、早漏の悩みについてくわしくまとめたよ</p>
+    <a class="yomi-a" href="/souro-training.html"><span>📚</span><b>早漏改善トレーニング完全ガイド</b><small>5つの方法と4週間プログラム</small></a>
     <a class="yomi-a" href="/stop-start.html"><span>🔁</span><b>ストップ・スタート法のやり方</b><small>4週間で身につける進め方</small></a>
     <a class="yomi-a" href="/souro-time.html"><span>⏱️</span><b>早漏は何分から？</b><small>平均の時間と「気にしすぎ」の目安</small></a>
     <a class="yomi-a" href="/squeeze.html"><span>✊</span><b>スクイーズ法のやり方</b><small>指のあて方と力加減</small></a>
@@ -1005,9 +1011,6 @@ body.battle .ck-l{color:rgba(255,255,255,.7)}
 
     <h3 id="g6">よくある質問</h3>
     <details><summary>ストップ・スタート法とは何ですか？</summary><p>射精しそうになる手前で刺激を止め、落ち着いたら再開することをくり返して、射精のタイミングを自分でコントロールする感覚を身につける練習方法です。1950年代から知られている、ひとりでもできる方法です。</p></details><details><summary>どのくらいの頻度で練習すればいいですか？</summary><p>週に3回くらいが目安です。毎日たくさんやるより、体と気持ちが回復する間をあけて続けるほうが負担が少なくなります。</p></details><details><summary>どのくらいで変化を感じますか？</summary><p>個人差がありますが、数週間続けて少しずつ変化を感じる人が多いと言われています。このアプリは治療ではなく、練習を続けるための記録ツールです。</p></details><details><summary>練習中にやわらかくなってしまったら？</summary><p>止めている間に少しやわらかくなるのはよくあることです。休けいを短めにして、ゆっくり再開してみてください。何度も続く場合は泌尿器科に相談してください。</p></details><details><summary>病院に相談したほうがいいのはどんなときですか？</summary><p>悩みが強くて生活に影響しているとき、痛みや違和感があるとき、勃起しにくい状態が続くときは、泌尿器科や男性の悩みを相談できるクリニックに相談してください。飲み薬などの方法もあります。</p></details><details><summary>データはどこに保存されますか？</summary><p>練習の記録・声・画像はすべて、使っているスマホのブラウザの中だけに保存され、外部には送信されません。サイト改善のため、アクセス数や流入元だけをGoogleアナリティクスで匿名で集計しています。無料で、会員登録も不要です。</p></details>
-
-    <h3 style="margin-top:20px">読みもの 📖</h3>
-    <p><a href="/stop-start.html">ストップ・スタート法のやり方｜4週間で身につける</a><br><a href="/souro-time.html">早漏は何分から？平均の時間と「気にしすぎ」かどうかの目安</a><br><a href="/squeeze.html">スクイーズ法のやり方｜指のあて方と力加減</a><br><a href="/kotsuban.html">骨盤底筋トレーニングで早漏対策</a></p>
 
     <p style="font-size:.8rem;color:var(--soft);margin-top:14px">※このページの内容は一般的な情報で、医師の診断や治療にかわるものではありません。</p>
   </article>
