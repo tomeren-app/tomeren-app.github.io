@@ -795,6 +795,40 @@ body.running.battle .ba-msg{margin-top:0}
 .mb-banner{display:block;width:100%;text-align:left;border:2px dashed var(--line);background:var(--card);color:var(--ink);border-radius:14px;padding:10px 12px;font:inherit;font-size:.82rem;font-weight:800;margin:0 0 10px;cursor:pointer}
 .mb-banner small{display:block;font-weight:500;color:var(--soft);font-size:.72rem;margin-top:2px}
 </style>
+<style>
+.gf-box{text-align:center;max-height:86vh;overflow-y:auto}
+.gf-ic{font-size:2.6rem;animation:gfBounce 1.2s ease-in-out infinite}
+.gf-item{text-align:left;border:2px solid var(--sun);border-radius:16px;padding:12px;margin-top:12px;background:linear-gradient(180deg,rgba(255,210,122,.15),transparent)}
+.gf-t{font-weight:900;font-size:1rem}.gf-m{font-size:.85rem;line-height:1.6;margin:4px 0}.gf-s{font-size:.78rem;font-weight:800;color:var(--sun);margin-bottom:8px}
+.gf-empty{font-size:.85rem;color:var(--soft);padding:14px}
+@keyframes gfBounce{0%,100%{transform:translateY(0) rotate(0)}30%{transform:translateY(-6px) rotate(-6deg)}60%{transform:translateY(0) rotate(6deg)}}
+@media (prefers-reduced-motion:reduce){.gf-ic{animation:none}}
+</style>
+<style>
+.ms-box,.tl-box{text-align:left;max-height:86vh;overflow-y:auto}
+.ms-box .fb-t,.tl-box .fb-t{text-align:center}
+.ms-sub{font-size:.78rem;color:var(--soft);text-align:center;margin:-2px 0 10px}
+.ms-row,.tl-row{display:flex;align-items:center;gap:10px;padding:10px;border:2px solid var(--line);border-radius:14px;margin-bottom:7px;background:var(--card);cursor:pointer}
+.ms-row.ok{border-color:var(--sun);background:linear-gradient(180deg,rgba(255,210,122,.16),transparent)}
+.ms-row.got{opacity:.55;cursor:default}
+.ms-row.bonus{border-style:dashed}
+.ms-ck{width:26px;height:26px;flex:none;border-radius:50%;border:2px solid var(--line);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:.85rem;color:#2EA05A}
+.ms-row.ok .ms-ck,.ms-row.got .ms-ck{border-color:#2EA05A;background:rgba(46,160,90,.12)}
+.ms-x{flex:1;min-width:0}.ms-t{font-weight:900;font-size:.9rem}.ms-r{font-size:.72rem;color:var(--soft)}
+.ms-b{border:none;border-radius:999px;padding:8px 12px;font:inherit;font-size:.78rem;font-weight:800;background:var(--sun);color:var(--sunInk);cursor:pointer;flex:none}
+.ms-st{font-size:.72rem;color:var(--soft);flex:none}.ms-arrow{font-size:1.4rem;color:var(--soft);flex:none}
+.ms-dot{position:absolute;top:4px;right:6px;width:10px;height:10px;border-radius:50%;background:#FF5A5A;box-shadow:0 0 0 2px var(--card)}
+#helpBtn{position:relative}
+.ms-new{display:inline-block;margin-left:8px;font-size:.68rem;background:#FF5A5A;color:#fff;border-radius:999px;padding:2px 8px;vertical-align:1px}
+.ms-toast{position:fixed;left:50%;top:calc(env(safe-area-inset-top,0px) + 14px);transform:translateX(-50%);z-index:60;background:#1B2034;color:#fff;font-size:.85rem;font-weight:800;padding:10px 16px;border-radius:999px;box-shadow:0 8px 24px rgba(0,0,0,.3);animation:nwUp .3s ease-out both;white-space:nowrap;max-width:92vw;overflow:hidden;text-overflow:ellipsis;transition:opacity .4s}
+.ms-toast.out{opacity:0}
+.tl-row{cursor:default}.tl-row.got{border-color:#2EA05A}.tl-row.cur{border-color:var(--sun);box-shadow:0 0 0 3px rgba(244,181,59,.2)}
+.tl-row.sp{border-style:dashed}
+.tl-ic{width:34px;height:34px;flex:none;border-radius:10px;background:var(--bg);display:flex;align-items:center;justify-content:center;color:var(--sun)}
+.tl-ic svg{width:24px;height:24px}
+.tl-now{margin-left:6px;font-size:.62rem;background:var(--sun);color:var(--sunInk);border-radius:6px;padding:1px 6px;vertical-align:1px}
+.tl-open{display:block;margin:10px auto 0;border:2px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px;padding:7px 16px;font:inherit;font-size:.8rem;font-weight:800;cursor:pointer}
+</style>
 </head>
 <body>
 <div id="splash" class="splash" role="dialog" aria-label="とめれん帳">
@@ -858,6 +892,8 @@ body.running.battle .ba-msg{margin-top:0}
       <div class="helpmenu" id="helpMenu">
         <a href="#" id="helpGuide">💡 使い方を見る</a>
         <a href="https://form.jotform.com/262745742685065" target="_blank" rel="noopener">📮 お問い合わせ</a>
+        <a href="#mission" id="helpMission">🎯 ミッション</a>
+        <a href="#gift" id="helpGift">🎁 プレゼントボックス</a>
         <a href="#member" id="helpMember">👤 会員（セーブ・引きつぎ）</a>
         <a href="#tut" id="helpTut">🎓 チュートリアルをもう一度</a>
         <a href="#keep" id="helpKeep">💾 記録を守る方法</a>
@@ -1024,6 +1060,7 @@ body.running.battle .ba-msg{margin-top:0}
     <div class="tc-row"><span class="tc-ic" id="tcIcon"></span><span class="tc-name" id="tcName">—</span></div>
     <div class="tc-desc" id="tcDesc"></div>
     <div class="tc-next" id="tcNext"></div>
+    <button type="button" class="tl-open" data-titlelist>称号一覧を見る</button>
     <div class="tc-review" id="tcReview" hidden>
       <div class="tc-rvh">「不滅の法灯」の審査に申請できるよ</div>
       <p>千年消えない火の称号。「審査に申請する」を押すと、記録が入ったメールができるよ。ひと言を書いて送ってね。合格したら<b>認定コード</b>を返信するよ。</p>
@@ -2545,9 +2582,11 @@ body.running.battle .ba-msg{margin-top:0}
     phone:'<rect x="6" y="2" width="12" height="20" rx="2.5"/><path d="M10 18h4"/><path d="M12 7v6M9 10h6"/>',
     upload:'<path d="M12 15V3M7 8l5-5 5 5"/><path d="M4 17v3h16v-3"/>',
     user:'<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8"/>',
+    target:'<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/>',
+    medal:'<circle cx="12" cy="15" r="6"/><path d="M8 3l4 6 4-6"/><path d="M12 12.5v5M9.8 15h4.4"/>',
     timer:'<circle cx="12" cy="13" r="8"/><path d="M10 2h4"/><path d="M10.5 10v6M13.5 10v6"/>'
   };
-  var M={'📌':'pin','🤔':'q','🌟':'star','🖼️':'img','🖼':'img','🎙️':'mic','🎙':'mic','📅':'cal','📈':'chart','🙏':'hands','🫶':'heart','💦':'drop','🎉':'spark','📋':'clip','🎁':'gift','✅':'check','🔈':'spk','🔊':'spkon','🔇':'mute','🌙':'moon','⬆':'up','🎬':'film','💭':'cloud','🤖':'bot','🏁':'flag','✕':'x','💡':'bulb','📮':'mail','📩':'mail','→':'arrow','💪':'timer','🔗':'link','🔔':'bell','💾':'save','📲':'phone','📤':'upload','🎓':'star','👤':'user','⚔️':'flag','⚔':'flag'};
+  var M={'📌':'pin','🤔':'q','🌟':'star','🖼️':'img','🖼':'img','🎙️':'mic','🎙':'mic','📅':'cal','📈':'chart','🙏':'hands','🫶':'heart','💦':'drop','🎉':'spark','📋':'clip','🎁':'gift','🎯':'target','🏅':'medal','✅':'check','🔈':'spk','🔊':'spkon','🔇':'mute','🌙':'moon','⬆':'up','🎬':'film','💭':'cloud','🤖':'bot','🏁':'flag','✕':'x','💡':'bulb','📮':'mail','📩':'mail','→':'arrow','💪':'timer','🔗':'link','🔔':'bell','💾':'save','📲':'phone','📤':'upload','🎓':'star','👤':'user','🎁':'gift','⚔️':'flag','⚔':'flag'};
   var keys=Object.keys(M).sort(function(a,b){return b.length-a.length}).map(function(k){return k.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')});
   var RE=new RegExp('('+keys.join('|')+')\uFE0F?','g');
   function svg(n){var e=document.createElementNS('http://www.w3.org/2000/svg','svg');e.setAttribute('viewBox','0 0 24 24');e.setAttribute('class','pi');e.setAttribute('aria-hidden','true');e.setAttribute('fill','none');e.setAttribute('stroke','currentColor');e.setAttribute('stroke-width','2');e.setAttribute('stroke-linecap','round');e.setAttribute('stroke-linejoin','round');e.innerHTML=P[n];return e;}
@@ -2689,6 +2728,17 @@ body.running.battle .ba-msg{margin-top:0}
         }).catch(function(){ msg.textContent='画像がつくれなかったよ🙏'; }); }
     }); });
   }
+  function titleList(){
+    var cur=rankOf(stats()), h='<div class="fb-box tl-box"><div class="fb-t">🏅 称号一覧</div><div class="ms-sub">いまの称号と、これまでに手に入れた称号だよ</div>';
+    T.forEach(function(t,i){ var got=i<=cur; h+='<div class="tl-row'+(got?' got':'')+(i===cur?' cur':'')+'"><span class="tl-ic">'+(got?t.ic:'')+'</span><div class="ms-x"><div class="ms-t">'+(got?t.n:'？？？')+(i===cur?'<span class="tl-now">いま</span>':'')+'</div><div class="ms-r">'+t.m+'分継続・'+t.d+'日間'+(got?'　'+t.t:'')+'</div></div></div>'; });
+    var hh=hasHoutou(); h+='<div class="tl-row'+(hh?' got cur':'')+' sp"><span class="tl-ic">'+(hh?HOUTOU.ic:'')+'</span><div class="ms-x"><div class="ms-t">'+(hh?HOUTOU.n:'？？？（審査制）')+'</div><div class="ms-r">悟りに到達して、審査に合格すると…</div></div></div>';
+    h+='<button type="button" class="mb-link" data-tl-close>とじる</button></div>';
+    var ov=document.createElement('div'); ov.className='fb-ov tl-ov'; ov.innerHTML=h; document.body.appendChild(ov);
+    ov.addEventListener('click',function(e){ if(e.target===ov||e.target.closest('[data-tl-close]')) ov.remove(); });
+    try{ if(window.tmMissionFlag) window.tmMissionFlag('titles'); }catch(e){}
+  }
+  window.tmTitleList=titleList;
+  document.addEventListener('click',function(e){ if(e.target.closest('[data-titlelist]')) titleList(); });
   function celebrate(r){
     if(r==='houtou') return celebrateHoutou();
     var t=T[r], L=r; // 0（しょぼい）〜8（豪華）
@@ -3427,7 +3477,7 @@ body.running.battle .ba-msg{margin-top:0}
 <script>
 (function(){
   var API='https://tomeren-app.vansboffice.workers.dev';
-  var KEYS=['tomeren-battle','tomeren-inv','tomeren-title','tomeren-houtou','tomeren-avatar','tomeren-hp','tomeren-done-count','tomeren-appid'];
+  var KEYS=['tomeren-battle','tomeren-inv','tomeren-title','tomeren-houtou','tomeren-avatar','tomeren-hp','tomeren-done-count','tomeren-appid','tomeren-mission'];
   function me(){ try{ return JSON.parse(localStorage.getItem('tomeren-member')||'null'); }catch(e){ return null; } }
   function setMe(m){ try{ if(m) localStorage.setItem('tomeren-member',JSON.stringify(m)); else localStorage.removeItem('tomeren-member'); }catch(e){} }
   function pack(){ var d={}; KEYS.forEach(function(k){ try{ var v=localStorage.getItem(k); if(v!==null) d[k]=v; }catch(e){} }); return d; }
@@ -3478,6 +3528,98 @@ body.running.battle .ba-msg{margin-top:0}
     var m=me(); b.innerHTML=m?('👤 '+String(m.nickname||'').replace(/[<>&]/g,'')+'　<small>自動セーブ中・最後 '+fmtT(m.savedAt)+'</small>'):'👤 会員登録で、機種変更してもデータを引きつげるよ<small>（無料・メール不要）</small>'; }
   banner(); setInterval(banner,5000);
   if(me()) setTimeout(function(){ save(false); },4000);
+})();
+</script>
+<script>
+(function(){
+  var API='https://tomeren-app.vansboffice.workers.dev';
+  function me(){ try{ return JSON.parse(localStorage.getItem('tomeren-member')||'null'); }catch(e){ return null; } }
+  function api(path,opt){ opt=opt||{}; var m=me(); if(!m) return Promise.reject({error:'nomember'}); return fetch(API+path,{method:opt.method||'GET',headers:{'Content-Type':'application/json','X-Id':m.id,'X-Secret':m.secret},body:opt.body?JSON.stringify(opt.body):undefined}).then(function(r){ return r.json().then(function(j){ if(!r.ok) throw j; return j; }); }); }
+  var PS=[['head',['兜','髪飾り']],['neck',['首飾り','勾玉','数珠','お守り','鈴']],['body',['鎧','羽織','具足','胸当て']],['arm',['籠手','腕輪','指輪','盾']],['leg',['すね当て']],['hand',['剣','槍','斧','弓','杖','刀','短剣','鎌']]];
+  function partOf(it){ for(var i=0;i<PS.length;i++){ for(var j=0;j<PS[i][1].length;j++){ var k=PS[i][1][j]; if(it.name.slice(-k.length)===k) return PS[i][0]; } } return it.slot==='weapon'?'hand':(it.slot==='armor'?'body':'neck'); }
+  function score(it){ return (it.atk||0)+(it.spd||0)+(it.def||0)*2+(it.hp||0)*0.2+(it.rar||0)*5; }
+  function apply(p){
+    var inv={}; try{ inv=JSON.parse(localStorage.getItem('tomeren-inv')||'{}'); }catch(e){}
+    inv.coins=(inv.coins||0)+(p.coins||0); inv.items=inv.items||[]; inv.equip=inv.equip||{}; inv.cons=inv.cons||{};
+    Object.keys(p.cons||{}).forEach(function(k){ inv.cons[k]=(inv.cons[k]||0)+p.cons[k]; });
+    (p.items||[]).forEach(function(it,i){ var c=JSON.parse(JSON.stringify(it)); c.uid='g'+Date.now().toString(36)+i+Math.random().toString(36).slice(2,5); inv.items.push(c); });
+    if(p.equipBest){ var best={}; inv.items.forEach(function(it){ var pt=partOf(it); if(!best[pt]||score(it)>score(best[pt])) best[pt]=it; }); Object.keys(best).forEach(function(pt){ inv.equip[pt]=best[pt].uid; }); ['weapon','armor','acc'].forEach(function(k){ delete inv.equip[k]; }); }
+    try{ localStorage.setItem('tomeren-inv',JSON.stringify(inv)); if(p.hpFull) localStorage.setItem('tomeren-hp',JSON.stringify({hp:999999,t:Date.now()})); }catch(e){}
+  }
+  function sum(p){ var a=[]; if(p.coins) a.push('コイン '+p.coins.toLocaleString()); if(p.items&&p.items.length) a.push('装備 '+p.items.length+'こ'); var c=p.cons||{}; if(c.herb) a.push('やくそう '+c.herb+'こ'); if(c.herb2) a.push('上やくそう '+c.herb2+'こ'); if(p.hpFull) a.push('HP全回復'); return a.join('・'); }
+  function esc(t){ return String(t||'').replace(/[<>&"]/g,function(c){ return {'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;'}[c]; }); }
+  function box(gifts,auto){
+    var old=document.querySelector('.gf-ov'); if(old) old.remove();
+    var ov=document.createElement('div'); ov.className='fb-ov gf-ov'; ov.setAttribute('role','dialog');
+    var h='<div class="fb-box gf-box"><div class="gf-ic">🎁</div><div class="fb-t">運営からのプレゼント</div>';
+    if(!gifts.length) h+='<div class="gf-empty">今はとどいてないよ。またチェックしてね！</div>';
+    gifts.forEach(function(g){ h+='<div class="gf-item"><div class="gf-t">'+esc(g.title)+'</div><div class="gf-m">'+esc(g.message)+'</div><div class="gf-s">'+esc(sum(g.payload))+'</div><button type="button" class="fb-main" data-gift="'+esc(g.id)+'">受け取る</button></div>'; });
+    h+='<div class="mb-msg" id="gfMsg"></div><button type="button" class="mb-link" data-gclose>とじる</button></div>';
+    ov.innerHTML=h; document.body.appendChild(ov);
+    ov.addEventListener('click',function(e){ if(e.target===ov||e.target.closest('[data-gclose]')){ ov.remove(); return; } var b=e.target.closest('[data-gift]'); if(!b) return; b.disabled=true; b.textContent='受け取り中…';
+      api('/api/gifts/claim',{method:'POST',body:{id:b.getAttribute('data-gift')}}).then(function(j){ apply(j.payload); var m=document.getElementById('gfMsg'); if(m) m.textContent='受け取ったよ！🎉 画面を読みこみ直すね…'; try{ if(window.gtag) gtag('event','gift_claim',{}); }catch(e2){} setTimeout(function(){ location.reload(); },1500); })
+        .catch(function(err){ b.disabled=false; b.textContent='受け取る'; var m=document.getElementById('gfMsg'); if(m) m.textContent=(err&&err.error==='claimed')?'もう受け取ってるよ':'受け取れなかったよ🙏 電波を確認してね'; }); });
+  }
+  function check(auto){ if(!me()) { if(!auto) box([],false); return; } api('/api/gifts').then(function(j){ var g=j.gifts||[]; var badge=document.getElementById('gfBadge'); if(badge) badge.hidden=!g.length; if(g.length||!auto) box(g,auto); }).catch(function(){ if(!auto) box([],false); }); }
+  window.tmGifts=check;
+  document.addEventListener('click',function(e){ if(e.target.closest('#helpGift')){ e.preventDefault(); var hm=document.getElementById('helpMenu'); if(hm) hm.classList.remove('open'); check(false); } });
+  // 起動後、オープニング・お知らせが終わってから自動チェック
+  var tries=0, iv=setInterval(function(){ tries++; var sp=document.getElementById('splash'), g=document.getElementById('gate'); if(!sp && (!g||g.hidden) && !document.querySelector('.nw-ov') && !document.querySelector('.tt-ov')){ clearInterval(iv); setTimeout(function(){ check(true); },800); } if(tries>200) clearInterval(iv); },500);
+})();
+</script>
+<script>
+(function(){
+  var KEY='tomeren-mission';
+  function st(){ var d=null; try{ d=JSON.parse(localStorage.getItem(KEY)||'null'); }catch(e){} d=d||{}; d.flags=d.flags||{}; d.claimed=d.claimed||{}; return d; }
+  function save(d){ try{ localStorage.setItem(KEY,JSON.stringify(d)); }catch(e){} refreshBadge(); }
+  function flag(k){ var d=st(); if(!d.flags[k]){ d.flags[k]=Date.now(); save(d); toast(k); } }
+  function logLen(){ try{ return (JSON.parse(localStorage.getItem('tomeren-log')||'{}').sessions||[]).length; }catch(e){ return 0; } }
+  function clickTab(go){ var b=document.querySelector('#tabs button[data-go="'+go+'"]'); if(b) b.click(); window.scrollTo(0,0); }
+  var M=[
+    {id:'tut',t:'チュートリアルをやってみる',r:{coins:100,cons:{herb:1}},done:function(){ try{ return localStorage.getItem('tomeren-tut')==='done'; }catch(e){ return false; } },go:function(){ if(window.tmTutorial) window.tmTutorial(); }},
+    {id:'practice',t:'練習を1回やる',r:{coins:200,cons:{herb:2}},done:function(){ return logLen()>0; },go:function(){ clickTab('train'); }},
+    {id:'battle',t:'バトルを1戦する',r:{coins:200,items:[{id:'m',slot:'weapon',name:'鉄の剣',rar:1,atk:8,def:0,hp:0,spd:0,en:'flag'}]},done:function(){ return !!st().flags.battle; },go:function(){ clickTab('battle'); }},
+    {id:'plan',t:'次の練習の予定を決める',r:{coins:150,cons:{herb:1}},done:function(){ return !!st().flags.plan; },go:function(){ clickTab('next'); }},
+    {id:'titles',t:'称号を確認する',r:{coins:100},done:function(){ return !!st().flags.titles; },go:function(){ clickTab('log'); setTimeout(function(){ if(window.tmTitleList) window.tmTitleList(); },250); }},
+    {id:'member',t:'会員登録をすませる',r:{coins:300,cons:{herb2:1}},done:function(){ try{ return !!localStorage.getItem('tomeren-member'); }catch(e){ return false; } },go:function(){ if(window.tmMemberSheet) window.tmMemberSheet(); }},
+    {id:'share',t:'とめれん帳を教える',r:{coins:300,items:[{id:'m',slot:'armor',name:'鉄の鎧',rar:1,atk:0,def:5,hp:40,spd:0,en:'flag'}]},done:function(){ return !!st().flags.share; },go:function(){ clickTab('help'); setTimeout(function(){ var c=document.getElementById('share'); if(c) c.scrollIntoView({behavior:'smooth',block:'start'}); },250); }}
+  ];
+  var BONUS={id:'all',t:'ぜんぶクリアのボーナス',r:{coins:1000,cons:{herb2:3},items:[{id:'m',slot:'acc',name:'見習い勇者のお守り',rar:2,atk:0,def:0,hp:0,spd:15,en:'flag'}]}};
+  function rText(r){ var a=[]; if(r.coins) a.push('コイン'+r.coins); var c=r.cons||{}; if(c.herb) a.push('やくそう×'+c.herb); if(c.herb2) a.push('上やくそう×'+c.herb2); (r.items||[]).forEach(function(i){ a.push(i.name); }); return a.join('・'); }
+  function give(r){ var inv={}; try{ inv=JSON.parse(localStorage.getItem('tomeren-inv')||'{}'); }catch(e){} inv.coins=(inv.coins||0)+(r.coins||0); inv.items=inv.items||[]; inv.equip=inv.equip||{}; inv.cons=inv.cons||{};
+    Object.keys(r.cons||{}).forEach(function(k){ inv.cons[k]=(inv.cons[k]||0)+r.cons[k]; });
+    (r.items||[]).forEach(function(it,i){ var c=JSON.parse(JSON.stringify(it)); c.uid='m'+Date.now().toString(36)+i+Math.random().toString(36).slice(2,5); inv.items.push(c); });
+    try{ localStorage.setItem('tomeren-inv',JSON.stringify(inv)); }catch(e){} }
+  function claimable(){ var d=st(), n=0; M.forEach(function(m){ if(m.done()&&!d.claimed[m.id]) n++; }); if(M.every(function(m){return d.claimed[m.id];}) && !d.claimed.all) n++; return n; }
+  function refreshBadge(){ var n=claimable(), hb=document.getElementById('helpBtn'); if(hb){ var dot=hb.querySelector('.ms-dot'); if(n&&!dot){ dot=document.createElement('i'); dot.className='ms-dot'; hb.appendChild(dot); } if(!n&&dot) dot.remove(); }
+    var b=document.getElementById('msBanner'), bc=document.getElementById('battleCard'); if(bc){ if(!b){ b=document.createElement('button'); b.type='button'; b.id='msBanner'; b.className='mb-banner ms-banner'; bc.insertBefore(b, document.getElementById('mbBanner')||bc.querySelector('.bt-lead')||bc.firstChild); }
+      var d=st(), done=M.filter(function(m){return d.claimed[m.id];}).length; b.innerHTML='🎯 ミッション　'+done+' / '+M.length+(n?'<span class="ms-new">受け取れる報酬が'+n+'こ</span>':'')+'<small>こなすと報酬がもらえるよ</small>'; } }
+  var toastT=null;
+  function toast(k){ var m=M.filter(function(x){return x.id===k;})[0]; if(!m) return; var t=document.createElement('div'); t.className='ms-toast'; t.textContent='🎯 ミッション達成！「'+m.t+'」'; document.body.appendChild(t); setTimeout(function(){ t.classList.add('out'); setTimeout(function(){ t.remove(); },400); },2600); }
+  function sheet(){
+    var old=document.querySelector('.ms-ov'); if(old) old.remove();
+    var d=st(), ov=document.createElement('div'); ov.className='fb-ov ms-ov'; ov.setAttribute('role','dialog');
+    var h='<div class="fb-box ms-box"><div class="fb-t">🎯 ミッション</div><div class="ms-sub">こなすと報酬がもらえるよ。押すとその場所に飛ぶよ</div>';
+    M.forEach(function(m){ var ok=m.done(), got=!!d.claimed[m.id];
+      h+='<div class="ms-row'+(got?' got':(ok?' ok':''))+'" data-ms-go="'+m.id+'"><span class="ms-ck">'+(got||ok?'✓':'')+'</span><div class="ms-x"><div class="ms-t">'+m.t+'</div><div class="ms-r">報酬：'+rText(m.r)+'</div></div>'+(got?'<span class="ms-st">受取済み</span>':(ok?'<button type="button" class="ms-b" data-ms-claim="'+m.id+'">受け取る</button>':'<span class="ms-arrow">›</span>'))+'</div>'; });
+    var allDone=M.every(function(m){return d.claimed[m.id];});
+    h+='<div class="ms-row bonus'+(d.claimed.all?' got':(allDone?' ok':''))+'"><span class="ms-ck">★</span><div class="ms-x"><div class="ms-t">'+BONUS.t+'</div><div class="ms-r">報酬：'+rText(BONUS.r)+'</div></div>'+(d.claimed.all?'<span class="ms-st">受取済み</span>':(allDone?'<button type="button" class="ms-b" data-ms-claim="all">受け取る</button>':''))+'</div>';
+    h+='<div class="mb-msg" id="msMsg"></div><button type="button" class="mb-link" data-ms-close>とじる</button></div>';
+    ov.innerHTML=h; document.body.appendChild(ov);
+    ov.addEventListener('click',function(e){ if(e.target===ov||e.target.closest('[data-ms-close]')){ ov.remove(); return; }
+      var c=e.target.closest('[data-ms-claim]'); if(c){ e.stopPropagation(); var id=c.getAttribute('data-ms-claim'), d2=st(); if(d2.claimed[id]) return; var r=id==='all'?BONUS.r:M.filter(function(x){return x.id===id;})[0].r; give(r); d2.claimed[id]=Date.now(); save(d2); try{ if(window.gtag) gtag('event','mission_'+id,{}); }catch(e3){} sheet(); var mm=document.getElementById('msMsg'); if(mm) mm.textContent='受け取ったよ！🎉 '+rText(r); return; }
+      var g=e.target.closest('[data-ms-go]'); if(g){ var m=M.filter(function(x){return x.id===g.getAttribute('data-ms-go');})[0]; if(m && !m.done()){ ov.remove(); m.go(); } } });
+  }
+  window.tmMissions=sheet;
+  // 達成の検知
+  document.addEventListener('click',function(e){
+    if(e.target.closest('[data-share]')||e.target.closest('[data-sh]')) flag('share');
+    var b=e.target.closest('button,a'); if(b && /カレンダーに入れる|通知に入れる/.test(b.textContent||'')) flag('plan');
+    if(e.target.closest('#helpMission')||e.target.closest('#msBanner')){ e.preventDefault(); var hm=document.getElementById('helpMenu'); if(hm) hm.classList.remove('open'); sheet(); }
+  },true);
+  new MutationObserver(function(ms){ ms.forEach(function(m){ m.addedNodes.forEach(function(n){ if(n.nodeType===1 && n.classList && n.classList.contains('br-ov')) flag('battle'); }); }); }).observe(document.body,{childList:true});
+  window.tmMissionFlag=flag;
+  refreshBadge(); setInterval(refreshBadge,3000);
 })();
 </script>
 </body>
