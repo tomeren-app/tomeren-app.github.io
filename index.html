@@ -829,6 +829,7 @@ body.running.battle .ba-msg{margin-top:0}
 .tl-now{margin-left:6px;font-size:.62rem;background:var(--sun);color:var(--sunInk);border-radius:6px;padding:1px 6px;vertical-align:1px}
 .tl-open{display:block;margin:10px auto 0;border:2px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px;padding:7px 16px;font:inherit;font-size:.8rem;font-weight:800;cursor:pointer}
 </style>
+<style>.adm-news{margin:12px;padding:14px;border:2px dashed var(--sun);display:flex;flex-direction:column;gap:4px}.adm-news label{font-size:.75rem;font-weight:800;color:var(--soft);margin-top:6px}.adm-news input,.adm-news textarea{width:100%;box-sizing:border-box;padding:10px;border-radius:10px;border:2px solid var(--line);font:inherit;background:var(--card);color:var(--ink)}.adm-news button{margin-top:10px;border:none;border-radius:999px;padding:12px;font:inherit;font-weight:800;background:var(--sun);color:var(--sunInk)}.adm-s{font-size:.75rem;color:var(--soft);margin:4px 0}.adm-m{font-size:.85rem;font-weight:800;color:var(--sun);min-height:1.2em}</style>
 </head>
 <body>
 <div id="splash" class="splash" role="dialog" aria-label="とめれん帳">
@@ -843,7 +844,7 @@ body.running.battle .ba-msg{margin-top:0}
       <span>Safariの<b>共有ボタン</b> →「<b>ホーム画面に追加</b>」→ ホーム画面から開いてね</span>
       <small>Safariで7日間開かないと、記録が消えることがあるよ。きろくタブで<b>バックアップ</b>もできるよ</small>
     </div>
-    <div class="sptap" style="margin-top:6px;font-size:.7rem">ver.9</div>
+    <div class="sptap" style="margin-top:6px;font-size:.7rem">ver.10</div>
   </div>
 </div>
 <div id="gate" class="gate" hidden>
@@ -1101,7 +1102,7 @@ body.running.battle .ba-msg{margin-top:0}
     <p class="sharemsg" id="bkMsg" aria-live="polite"></p>
   </section>
 
-  <p data-tab="log" class="foot">ver.9<br>きろくは自分だけが見れるよ🔒<br><a href="https://form.jotform.com/262745742685065" target="_blank" rel="noopener" style="color:var(--soft)">お問い合わせ</a><br><button class="linkbtn" id="resetAll">きろくを全部けす</button></p>
+  <p data-tab="log" class="foot">ver.10<br>きろくは自分だけが見れるよ🔒<br><a href="https://form.jotform.com/262745742685065" target="_blank" rel="noopener" style="color:var(--soft)">お問い合わせ</a><br><button class="linkbtn" id="resetAll">きろくを全部けす</button></p>
 </main>
 
 <script>
@@ -2799,6 +2800,16 @@ body.running.battle .ba-msg{margin-top:0}
 (function(){
   // ===== 運営からのお知らせ（新しいお知らせは、いちばん上に足してね）=====
   var NEWS=[
+    {v:'ver.10', d:'2026年10月5日', t:'大型アップデート！バトルモードが登場', items:[
+      'バトルモード登場！練習で敵をたおして、全9ステージ・45体の冒険マップを進もう',
+      '装備（武器・防具・お守り）が登場。敵がごくたまに落とすよ。ショップで買ったり売ったりもできるよ',
+      'キャラクターを作れるようになったよ（男の子・女の子／体格・身長）',
+      '会員登録でセーブ＆引きつぎができるように。メールも本名もいらないよ',
+      '運営からのプレゼントボックスと、こなすと報酬がもらえるミッションを追加',
+      '練習中は全画面になって、スクロールなしで見やすくなったよ',
+      'きろくタブから、これまでの称号を一覧で見られるよ',
+      'はじめての人向けのチュートリアルを追加'
+    ]},
     {v:'ver.9', d:'2026年10月3日', t:'記録を守る機能がつきました', items:[
       'きろくタブのいちばん下で、記録をファイルに書き出し・読みこみできるよ（機種変更でも安心）',
       'ホーム画面に追加して開くと、記録が勝手に消えにくくなるよ',
@@ -2819,20 +2830,33 @@ body.running.battle .ba-msg{margin-top:0}
     ov.innerHTML='<div class="nw-box"><div class="nw-k">運営からのお知らせ</div><div class="nw-t"></div><div class="nw-d"></div><ul></ul><button type="button" class="nw-btn">OK</button></div>';
     ov.querySelector('.nw-t').textContent=n.t; ov.querySelector('.nw-d').textContent=n.d+'　'+n.v;
     var ul=ov.querySelector('ul'); n.items.forEach(function(x){ var li=document.createElement('li'); li.textContent=x; ul.appendChild(li); });
-    var close=function(){ try{ localStorage.setItem(KEY,n.v); }catch(e){} ov.remove(); };
+    var close=function(){ try{ localStorage.setItem(KEY,kOf(n)); }catch(e){} ov.remove(); };
     ov.querySelector('.nw-btn').addEventListener('click',close);
     ov.addEventListener('click',function(e){ if(e.target===ov) close(); });
     document.body.appendChild(ov);
   }
-  var latest=NEWS[0], seen=null; try{ seen=localStorage.getItem(KEY); }catch(e){}
-  try{ var _lg=JSON.parse(localStorage.getItem('tomeren-log')||'{}'); var _first=!localStorage.getItem('tomeren-tut') && !((_lg.sessions||[]).length); if(_first && latest){ localStorage.setItem(KEY,latest.v); seen=latest.v; } }catch(e){}
-  if(latest && seen!==latest.v){
-    var tries=0, iv=setInterval(function(){
-      tries++; var sp=document.getElementById('splash'), g=document.getElementById('gate');
-      if(!sp && (!g || g.hidden)){ clearInterval(iv); setTimeout(function(){ show(latest); },400); }
-      if(tries>300) clearInterval(iv);
-    },300);
+  var API_N='https://tomeren-app.vansboffice.workers.dev';
+  function kOf(n){ return n.key||n.v; }
+  function startNews(){
+    var latest=NEWS[0], seen=null; try{ seen=localStorage.getItem(KEY); }catch(e){}
+    try{ var _lg=JSON.parse(localStorage.getItem('tomeren-log')||'{}'); var _first=!localStorage.getItem('tomeren-tut') && !((_lg.sessions||[]).length); if(_first && latest){ localStorage.setItem(KEY,kOf(latest)); seen=kOf(latest); } }catch(e){}
+    if(latest && seen!==kOf(latest)){
+      var tries=0, iv=setInterval(function(){
+        tries++; var sp=document.getElementById('splash'), g=document.getElementById('gate');
+        if(!sp && (!g || g.hidden)){ clearInterval(iv); setTimeout(function(){ show(latest); },400); }
+        if(tries>300) clearInterval(iv);
+      },300);
+    }
   }
+  var _started=false; function go(){ if(_started) return; _started=true; startNews(); }
+  try{
+    var ctl=(window.AbortController?new AbortController():null); setTimeout(function(){ try{ if(ctl) ctl.abort(); }catch(e){} go(); },3500);
+    fetch(API_N+'/api/news',ctl?{signal:ctl.signal}:{}).then(function(r){ return r.json(); }).then(function(j){
+      var rem=(j.news||[]).map(function(n){ return {key:'r'+n.id, v:n.v, d:n.d, t:n.t, items:n.items, at:n.at}; });
+      if(rem.length){ for(var i=rem.length-1;i>=0;i--) NEWS.unshift(rem[i]); }
+      go();
+    }).catch(function(){ go(); });
+  }catch(e){ go(); }
   function showAll(){
     if(document.querySelector('.nw-ov')) return;
     var ov=document.createElement('div'); ov.className='nw-ov'; ov.setAttribute('role','dialog'); ov.setAttribute('aria-label','運営からのお知らせ一覧');
@@ -2842,7 +2866,7 @@ body.running.battle .ba-msg{margin-top:0}
     ov.innerHTML=h;
     var its=ov.querySelectorAll('.nw-item');
     NEWS.forEach(function(n,k){ var it=its[k]; it.querySelector('.nw-st').textContent=n.t; it.querySelector('.nw-dd').textContent=n.d; var ul=it.querySelector('ul'); n.items.forEach(function(x){ var li=document.createElement('li'); li.textContent=x; ul.appendChild(li); }); });
-    var close=function(){ try{ localStorage.setItem(KEY,NEWS[0].v); }catch(e){} ov.remove(); };
+    var close=function(){ try{ localStorage.setItem(KEY,kOf(NEWS[0])); }catch(e){} ov.remove(); };
     ov.querySelector('.nw-btn').addEventListener('click',close);
     ov.addEventListener('click',function(e){ if(e.target===ov) close(); });
     document.body.appendChild(ov);
@@ -3622,6 +3646,31 @@ body.running.battle .ba-msg{margin-top:0}
   new MutationObserver(function(ms){ ms.forEach(function(m){ m.addedNodes.forEach(function(n){ if(n.nodeType===1 && n.classList && n.classList.contains('br-ov')) flag('battle'); }); }); }).observe(document.body,{childList:true});
   window.tmMissionFlag=flag;
   refreshBadge(); setInterval(refreshBadge,3000);
+})();
+</script>
+
+<script>
+(function(){
+  try{ if(new URLSearchParams(location.search).get('admin')!=='houtou') return; }catch(e){ return; }
+  var API='https://tomeren-app.vansboffice.workers.dev';
+  var box=document.createElement('div'); box.className='card adm-news';
+  var key=''; try{ key=localStorage.getItem('tomeren-adminkey')||''; }catch(e){}
+  box.innerHTML='<b>運営用：お知らせを配信</b><p class="adm-s">ここから送ると、ファイルをのせ直さなくても、みんなのアプリに次に開いたとき表示されるよ</p>'+
+    '<label>運営キー</label><input id="anKey" type="password" placeholder="Cloudflareに設定した運営キー" value="'+key.replace(/"/g,'')+'">'+
+    '<label>ラベル（例：ver.11、お知らせ）</label><input id="anV" placeholder="お知らせ">'+
+    '<label>タイトル</label><input id="anT" placeholder="例：新しいステージを追加しました">'+
+    '<label>中身（1行に1つ）</label><textarea id="anI" rows="5" placeholder="例：ステージ10が登場！\n報酬がもらえるイベント開催中"></textarea>'+
+    '<button type="button" id="anSend">配信する</button><p class="adm-m" id="anMsg"></p>';
+  document.body.insertBefore(box,document.body.firstChild);
+  box.querySelector('#anSend').addEventListener('click',function(){
+    var k=box.querySelector('#anKey').value.trim(), t=box.querySelector('#anT').value.trim(), it=box.querySelector('#anI').value, v=box.querySelector('#anV').value.trim()||'お知らせ', m=box.querySelector('#anMsg');
+    if(!k||!t||!it.trim()){ m.textContent='運営キー・タイトル・中身を入れてね'; return; }
+    try{ localStorage.setItem('tomeren-adminkey',k); }catch(e){}
+    m.textContent='配信中…';
+    fetch(API+'/api/admin/news',{method:'POST',headers:{'Content-Type':'application/json','X-Admin':k},body:JSON.stringify({v:v,title:t,items:it})}).then(function(r){ return r.json().then(function(j){ if(!r.ok) throw j; return j; }); })
+      .then(function(){ m.textContent='配信できたよ！✅ みんなが次にアプリを開いたときに表示されるよ'; box.querySelector('#anT').value=''; box.querySelector('#anI').value=''; })
+      .catch(function(e){ m.textContent=(e&&e.error==='admin')?'運営キーがちがうみたい🙏':'配信できなかったよ🙏 電波を確認してね'; });
+  });
 })();
 </script>
 </body>
