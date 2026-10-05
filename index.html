@@ -2738,6 +2738,7 @@ body.running.battle .ba-msg{margin-top:0}
     try{ if(window.tmMissionFlag) window.tmMissionFlag('titles'); }catch(e){}
   }
   window.tmTitleList=titleList;
+  (function(){ var nw=null; try{ nw=localStorage.getItem('tomeren-houtou-new'); }catch(e){} if(nw==='1'){ var tr=0, iv=setInterval(function(){ tr++; var sp=document.getElementById('splash'), g=document.getElementById('gate'); if(!sp && (!g||g.hidden) && !document.querySelector('.fb-ov') && !document.querySelector('.nw-ov') && !document.querySelector('.tt-ov')){ clearInterval(iv); try{ localStorage.removeItem('tomeren-houtou-new'); }catch(e){} renderCard(); celebrate('houtou'); } if(tr>200) clearInterval(iv); },500); } })();
   document.addEventListener('click',function(e){ if(e.target.closest('[data-titlelist]')) titleList(); });
   function celebrate(r){
     if(r==='houtou') return celebrateHoutou();
@@ -3545,8 +3546,9 @@ body.running.battle .ba-msg{margin-top:0}
     (p.items||[]).forEach(function(it,i){ var c=JSON.parse(JSON.stringify(it)); c.uid='g'+Date.now().toString(36)+i+Math.random().toString(36).slice(2,5); inv.items.push(c); });
     if(p.equipBest){ var best={}; inv.items.forEach(function(it){ var pt=partOf(it); if(!best[pt]||score(it)>score(best[pt])) best[pt]=it; }); Object.keys(best).forEach(function(pt){ inv.equip[pt]=best[pt].uid; }); ['weapon','armor','acc'].forEach(function(k){ delete inv.equip[k]; }); }
     try{ localStorage.setItem('tomeren-inv',JSON.stringify(inv)); if(p.hpFull) localStorage.setItem('tomeren-hp',JSON.stringify({hp:999999,t:Date.now()})); }catch(e){}
+    try{ if(p.houtou){ localStorage.setItem('tomeren-houtou','1'); localStorage.setItem('tomeren-houtou-new','1'); } }catch(e){}
   }
-  function sum(p){ var a=[]; if(p.coins) a.push('コイン '+p.coins.toLocaleString()); if(p.items&&p.items.length) a.push('装備 '+p.items.length+'こ'); var c=p.cons||{}; if(c.herb) a.push('やくそう '+c.herb+'こ'); if(c.herb2) a.push('上やくそう '+c.herb2+'こ'); if(p.hpFull) a.push('HP全回復'); return a.join('・'); }
+  function sum(p){ var a=[]; if(p.coins) a.push('コイン '+p.coins.toLocaleString()); if(p.items&&p.items.length) a.push('装備 '+p.items.length+'こ'); var c=p.cons||{}; if(c.herb) a.push('やくそう '+c.herb+'こ'); if(c.herb2) a.push('上やくそう '+c.herb2+'こ'); if(p.hpFull) a.push('HP全回復'); if(p.houtou) a.push('称号「不滅の法灯」'); return a.join('・'); }
   function esc(t){ return String(t||'').replace(/[<>&"]/g,function(c){ return {'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;'}[c]; }); }
   function box(gifts,auto){
     var old=document.querySelector('.gf-ov'); if(old) old.remove();
