@@ -830,6 +830,27 @@ body.running.battle .ba-msg{margin-top:0}
 .tl-open{display:block;margin:10px auto 0;border:2px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px;padding:7px 16px;font:inherit;font-size:.8rem;font-weight:800;cursor:pointer}
 </style>
 <style>.adm-news{margin:12px;padding:14px;border:2px dashed var(--sun);display:flex;flex-direction:column;gap:4px}.adm-news label{font-size:.75rem;font-weight:800;color:var(--soft);margin-top:6px}.adm-news input,.adm-news textarea{width:100%;box-sizing:border-box;padding:10px;border-radius:10px;border:2px solid var(--line);font:inherit;background:var(--card);color:var(--ink)}.adm-news button{margin-top:10px;border:none;border-radius:999px;padding:12px;font:inherit;font-weight:800;background:var(--sun);color:var(--sunInk)}.adm-s{font-size:.75rem;color:var(--soft);margin:4px 0}.adm-m{font-size:.85rem;font-weight:800;color:var(--sun);min-height:1.2em}</style>
+<style>
+.sb-info{display:none}
+.stage.idle .sb-info{display:flex;align-items:center;justify-content:space-between;gap:6px;margin:14px auto 0;max-width:340px;padding:10px 12px;border-radius:16px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14);cursor:pointer;position:relative}
+.sb-c{display:flex;align-items:center;gap:8px;min-width:0}
+.sb-ic{width:28px;height:28px;flex:none;border-radius:50%;display:flex;align-items:center;justify-content:center;background:rgba(255,201,138,.15);color:#FFC98A}
+.sb-ic:empty{display:none}
+.sb-ic svg{width:18px;height:18px}
+.sb-ic.h{background:rgba(255,210,122,.25);color:#FFD27A;box-shadow:0 0 12px rgba(255,190,90,.5)}
+.sb-l{font-size:.6rem;letter-spacing:.12em;color:rgba(244,241,234,.6);white-space:nowrap}
+.sb-v{font-size:.82rem;font-weight:800;color:#F4F1EA;white-space:nowrap}
+.sb-sep{width:1px;align-self:stretch;background:rgba(255,255,255,.14)}
+body.battle .stage.idle .sb-info{display:none}
+.stage.idle .clock .ck-t{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;line-height:1.15;letter-spacing:0;font-variant-numeric:normal}
+.ck-ic{width:34px;height:34px;display:flex;align-items:center;justify-content:center;color:#FFC98A}
+.ck-ic:empty{display:none}
+.ck-ic svg{width:30px;height:30px}
+.ck-ic.h{color:#FFD27A;filter:drop-shadow(0 0 8px rgba(255,190,90,.7))}
+.ck-l{font-size:.62rem;font-weight:600;letter-spacing:.18em;color:rgba(244,241,234,.6)}
+.ck-v{font-size:1.65rem;font-weight:800;white-space:nowrap}
+body.battle .ck-l{color:rgba(255,255,255,.7)}
+</style>
 </head>
 <body>
 <div id="splash" class="splash" role="dialog" aria-label="とめれん帳">
@@ -971,6 +992,9 @@ body.running.battle .ba-msg{margin-top:0}
 
     <h3 id="g6">よくある質問</h3>
     <details><summary>ストップ・スタート法とは何ですか？</summary><p>射精しそうになる手前で刺激を止め、落ち着いたら再開することをくり返して、射精のタイミングを自分でコントロールする感覚を身につける練習方法です。1950年代から知られている、ひとりでもできる方法です。</p></details><details><summary>どのくらいの頻度で練習すればいいですか？</summary><p>週に3回くらいが目安です。毎日たくさんやるより、体と気持ちが回復する間をあけて続けるほうが負担が少なくなります。</p></details><details><summary>どのくらいで変化を感じますか？</summary><p>個人差がありますが、数週間続けて少しずつ変化を感じる人が多いと言われています。このアプリは治療ではなく、練習を続けるための記録ツールです。</p></details><details><summary>練習中にやわらかくなってしまったら？</summary><p>止めている間に少しやわらかくなるのはよくあることです。休けいを短めにして、ゆっくり再開してみてください。何度も続く場合は泌尿器科に相談してください。</p></details><details><summary>病院に相談したほうがいいのはどんなときですか？</summary><p>悩みが強くて生活に影響しているとき、痛みや違和感があるとき、勃起しにくい状態が続くときは、泌尿器科や男性の悩みを相談できるクリニックに相談してください。飲み薬などの方法もあります。</p></details><details><summary>データはどこに保存されますか？</summary><p>練習の記録・声・画像はすべて、使っているスマホのブラウザの中だけに保存され、外部には送信されません。サイト改善のため、アクセス数や流入元だけをGoogleアナリティクスで匿名で集計しています。無料で、会員登録も不要です。</p></details>
+
+    <h3 style="margin-top:20px">読みもの 📖</h3>
+    <p><a href="/stop-start.html">ストップ・スタート法のやり方｜4週間で身につける</a><br><a href="/souro-time.html">早漏は何分から？平均の時間と「気にしすぎ」かどうかの目安</a><br><a href="/squeeze.html">スクイーズ法のやり方｜指のあて方と力加減</a><br><a href="/kotsuban.html">骨盤底筋トレーニングで早漏対策</a></p>
 
     <p style="font-size:.8rem;color:var(--soft);margin-top:14px">※このページの内容は一般的な情報で、医師の診断や治療にかわるものではありません。</p>
   </article>
@@ -1974,7 +1998,7 @@ body.running.battle .ba-msg{margin-top:0}
     window.__tm = { mode: mode, active: curActive()/1000, rest: curRest()/1000, stops: stops };
     if (mode==='idle'){
       $('state').textContent = 'スタンバイOK';
-      $('clock').textContent = '0:00';
+      if (window.tmIdleClock) window.tmIdleClock(); else $('clock').textContent = '0:00';
       $('countTxt').textContent = '目標：'+GOAL+'回止める';
       const rec = recommendStyle();
       const box = document.createElement('div'); box.className='opts';
@@ -2739,6 +2763,7 @@ body.running.battle .ba-msg{margin-top:0}
     try{ if(window.tmMissionFlag) window.tmMissionFlag('titles'); }catch(e){}
   }
   window.tmTitleList=titleList;
+  window.tmTitleInfo=function(){ var st=stats(), r=rankOf(st), h=hasHoutou(); var t=h?HOUTOU:(r>=0?T[r]:null); return {name:t?t.n:'称号なし', ic:t?t.ic:'', bestSec:Math.round(st.bestMin*60), days:st.days, houtou:h}; };
   (function(){ var nw=null; try{ nw=localStorage.getItem('tomeren-houtou-new'); }catch(e){} if(nw==='1'){ var tr=0, iv=setInterval(function(){ tr++; var sp=document.getElementById('splash'), g=document.getElementById('gate'); if(!sp && (!g||g.hidden) && !document.querySelector('.fb-ov') && !document.querySelector('.nw-ov') && !document.querySelector('.tt-ov')){ clearInterval(iv); try{ localStorage.removeItem('tomeren-houtou-new'); }catch(e){} renderCard(); celebrate('houtou'); } if(tr>200) clearInterval(iv); },500); } })();
   document.addEventListener('click',function(e){ if(e.target.closest('[data-titlelist]')) titleList(); });
   function celebrate(r){
@@ -3673,5 +3698,31 @@ body.running.battle .ba-msg{margin-top:0}
   });
 })();
 </script>
+
+<script>
+(function(){
+  function fmt(sec){ var m=Math.floor(sec/60), s=sec%60; return m+'分'+(s<10?'0':'')+s+'秒'; }
+  function render(){
+    var stg=document.getElementById('stage'); if(!stg || !window.tmTitleInfo) return;
+    var el=document.getElementById('sbInfo');
+    if(!el){ el=document.createElement('div'); el.id='sbInfo'; el.className='sb-info'; el.setAttribute('data-titlelist',''); var st=stg.querySelector('.state'); stg.insertBefore(el, st?st.nextSibling:stg.firstChild); }
+    var i=window.tmTitleInfo();
+    var html='<div class="sb-c"><span class="sb-ic'+(i.houtou?' h':'')+'">'+(i.ic||'')+'</span><div><div class="sb-l">いまの称号</div><div class="sb-v">'+i.name+'</div></div></div>'+
+      '<div class="sb-sep"></div><div class="sb-c"><div><div class="sb-l">最高記録</div><div class="sb-v">'+(i.bestSec?fmt(i.bestSec):'まだなし')+'</div></div></div>'+
+      '<div class="sb-sep"></div><div class="sb-c"><div><div class="sb-l">練習した日</div><div class="sb-v">'+i.days+'日</div></div></div>';
+    if(el.__h!==html){ el.innerHTML=html; el.__h=html; }
+  }
+  window.tmIdleClock=function(){
+    var ck=document.getElementById('clock'); if(!ck) return;
+    if(!window.tmTitleInfo){ ck.textContent='0:00'; ck.__h=''; return; }
+    var i=window.tmTitleInfo();
+    var h='<span class="ck-t"><span class="ck-ic'+(i.houtou?' h':'')+'">'+(i.ic||'')+'</span><span class="ck-l">いまの称号</span><span class="ck-v">'+i.name+'</span></span>';
+    if(ck.__h!==h || !ck.querySelector('.ck-t')){ ck.innerHTML=h; ck.__h=h; }
+  };
+  function paintClock(){ var stg=document.getElementById('stage'); if(stg && stg.classList.contains('idle') && (!window.__tm || window.__tm.mode==='idle')) window.tmIdleClock(); }
+  render(); paintClock(); setInterval(function(){ render(); paintClock(); },2000);
+})();
+</script>
+
 </body>
 </html>
