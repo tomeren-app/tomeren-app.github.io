@@ -3,6 +3,17 @@
 <head>
 <meta charset="utf-8">
 <script>
+(function(){
+  var shown=0;
+  function box(msg){ try{ if(shown>2) return; shown++; var d=document.createElement('div'); d.style.cssText='position:fixed;left:8px;right:8px;bottom:8px;z-index:99999;background:#B00020;color:#fff;font:12px/1.5 sans-serif;padding:10px 12px;border-radius:10px;white-space:pre-wrap;word-break:break-all'; d.textContent='エラー（このスクショを送ってね）\n'+msg; (document.body||document.documentElement).appendChild(d); }catch(e){} }
+  window.addEventListener('error',function(e){ box((e.message||'')+'\n'+(e.filename||'').split('/').pop()+':'+(e.lineno||'')+':'+(e.colno||'')); });
+  window.addEventListener('unhandledrejection',function(e){ box('promise: '+((e.reason&&e.reason.message)||e.reason)); });
+  // 予備：オープニングが閉じない場合、10秒後に強制で閉じる
+  setTimeout(function(){ var sp=document.getElementById('splash'); if(sp){ sp.style.transition='opacity .4s'; sp.style.opacity='0'; setTimeout(function(){ if(sp.parentNode) sp.parentNode.removeChild(sp); },450); } },10000);
+})();
+</script>
+
+<script>
   (function(){
     try{
       var q=new URLSearchParams(location.search).get('me');
@@ -690,6 +701,100 @@ body.battle.running .ba-side.en .ba-en{width:72px;height:72px}
 @keyframes nodePulse{0%,100%{box-shadow:0 0 0 3px rgba(244,181,59,.35),0 3px 10px rgba(0,0,0,.5)}50%{box-shadow:0 0 0 9px rgba(244,181,59,.15),0 3px 10px rgba(0,0,0,.5)}}
 @media (prefers-reduced-motion:reduce){.bt-node.open{animation:none}}
 </style>
+<style>
+/* ===== 練習スタンバイ画面（おしゃれ版） ===== */
+body:not(.battle) .stage.idle{
+  --card:#1B2034;--ink:#F4F1EA;--line:rgba(255,255,255,.16);--bg:rgba(255,255,255,.06);--soft:rgba(244,241,234,.6);
+  position:relative;overflow:hidden;color:#F4F1EA;border:none!important;
+  background:radial-gradient(120% 60% at 50% 0%,rgba(255,170,90,.22),transparent 60%),radial-gradient(90% 50% at 100% 100%,rgba(120,140,255,.18),transparent 60%),linear-gradient(180deg,#232A45 0%,#151A2C 100%)!important;
+  box-shadow:0 18px 40px rgba(21,26,44,.35),inset 0 1px 0 rgba(255,255,255,.08)!important;padding:28px 18px 20px!important}
+body:not(.battle) .stage.idle::before{content:'';position:absolute;inset:0;pointer-events:none;opacity:.5;
+  background-image:radial-gradient(rgba(255,255,255,.18) 1px,transparent 1.2px);background-size:22px 22px;mask-image:linear-gradient(180deg,#000 0,transparent 55%);-webkit-mask-image:linear-gradient(180deg,#000 0,transparent 55%)}
+body:not(.battle) .stage.idle > *{position:relative}
+body:not(.battle) .stage.idle .state{font-size:.72rem!important;letter-spacing:.45em!important;color:#FFC98A!important;font-weight:800}
+body:not(.battle) .stage.idle .state::after{content:'今日も、自分のペースで。';display:block;letter-spacing:.08em;font-size:1rem;color:#F4F1EA;font-weight:700;margin-top:8px}
+body:not(.battle) .stage.idle .clock{width:210px!important;height:210px!important;margin:18px auto 16px!important;font-size:3.6rem!important;font-weight:300;letter-spacing:.02em;color:#fff;
+  background:radial-gradient(closest-side,#1B2034 86%,transparent 87% 100%),conic-gradient(from -90deg,#FFB547 0,#FF7A59 25%,rgba(255,255,255,.1) 25% 100%)!important;
+  box-shadow:0 0 0 1px rgba(255,255,255,.06),0 0 50px rgba(255,150,90,.25)}
+body:not(.battle) .stage.idle .dot{border-color:rgba(255,201,138,.7)!important}
+body:not(.battle) .stage.idle .countTxt{color:var(--soft)!important;letter-spacing:.05em}
+body:not(.battle) .stage.idle .opts .lab{color:var(--soft)!important;font-size:.72rem;letter-spacing:.2em}
+body:not(.battle) .stage.idle .opts .chips{display:flex;flex-wrap:nowrap;gap:0;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:999px;padding:4px;margin:6px auto 0;max-width:340px}
+body:not(.battle) .stage.idle .opts .chip{flex:1;border:none!important;background:transparent!important;color:rgba(244,241,234,.75)!important;padding:9px 4px;font-size:.78rem;white-space:nowrap;border-radius:999px;transition:background .2s,color .2s}
+body:not(.battle) .stage.idle .opts .chip.on{background:linear-gradient(135deg,#FFB547,#FF7A59)!important;color:#2A1600!important;box-shadow:0 4px 14px rgba(255,140,80,.35)}
+body:not(.battle) .stage.idle .opts .chip small{display:none}
+body:not(.battle) .stage.idle .opts > p{color:var(--soft)!important;font-size:.76rem;line-height:1.6}
+body:not(.battle) .stage.idle .big.go{position:relative;overflow:hidden;margin-top:16px;background:linear-gradient(135deg,#FFB547 0%,#FF7A59 100%)!important;color:#2A1600!important;letter-spacing:.3em;font-size:1.25rem;box-shadow:0 10px 30px rgba(255,130,80,.4),inset 0 1px 0 rgba(255,255,255,.5)}
+body:not(.battle) .stage.idle .big.go::after{content:'';position:absolute;top:0;left:-60%;width:40%;height:100%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.55),transparent);transform:skewX(-20deg);animation:goShine 3.2s ease-in-out infinite}
+body:not(.battle) .stage.idle .ghost{background:rgba(255,255,255,.06)!important;border-color:rgba(255,255,255,.14)!important;color:rgba(244,241,234,.8)!important}
+body:not(.battle) .stage.idle .vset summary{color:var(--soft)!important}
+@keyframes goShine{0%,55%{left:-60%}100%{left:130%}}
+@media (prefers-reduced-motion:reduce){body:not(.battle) .stage.idle .big.go::after{animation:none;display:none}}
+</style>
+<style>
+/* ===== 練習中は全画面 ===== */
+body.running{overflow:hidden!important;height:100dvh}
+body.running .tabs{display:none!important}
+body.running .stage.run{position:fixed!important;inset:0!important;z-index:35;margin:0!important;border-radius:0!important;border:none!important;overflow:hidden;
+  display:flex!important;flex-direction:column;justify-content:space-between;gap:0;
+  padding:calc(env(safe-area-inset-top,0px) + 12px) 16px calc(env(safe-area-inset-bottom,0px) + 12px)!important;box-sizing:border-box;height:100dvh}
+body.running:not(.battle) .stage.run{--card:#1B2034;--ink:#F4F1EA;--line:rgba(255,255,255,.16);--bg:rgba(255,255,255,.06);--soft:rgba(244,241,234,.65);color:#F4F1EA;
+  background:radial-gradient(120% 50% at 50% 0%,rgba(255,170,90,.2),transparent 60%),linear-gradient(180deg,#232A45 0%,#151A2C 100%)!important}
+body.running.battle .stage.run{background:transparent!important;-webkit-backdrop-filter:none;backdrop-filter:none}
+body.running .stage.run .state{font-size:clamp(.72rem,1.8vh,.85rem)!important;line-height:1.4;margin:0!important}
+body.running .stage.run .clock{width:min(30vh,220px)!important;height:min(30vh,220px)!important;font-size:min(6.5vh,3.2rem)!important;margin:0 auto!important;flex:none}
+body.running:not(.battle) .stage.run .clock{color:#fff;background:radial-gradient(closest-side,#1B2034 86%,transparent 87% 100%),conic-gradient(from -90deg,#FFB547 0,#FF7A59 var(--prog,0%),rgba(255,255,255,.1) var(--prog,0%) 100%)!important;box-shadow:0 0 40px rgba(255,150,90,.2)}
+body.running:not(.battle) .stage.resting .clock{background:radial-gradient(closest-side,#1B2034 86%,transparent 87% 100%),conic-gradient(#6FA8E8 0 100%)!important}
+body.running .stage.run .counts{margin:0!important}
+body.running .stage.run .countTxt{margin:0!important;font-size:.75rem!important}
+body.running .stage.run #controls .big{padding:min(2vh,16px)!important;font-size:clamp(1rem,2.6vh,1.25rem)!important}
+body.running:not(.battle) .stage.run #controls .big.stop{background:linear-gradient(135deg,#FF7A7A,#E0484E)!important;box-shadow:0 8px 24px rgba(224,72,78,.35)}
+body.running .stage.run #controls .row{margin-top:min(1vh,8px)!important}
+body.running .stage.run #controls > .ghost{margin-top:min(1vh,8px)!important;padding:min(1vh,8px)!important}
+body.running .stage.run .lv{margin:0!important;padding:min(1.2vh,10px) 10px!important}
+body.running .stage.run .lvgrid button{padding:min(1vh,8px) 0!important}
+body.running .stage.run .hand,body.running .stage.run .live{margin:0!important}
+body.running .stage.run .stageimg{max-height:16vh!important}
+body.running.battle .stage.run .bt-arena{margin:0!important}
+@media (max-height:740px){
+ body.running .stage.run .lvmsg, body.running .stage.run .live{display:none!important}
+ body.running .stage.run .clock{width:min(26vh,180px)!important;height:min(26vh,180px)!important}
+ body.running.battle .ba-field{min-height:80px!important}
+ body.running.battle .ba-pl, body.running.battle .ba-pl .ro-art{height:72px!important}
+ body.running.battle .ba-pl .ro-img{max-height:72px!important}
+ body.running.battle .ba-side.en .ba-en{width:60px!important;height:60px!important}
+ body.running.battle .ba-cond, body.running.battle .ba-me{display:none}
+}
+</style>
+<style>
+body.running.battle .stage.run .clock{width:min(17vh,140px)!important;height:min(17vh,140px)!important;font-size:min(4.4vh,2.2rem)!important}
+body.running.battle .stage.run .lvmsg, body.running.battle .stage.run .live, body.running.battle .stage.run .hand{display:none!important}
+body.running.battle .ba-cond, body.running.battle .ba-me{display:none!important}
+body.running.battle .bt-arena{padding:6px 10px!important}
+body.running.battle .ba-field{min-height:0!important;margin:2px 0!important}
+body.running.battle .ba-pl, body.running.battle .ba-pl .ro-art{height:min(11vh,90px)!important}
+body.running.battle .ba-pl .ro-img{max-height:min(11vh,90px)!important}
+body.running.battle .ba-side.en .ba-en{width:min(9vh,72px)!important;height:min(9vh,72px)!important}
+body.running.battle .ba-name{font-size:.9rem}
+body.running.battle .ba-msg{margin-top:0}
+</style>
+<style>
+.mb-box{text-align:left;max-height:88vh;overflow-y:auto}
+.mb-box .fb-t{text-align:center}
+.mb-note{font-size:.82rem;line-height:1.7;background:var(--bg);border-radius:12px;padding:10px 12px;margin-bottom:12px}
+.mb-l{font-size:.75rem;font-weight:800;color:var(--soft);margin:12px 0 4px}
+.mb-in{width:100%;box-sizing:border-box;padding:11px 12px;border-radius:12px;border:2px solid var(--line);font:inherit;background:var(--card);color:var(--ink);margin-bottom:8px}
+.mb-hr{text-align:center;font-size:.75rem;color:var(--soft);margin:14px 0 0}
+.mb-card{border:2px solid var(--line);border-radius:14px;padding:10px 12px}
+.mb-row{display:flex;justify-content:space-between;font-size:.85rem;padding:4px 0}
+.mb-row span{color:var(--soft)}
+.mb-code{font-size:1.6rem;font-weight:900;letter-spacing:.25em;text-align:center;padding:10px;border-radius:12px;background:var(--bg);margin-bottom:6px;font-family:ui-monospace,Menlo,monospace}
+.mb-warn{font-size:.8rem;color:#E05555;font-weight:800;margin-top:8px}
+.mb-msg{font-size:.85rem;color:var(--sun);font-weight:800;min-height:1.2em;margin-top:10px;text-align:center}
+.mb-link{display:block;margin:10px auto 0;background:none;border:none;color:var(--soft);font:inherit;font-size:.8rem;text-decoration:underline;cursor:pointer}
+.mb-banner{display:block;width:100%;text-align:left;border:2px dashed var(--line);background:var(--card);color:var(--ink);border-radius:14px;padding:10px 12px;font:inherit;font-size:.82rem;font-weight:800;margin:0 0 10px;cursor:pointer}
+.mb-banner small{display:block;font-weight:500;color:var(--soft);font-size:.72rem;margin-top:2px}
+</style>
 </head>
 <body>
 <div id="splash" class="splash" role="dialog" aria-label="とめれん帳">
@@ -753,6 +858,7 @@ body.battle.running .ba-side.en .ba-en{width:72px;height:72px}
       <div class="helpmenu" id="helpMenu">
         <a href="#" id="helpGuide">💡 使い方を見る</a>
         <a href="https://form.jotform.com/262745742685065" target="_blank" rel="noopener">📮 お問い合わせ</a>
+        <a href="#member" id="helpMember">👤 会員（セーブ・引きつぎ）</a>
         <a href="#tut" id="helpTut">🎓 チュートリアルをもう一度</a>
         <a href="#keep" id="helpKeep">💾 記録を守る方法</a>
         <a href="#news" id="helpNews">🔔 運営からのお知らせ</a>
@@ -2438,9 +2544,10 @@ body.battle.running .ba-side.en .ba-en{width:72px;height:72px}
     save:'<path d="M12 3v12M7 10l5 5 5-5"/><path d="M4 17v3h16v-3"/>',
     phone:'<rect x="6" y="2" width="12" height="20" rx="2.5"/><path d="M10 18h4"/><path d="M12 7v6M9 10h6"/>',
     upload:'<path d="M12 15V3M7 8l5-5 5 5"/><path d="M4 17v3h16v-3"/>',
+    user:'<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8"/>',
     timer:'<circle cx="12" cy="13" r="8"/><path d="M10 2h4"/><path d="M10.5 10v6M13.5 10v6"/>'
   };
-  var M={'📌':'pin','🤔':'q','🌟':'star','🖼️':'img','🖼':'img','🎙️':'mic','🎙':'mic','📅':'cal','📈':'chart','🙏':'hands','🫶':'heart','💦':'drop','🎉':'spark','📋':'clip','🎁':'gift','✅':'check','🔈':'spk','🔊':'spkon','🔇':'mute','🌙':'moon','⬆':'up','🎬':'film','💭':'cloud','🤖':'bot','🏁':'flag','✕':'x','💡':'bulb','📮':'mail','📩':'mail','→':'arrow','💪':'timer','🔗':'link','🔔':'bell','💾':'save','📲':'phone','📤':'upload','🎓':'star','⚔️':'flag','⚔':'flag'};
+  var M={'📌':'pin','🤔':'q','🌟':'star','🖼️':'img','🖼':'img','🎙️':'mic','🎙':'mic','📅':'cal','📈':'chart','🙏':'hands','🫶':'heart','💦':'drop','🎉':'spark','📋':'clip','🎁':'gift','✅':'check','🔈':'spk','🔊':'spkon','🔇':'mute','🌙':'moon','⬆':'up','🎬':'film','💭':'cloud','🤖':'bot','🏁':'flag','✕':'x','💡':'bulb','📮':'mail','📩':'mail','→':'arrow','💪':'timer','🔗':'link','🔔':'bell','💾':'save','📲':'phone','📤':'upload','🎓':'star','👤':'user','⚔️':'flag','⚔':'flag'};
   var keys=Object.keys(M).sort(function(a,b){return b.length-a.length}).map(function(k){return k.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')});
   var RE=new RegExp('('+keys.join('|')+')\uFE0F?','g');
   function svg(n){var e=document.createElementNS('http://www.w3.org/2000/svg','svg');e.setAttribute('viewBox','0 0 24 24');e.setAttribute('class','pi');e.setAttribute('aria-hidden','true');e.setAttribute('fill','none');e.setAttribute('stroke','currentColor');e.setAttribute('stroke-width','2');e.setAttribute('stroke-linecap','round');e.setAttribute('stroke-linejoin','round');e.innerHTML=P[n];return e;}
@@ -3315,6 +3422,62 @@ body.battle.running .ba-side.en .ba-en{width:72px;height:72px}
     if(e.target.closest('[data-avedit]')){ avatarSheet(function(){ panel(); }); return; }
   });
   render(); (function(){ var id=active(), sg=id?stage(id):null; if(sg){ var t=document.querySelector('#tabs button[data-go="train"]'); if(t) t.click(); enter(sg); } })();
+})();
+</script>
+<script>
+(function(){
+  var API='https://tomeren-app.vansboffice.workers.dev';
+  var KEYS=['tomeren-battle','tomeren-inv','tomeren-title','tomeren-houtou','tomeren-avatar','tomeren-hp','tomeren-done-count','tomeren-appid'];
+  function me(){ try{ return JSON.parse(localStorage.getItem('tomeren-member')||'null'); }catch(e){ return null; } }
+  function setMe(m){ try{ if(m) localStorage.setItem('tomeren-member',JSON.stringify(m)); else localStorage.removeItem('tomeren-member'); }catch(e){} }
+  function pack(){ var d={}; KEYS.forEach(function(k){ try{ var v=localStorage.getItem(k); if(v!==null) d[k]=v; }catch(e){} }); return d; }
+  function unpack(d){ if(!d) return; KEYS.forEach(function(k){ try{ if(d[k]!=null) localStorage.setItem(k,d[k]); }catch(e){} }); }
+  function api(path,opt){ opt=opt||{}; var m=me(), h={'Content-Type':'application/json'}; if(m){ h['X-Id']=m.id; h['X-Secret']=m.secret; }
+    return fetch(API+path,{method:opt.method||'GET',headers:h,body:opt.body?JSON.stringify(opt.body):undefined}).then(function(r){ return r.json().then(function(j){ if(!r.ok) throw j; return j; }); }); }
+  var lastSig=null, saving=false;
+  function sig(){ return JSON.stringify(pack()); }
+  function save(force){ var m=me(); if(!m||saving) return Promise.resolve(false); var s=sig(); if(!force && s===lastSig) return Promise.resolve(false);
+    saving=true; return api('/api/save',{method:'POST',body:{data:pack()}}).then(function(j){ lastSig=s; m.savedAt=j.at; setMe(m); saving=false; return true; }).catch(function(e){ saving=false; if(e&&e.error==='auth'){ m.lost=true; setMe(m); } return false; }); }
+  setInterval(function(){ save(false); },60000);
+  document.addEventListener('visibilitychange',function(){ if(document.visibilityState==='hidden') save(false); });
+  function fmtT(t){ if(!t) return 'まだ'; var d=new Date(t); return (d.getMonth()+1)+'/'+d.getDate()+' '+String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0'); }
+  function sheet(){
+    var old=document.querySelector('.mb-ov'); if(old) old.remove();
+    var m=me(), ov=document.createElement('div'); ov.className='fb-ov mb-ov'; ov.setAttribute('role','dialog');
+    var h='<div class="fb-box mb-box"><div class="fb-t">👤 会員（セーブ・引きつぎ）</div>';
+    if(!m){
+      h+='<div class="mb-note">登録すると、<b>バトルの進み具合・装備・称号・キャラ</b>をネットに自動セーブ。機種変更しても<b>引きつぎコード</b>でもどせるよ。<br><b>メールも本名もいらない</b>し、<b>練習の記録はアップしない</b>から安心してね🔒</div>';
+      h+='<div class="mb-l">ニックネーム（16文字まで）</div><input class="mb-in" id="mbNick" maxlength="16" placeholder="名無しの勇者"><button type="button" class="fb-main" data-mb="reg">会員登録する</button>';
+      h+='<div class="mb-hr">または</div><div class="mb-l">前のスマホのデータをもどす</div><input class="mb-in" id="mbCode" maxlength="8" placeholder="引きつぎコード（8文字）" autocapitalize="characters"><button type="button" class="fb-sub" data-mb="tr">引きつぐ</button>';
+    } else {
+      h+='<div class="mb-card"><div class="mb-row"><span>ニックネーム</span><b>'+String(m.nickname||'').replace(/[<>&]/g,'')+'</b></div><div class="mb-row"><span>会員番号</span><b>'+m.id+'</b></div><div class="mb-row"><span>最後のセーブ</span><b>'+fmtT(m.savedAt)+'</b></div></div>';
+      if(m.lost) h+='<div class="mb-warn">ほかのスマホで引きつぎされたみたい。このスマホのセーブは止まってるよ</div>';
+      h+='<div class="mb-l">引きつぎコード（機種変更のときに使うよ・人に見せないでね🤫）</div><div class="mb-code" id="mbTc">'+(m.transfer||'—')+'</div><button type="button" class="fb-sub" data-mb="copy">コードをコピー</button>';
+      h+='<button type="button" class="fb-main" data-mb="save">今すぐセーブ</button><button type="button" class="fb-sub" data-mb="load">ネットのセーブを読みこむ</button>';
+      h+='<div class="mb-l">ニックネームを変える</div><input class="mb-in" id="mbNick2" maxlength="16" value="'+String(m.nickname||'').replace(/"/g,'')+'"><button type="button" class="fb-sub" data-mb="nick">変更する</button>';
+      h+='<button type="button" class="mb-link" data-mb="out">このスマホでログアウト</button>';
+    }
+    h+='<div class="mb-msg" id="mbMsg" aria-live="polite"></div><button type="button" class="mb-link" data-mb="close">とじる</button></div>';
+    ov.innerHTML=h; document.body.appendChild(ov);
+    var msg=function(t){ var e=document.getElementById('mbMsg'); if(e) e.textContent=t; };
+    ov.addEventListener('click',function(e){ if(e.target===ov){ ov.remove(); return; } var b=e.target.closest('[data-mb]'); if(!b) return; var a=b.getAttribute('data-mb');
+      if(a==='close'){ ov.remove(); return; }
+      if(a==='reg'){ msg('登録中…'); api('/api/register',{method:'POST',body:{nickname:(document.getElementById('mbNick').value||'').trim()}}).then(function(j){ setMe({id:j.id,secret:j.secret,transfer:j.transfer,nickname:j.nickname}); return save(true); }).then(function(){ sheet(); var e2=document.getElementById('mbMsg'); if(e2) e2.textContent='登録できたよ！引きつぎコードはメモしておいてね📝'; try{ if(window.gtag) gtag('event','member_register',{}); }catch(e3){} }).catch(function(){ msg('登録できなかったよ🙏 電波を確認して、もう一度ためしてね'); }); }
+      if(a==='tr'){ var c=(document.getElementById('mbCode').value||'').trim().toUpperCase(); if(c.length<6){ msg('引きつぎコードを入れてね'); return; } msg('引きつぎ中…'); api('/api/transfer',{method:'POST',body:{code:c}}).then(function(j){ setMe({id:j.id,secret:j.secret,transfer:j.transfer,nickname:j.nickname,savedAt:Date.now()}); unpack(j.data); msg('引きつぎできたよ！画面を読みこみ直すね…'); setTimeout(function(){ location.reload(); },1200); }).catch(function(e){ msg(e&&e.error==='not_found'?'そのコードは見つからなかったよ。もう一度たしかめてね':'うまくいかなかったよ🙏 もう一度ためしてね'); }); }
+      if(a==='copy'){ var t=(me()||{}).transfer||''; if(navigator.clipboard&&navigator.clipboard.writeText) navigator.clipboard.writeText(t).then(function(){ msg('コピーしたよ！メモアプリとかに貼っておいてね'); },function(){ msg(t); }); else msg(t); }
+      if(a==='save'){ msg('セーブ中…'); save(true).then(function(ok){ if(ok){ sheet(); var e4=document.getElementById('mbMsg'); if(e4) e4.textContent='セーブできたよ✅'; } else msg('セーブできなかったよ🙏'); }); }
+      if(a==='load'){ if(!confirm('ネットのセーブで、このスマホのバトル・装備・称号を上書きするよ。いい？')) return; msg('読みこみ中…'); api('/api/load').then(function(j){ if(!j.data){ msg('まだネットにセーブがないよ'); return; } unpack(j.data); msg('読みこんだよ！画面を読みこみ直すね…'); setTimeout(function(){ location.reload(); },1200); }).catch(function(){ msg('読みこめなかったよ🙏'); }); }
+      if(a==='nick'){ var n=(document.getElementById('mbNick2').value||'').trim(); if(!n){ msg('ニックネームを入れてね'); return; } api('/api/nickname',{method:'POST',body:{nickname:n}}).then(function(){ var m2=me(); m2.nickname=n; setMe(m2); sheet(); var e5=document.getElementById('mbMsg'); if(e5) e5.textContent='変更したよ！'; }).catch(function(){ msg('変更できなかったよ🙏'); }); }
+      if(a==='out'){ if(!confirm('このスマホでログアウトするよ。もう一度使うには引きつぎコードが必要になるけど、いい？')) return; save(true).then(function(){ setMe(null); sheet(); }); }
+    });
+  }
+  window.tmMemberSheet=sheet;
+  document.addEventListener('click',function(e){ if(e.target.closest('#helpMember')||e.target.closest('[data-member-open]')){ e.preventDefault(); var hm=document.getElementById('helpMenu'); if(hm) hm.classList.remove('open'); sheet(); } });
+  // バトルタブに会員バナー
+  function banner(){ var bc=document.getElementById('battleCard'); if(!bc) return; var b=document.getElementById('mbBanner'); if(!b){ b=document.createElement('button'); b.type='button'; b.id='mbBanner'; b.className='mb-banner'; b.setAttribute('data-member-open',''); var lead=bc.querySelector('.bt-lead'); bc.insertBefore(b, lead?lead.nextSibling:bc.firstChild); }
+    var m=me(); b.innerHTML=m?('👤 '+String(m.nickname||'').replace(/[<>&]/g,'')+'　<small>自動セーブ中・最後 '+fmtT(m.savedAt)+'</small>'):'👤 会員登録で、機種変更してもデータを引きつげるよ<small>（無料・メール不要）</small>'; }
+  banner(); setInterval(banner,5000);
+  if(me()) setTimeout(function(){ save(false); },4000);
 })();
 </script>
 </body>
