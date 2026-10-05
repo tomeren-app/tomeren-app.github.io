@@ -846,6 +846,15 @@ body.running.battle .ba-msg{margin-top:0}
 .sb-v{font-size:.82rem;font-weight:800;color:#F4F1EA;white-space:nowrap}
 .sb-sep{width:1px;align-self:stretch;background:rgba(255,255,255,.14)}
 body.battle .stage.idle .sb-info{display:none}
+#xvid .xv-s{font-size:.8rem;color:var(--soft);margin:4px 0 10px;line-height:1.6}
+#xvid .xv-row{display:flex;gap:8px}
+#xvid .xv-row input{flex:1;min-width:0;font-size:16px;padding:12px 14px;border-radius:14px;border:1px solid var(--line);background:transparent;color:inherit}
+#xvid .xv-row button{width:auto;white-space:nowrap;padding:12px 16px;border-radius:14px;border:none;background:#F2B53A;color:#1E2340;font-weight:800;margin:0}
+#xvid .xv-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+#xvid .xv-chips button{width:auto;margin:0;padding:6px 12px;border-radius:999px;border:1px solid var(--line);background:transparent;color:inherit;font-size:.8rem}
+#xvid .xv-how{margin-top:12px;font-size:.85rem}
+#xvid .xv-how summary{font-weight:800;cursor:pointer}
+#xvid .xv-how ol{padding-left:1.3em;margin:8px 0;line-height:1.7}
 .yomi-a{display:grid;grid-template-columns:34px 1fr;column-gap:8px;align-items:center;text-decoration:none;color:var(--ink);border:1px solid var(--line);border-radius:14px;padding:10px 12px;margin:8px 0}
 .yomi-a span{grid-row:1/3;font-size:1.4rem;text-align:center}
 .yomi-a b{font-size:.95rem}
@@ -967,6 +976,14 @@ body.battle .ck-l{color:rgba(255,255,255,.7)}
   <article data-tab="help" class="card guide" id="guide">
     <h2>早漏トレーニングの基本ガイド：ひとりでできるストップ・スタート法</h2>
     <p>「すぐに射精してしまう」という悩みは、実はとても多くの男性がかかえているものです。このページでは、ひとりでできる練習として知られている<b>ストップ・スタート法</b>のやり方と、続けるコツをまとめています。とめれん帳は、その練習をタイマー・声かけ・記録でサポートする無料のツールです。</p>
+    <h3>とめれん帳でできること</h3>
+    <ul>
+      <li><b>自動で時間を計るタイマー</b>：「はじめる」を押すと経過時間を自動で計測。「とめた！」「再開する」をタップするだけで、止めていた時間と練習時間を分けて記録します。</li>
+      <li><b>音声ガイド（声かけ）</b>：練習中に「ゆっくり手を動かしてね」「深呼吸しよう」などの声で自動的にサポート。読み上げの声のほか、自分で録音した自然な声も使えます。</li>
+      <li><b>自動記録とレポート</b>：止めた回数・がまんできた時間・練習した日が自動で記録され、日ごとのレポートで振り返れます。</li>
+      <li><b>次の練習日のめやす・称号</b>：練習の間かくのめやすを表示し、続けるほど称号が上がって、継続を応援します。</li>
+      <li><b>無料・登録なし</b>：会員登録は不要で、記録は使っているスマホの中だけに保存されます。</li>
+    </ul>
     <nav aria-label="もくじ"><ul>
       <li><a href="#g1">早漏とは？どれくらいの人が悩んでいる？</a></li>
       <li><a href="#g2">ストップ・スタート法のやり方</a></li>
@@ -1070,6 +1087,22 @@ body.battle .ck-l{color:rgba(255,255,255,.7)}
     <div class="counts" id="dots"></div>
     <div class="countTxt" id="countTxt">目標：3回止める</div>
     <div id="controls"></div>
+  </section>
+
+  <section data-tab="train" class="card xvid" id="xvid">
+    <h2>動画をさがす 🔍</h2>
+    <p class="xv-s">好きな動画をさがして、見ながら練習できるよ（18歳以上向けのサイトが開きます）</p>
+    <div class="xv-row"><input id="xvQ" type="search" enterkeyhint="search" placeholder="さがしたい言葉を入れてね" autocomplete="off"><button type="button" id="xvGo">動画をさがす</button></div>
+    <div class="xv-chips" id="xvHist"></div>
+    <details class="xv-how"><summary>見ながら練習するやり方（iPhone）</summary>
+      <ol>
+        <li>「動画をさがす」で動画をえらんで再生</li>
+        <li>動画を全画面にして、左上の<b>小窓ボタン</b>（四角が2つ重なったマーク）をタップ</li>
+        <li>小窓のまま、このとめれん帳にもどって「はじめる」</li>
+      </ol>
+      <p class="xv-s">小窓はすみっこに動かせるよ。小窓ボタンが出ないときは、動画を再生中にホーム画面にもどると小窓になることもあるよ</p>
+      <p class="xv-s">※刺激の強い動画は早く高まりやすいから、慣れてきたら想像だけの練習にも挑戦してみてね</p>
+    </details>
   </section>
 
   <section data-tab="img" class="card">
@@ -3740,5 +3773,26 @@ body.battle .ck-l{color:rgba(255,255,255,.7)}
 })();
 </script>
 
+<script>
+/* ===== 動画をさがす ===== */
+(function(){
+  var q=document.getElementById('xvQ'), go=document.getElementById('xvGo'), hist=document.getElementById('xvHist');
+  if(!q||!go) return;
+  function load(){ try{ return JSON.parse(localStorage.getItem('tomeren-xvq')||'[]')||[]; }catch(e){ return []; } }
+  function save(a){ try{ localStorage.setItem('tomeren-xvq',JSON.stringify(a)); }catch(e){} }
+  function esc(s){ return String(s).replace(/[&<>"']/g,function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+  function render(){ var a=load(); hist.innerHTML=a.map(function(w){ return '<button type="button" data-xvw="'+esc(w)+'">🔁 '+esc(w)+'</button>'; }).join('')+(a.length?'<button type="button" data-xvclr>けす</button>':''); }
+  function open(w){
+    w=String(w||'').trim(); if(!w){ q.focus(); return; }
+    var a=load().filter(function(x){ return x!==w; }); a.unshift(w); save(a.slice(0,6)); render();
+    try{ if(window.gtag) gtag('event','video_search'); }catch(e){}
+    var u=['https://','www.','xvideos','.com/?k='].join('')+encodeURIComponent(w); window.open(u,'_blank','noopener,noreferrer');
+  }
+  go.addEventListener('click',function(){ open(q.value); });
+  q.addEventListener('keydown',function(e){ if(e.key==='Enter'){ e.preventDefault(); open(q.value); } });
+  hist.addEventListener('click',function(e){ var b=e.target.closest('button'); if(!b) return; if(b.hasAttribute('data-xvclr')){ save([]); render(); return; } open(b.getAttribute('data-xvw')); });
+  render();
+})();
+</script>
 </body>
 </html>
