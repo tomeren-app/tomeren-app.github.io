@@ -846,6 +846,23 @@ body.running.battle .ba-msg{margin-top:0}
 .sb-v{font-size:.82rem;font-weight:800;color:#F4F1EA;white-space:nowrap}
 .sb-sep{width:1px;align-self:stretch;background:rgba(255,255,255,.14)}
 body.battle .stage.idle .sb-info{display:none}
+.card.kiroku{background:#0F1118;color:#F2F2F5;border:6px solid #262A36;border-radius:34px;padding:26px 20px 14px}
+.kr-h{display:flex;align-items:center;gap:12px;font-size:1.55rem;font-weight:900;letter-spacing:.06em;margin:4px 6px 18px}
+.kr-h svg{width:30px;height:30px;color:#F4956E}
+.kr-chart{background:#1B1E28;border-radius:22px;padding:14px 16px 12px;position:relative}
+.kr-lab{font-size:.85rem;color:#A9ADBB;font-weight:700;margin-bottom:4px}
+#chart{position:relative}
+.kr-svg{display:block;width:100%;height:130px}
+.kr-dot{position:absolute;width:18px;height:18px;margin:-9px 0 0 -9px;border-radius:50%;background:#F4956E}
+.kr-list{list-style:none;margin:14px 0 0;padding:0}
+.kr-list li{display:flex;align-items:center;gap:6px;padding:16px 6px;border-top:1px solid rgba(255,255,255,.1)}
+.kr-d{width:58px;color:#C9CCD6;font-size:1rem;font-variant-numeric:tabular-nums}
+.kr-t{flex:1;font-size:1.6rem;font-weight:900;font-variant-numeric:tabular-nums;letter-spacing:.01em}
+.kr-dots{display:flex;gap:7px}
+.kr-dots i{width:15px;height:15px;border-radius:50%;border:2px solid #5A5E6B;box-sizing:border-box}
+.kr-dots i.on{background:#F4956E;border-color:#F4956E}
+.kr-del{width:auto!important;margin:0 0 0 6px!important;padding:2px 6px!important;background:none!important;border:none!important;color:#5A5E6B!important;font-size:1rem!important;box-shadow:none!important}
+.kr-empty{color:#A9ADBB;font-size:.88rem;padding:14px 4px;list-style:none}
 .pi{width:1.05em;height:1.05em;vertical-align:-.16em;margin-left:.2em;color:var(--sun,#F2B53A)}
 .yomi-a span .yi{width:26px;height:26px;color:var(--sun,#F2B53A)}
 #xvid .xv-s{font-size:.8rem;color:var(--soft);margin:4px 0 10px;line-height:1.6}
@@ -1131,6 +1148,12 @@ body.battle .ck-l{color:rgba(255,255,255,.7)}
     <div id="dayBody"></div>
   </section>
 
+  <section data-tab="log" class="card kiroku">
+    <div class="kr-h"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 6-7"/></svg><span>きろく</span></div>
+    <div class="kr-chart"><div class="kr-lab">続いた時間</div><div id="chart"></div></div>
+    <ul class="kr-list" id="hist"></ul>
+  </section>
+
   <section data-tab="log" class="card" id="titleCard">
     <div class="tc-lab">いまの称号</div>
     <div class="tc-row"><span class="tc-ic" id="tcIcon"></span><span class="tc-name" id="tcName">—</span></div>
@@ -1154,16 +1177,6 @@ body.battle .ck-l{color:rgba(255,255,255,.7)}
   <section data-tab="log" class="card">
     <h2>これまでのきろく <svg class="pi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 6-7"/></svg></h2>
     <div class="stats" id="stats"></div>
-  </section>
-
-  <section data-tab="log" class="card">
-    <h2>射精をがまんできた時間のうつりかわり</h2>
-    <div class="chart" id="chart"></div>
-  </section>
-
-  <section data-tab="log" class="card">
-    <h2>くわしいきろく</h2>
-    <ul class="hist" id="hist"></ul>
   </section>
 
   <section data-tab="log" class="card" id="backupCard">
@@ -2229,40 +2242,40 @@ body.battle .ck-l{color:rgba(255,255,255,.7)}
   function renderChart(){
     const ss = log.sessions.slice(-14);
     const el = $('chart');
-    if (!ss.length){ el.innerHTML = '<p class="empty">1回やるとここにグラフが出るよ〜📊</p>'; return; }
-    const W = Math.max(300, ss.length*34), H = 150, pad = 22;
-    const max = Math.max(60, ...ss.map(s=>s.active));
-    const bw = (W - pad) / ss.length;
-    let bars = '';
-    ss.forEach((s,i)=>{
-      const h = Math.max(3, (s.active/max)*(H-pad-18));
-      const x = pad + i*bw + bw*0.18, y = H-pad-h, w = bw*0.64;
-      const col = s.stops>=GOAL ? 'var(--sun)' : 'var(--rest)';
-      bars += '<rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'" rx="6" fill="'+col+'"/>';
-      bars += '<text x="'+(x+w/2)+'" y="'+(y-4)+'" font-size="10" text-anchor="middle" fill="var(--soft)">'+(s.active>=60?Math.floor(s.active/60)+'分':s.active+'秒')+'</text>';
-      const d = new Date(s.t);
-      bars += '<text x="'+(x+w/2)+'" y="'+(H-6)+'" font-size="10" text-anchor="middle" fill="var(--soft)">'+(d.getMonth()+1)+'/'+d.getDate()+'</text>';
-    });
-    el.innerHTML = '<svg viewBox="0 0 '+W+' '+H+'" width="'+W+'" height="'+H+'" role="img" aria-label="がまんできた時間のグラフ">'+
-      '<line x1="'+pad+'" y1="'+(H-pad)+'" x2="'+W+'" y2="'+(H-pad)+'" stroke="var(--line)"/>'+bars+'</svg>'+
-      '<p class="empty" style="font-size:.8rem;margin-top:6px">黄色＝目標の'+GOAL+'回止めたたっせい日</p>';
+    if (!ss.length){ el.innerHTML = '<p class="kr-empty">1回やるとここにグラフが出るよ</p>'; return; }
+    const W = 300, H = 130, px = 16, top = 18, bot = 112;
+    const max = Math.max(60, ...ss.map(s=>s.active)), min = Math.min(...ss.map(s=>s.active));
+    const lo = ss.length>1 ? Math.max(0, min - (max-min)*0.6) : 0;
+    const xs = i => ss.length===1 ? W/2 : px + i*(W-2*px)/(ss.length-1);
+    const ys = v => bot - ((v-lo)/Math.max(1,(max-lo)))*(bot-top);
+    const pts = ss.map((s,i)=>[xs(i), ys(s.active)]);
+    let d = 'M'+pts[0][0].toFixed(1)+' '+pts[0][1].toFixed(1);
+    for (let i=1;i<pts.length;i++){ const [x0,y0]=pts[i-1],[x1,y1]=pts[i], cx=(x0+x1)/2; d+=' C'+cx.toFixed(1)+' '+y0.toFixed(1)+' '+cx.toFixed(1)+' '+y1.toFixed(1)+' '+x1.toFixed(1)+' '+y1.toFixed(1); }
+    const last = pts[pts.length-1];
+    el.innerHTML = '<svg class="kr-svg" viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="none" role="img" aria-label="続いた時間のグラフ">'+
+      '<line x1="'+px+'" y1="'+(bot+10)+'" x2="'+(W-px)+'" y2="'+(bot+10)+'" stroke="rgba(255,255,255,.12)" stroke-width="1.5"/>'+
+      '<path d="'+d+'" fill="none" stroke="#F4956E" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke"/>'+
+      '</svg><span class="kr-dot" style="left:'+(last[0]/W*100)+'%;top:'+(last[1]/H*100)+'%"></span>';
   }
+
 
   function renderHist(){
     const ul = $('hist'); ul.innerHTML='';
     const ss = log.sessions.slice().reverse().slice(0,30);
-    if (!ss.length){ ul.innerHTML = '<li class="empty">まだきろくないよ〜。「はじめる」おしてみよ✨</li>'; return; }
+    if (!ss.length){ ul.innerHTML = '<li class="kr-empty">まだきろくないよ〜。「はじめる」おしてみよ✨</li>'; return; }
     ss.forEach(s=>{
       const d = new Date(s.t);
       const li = document.createElement('li');
-      const span = document.createElement('span');
-      span.textContent = (d.getMonth()+1)+'/'+d.getDate()+' '+String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0')+'　'+fmtShort(s.active)+'・'+s.stops+'回止め'+(s.leaked?' 💦':(s.stops>=GOAL?' 🎉':''))+(s.style&&STYLES[s.style]?' '+STYLES[s.style].icon:'');
-      const del = document.createElement('button'); del.className='del'; del.type='button'; del.textContent='けす';
+      const m = Math.floor(s.active/60), sec = s.active%60;
+      let dots=''; for (let i=0;i<GOAL;i++) dots += '<i class="'+(i<s.stops?'on':'')+'"></i>';
+      li.innerHTML = '<span class="kr-d">'+(d.getMonth()+1)+'/'+d.getDate()+'</span><b class="kr-t">'+m+':'+String(sec).padStart(2,'0')+'</b><span class="kr-dots" aria-label="'+s.stops+'回止め">'+dots+'</span>';
+      const del = document.createElement('button'); del.className='kr-del'; del.type='button'; del.textContent='×';
       del.setAttribute('aria-label','このきろくをけす');
-      del.onclick = ()=>{ if (confirm('このきろくけす？')){ log.sessions = log.sessions.filter(x=>x.t!==s.t); persist(); renderAll(); } };
-      li.append(span, del); ul.appendChild(li);
+      del.onclick = ()=>{ if (confirm((d.getMonth()+1)+'/'+d.getDate()+' のきろくをけす？')){ log.sessions = log.sessions.filter(x=>x.t!==s.t); persist(); renderAll(); } };
+      li.appendChild(del); ul.appendChild(li);
     });
   }
+
 
   // ---- 次の練習日（週3回になるように自動で計算） ----
   const DAY = 864e5;
