@@ -846,6 +846,7 @@ body.running.battle .ba-msg{margin-top:0}
 .sb-v{font-size:.82rem;font-weight:800;color:#F4F1EA;white-space:nowrap}
 .sb-sep{width:1px;align-self:stretch;background:rgba(255,255,255,.14)}
 body.battle .stage.idle .sb-info{display:none}
+#btClose{display:flex!important;align-items:center;justify-content:center;width:52px!important;height:52px;min-width:52px;border-radius:50%!important;font-size:1.6rem!important;font-weight:900;line-height:1;color:#fff!important;background:rgba(255,255,255,.14)!important;border:2px solid rgba(255,255,255,.55)!important;padding:0!important;margin:0!important;cursor:pointer;flex:0 0 auto}
 body.running #xvid, body.battle #xvid, body.running .site-foot, body.battle .site-foot{display:none!important}
 .site-foot{text-align:center;font-size:.78rem;color:var(--soft);padding:18px 16px calc(28px + env(safe-area-inset-bottom,0px))}
 .site-foot a{color:var(--soft)}
@@ -3368,7 +3369,7 @@ body.battle .ck-l{color:rgba(255,255,255,.7)}
     if(!s){ if(a) a.remove(); return; }
     var W=WORLDS[+s.id.split('-')[0]-1];
     if(!a){ a=document.createElement('div'); a.id='btArena'; a.className='bt-arena'; stg.insertBefore(a,stg.firstChild); }
-    a.innerHTML='<div class="ba-top"><span class="ba-w">ステージ'+W.id+'　'+W.name+'</span><button type="button" id="btRun">にげる</button></div><div class="ba-field"><div class="ba-side me"><div class="ba-pl" id="baPl">'+figure(migrate(inv()))+'</div><div class="ba-bar me"><i id="baMeHp"></i></div><div class="ba-tag">あなた</div></div><div class="ba-vs">VS</div><div class="ba-side en"><div class="ba-en" id="baEn">'+EN[s.en]+'<div class="ba-fx" id="baFx"></div></div><div class="ba-bar"><i id="baHp"></i></div><div class="ba-tag">'+s.id+(s.boss?' <span class="ba-boss">BOSS</span>':'')+'</div></div></div><div class="ba-name">'+s.name+'</div><div class="ba-cond">'+cond(s)+'・攻撃力'+atk(s)+'</div><div class="ba-me" id="baMe"></div><div class="ba-msg" id="baMsg"></div>';
+    a.innerHTML='<div class="ba-top"><span class="ba-w">ステージ'+W.id+'　'+W.name+'</span><button type="button" id="btClose" aria-label="バトルをやめてもどる">✕</button></div><div class="ba-field"><div class="ba-side me"><div class="ba-pl" id="baPl">'+figure(migrate(inv()))+'</div><div class="ba-bar me"><i id="baMeHp"></i></div><div class="ba-tag">あなた</div></div><div class="ba-vs">VS</div><div class="ba-side en"><div class="ba-en" id="baEn">'+EN[s.en]+'<div class="ba-fx" id="baFx"></div></div><div class="ba-bar"><i id="baHp"></i></div><div class="ba-tag">'+s.id+(s.boss?' <span class="ba-boss">BOSS</span>':'')+'</div></div></div><div class="ba-name">'+s.name+'</div><div class="ba-cond">'+cond(s)+'・攻撃力'+atk(s)+'</div><div class="ba-me" id="baMe"></div><div class="ba-msg" id="baMsg"></div>';
     tick();
   }
   function tick(){
@@ -3592,6 +3593,9 @@ body.battle .ck-l{color:rgba(255,255,255,.7)}
   document.addEventListener('click',function(e){
     var n=e.target.closest('.bt-node'); if(n){ var w=+n.getAttribute('data-w'); selW=w; render(); return; }
     var g=e.target.closest('.bt-go'); if(g && !g.disabled){ var sid=g.getAttribute('data-st'), sg=stage(sid), dd=st(), ww=WORLDS[+sid.split('-')[0]-1]; if(!sg || !stageOpen(sg,dd,ww.stages,ww) || hpGet().hp<=0) return; setActive(sid); var t=document.querySelector('#tabs button[data-go="train"]'); if(t) t.click(); lastStops=0; enter(sg); window.scrollTo(0,0); return; }
+    if(e.target.closest('#btClose')){ var tm2=window.__tm||{}; var go=function(){ setActive(null); exitBattle(); var b2=document.querySelector('#tabs button[data-go="battle"]'); if(b2) b2.click(); render(); };
+      if(tm2.mode==='active'||tm2.mode==='rest'){ if(!confirm('練習をやめて、バトルからもどる？')) return; var q=[].slice.call(document.querySelectorAll('#controls button')).filter(function(x){ return x.textContent.trim()==='やめる'; })[0]; if(q) q.click(); setTimeout(go,350); return; }
+      go(); return; }
     if(e.target.closest('#btRun')){ var tm=window.__tm||{}; if(tm.mode==='active'||tm.mode==='rest'){ var m=document.getElementById('baMsg'); if(m) m.textContent='練習中はにげられないよ。「やめる」か「おわり」を押してね'; return; } setActive(null); exitBattle(); var b=document.querySelector('#tabs button[data-go="battle"]'); if(b) b.click(); render(); return; }
     if(e.target.closest('#tabs button[data-go="battle"]')){ setTimeout(function(){ render(); panel(); if(!avGet()) avatarSheet(function(){ panel(); }); },30); }
     if(e.target.closest('[data-avedit]')){ avatarSheet(function(){ panel(); }); return; }
