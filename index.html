@@ -846,6 +846,9 @@ body.running.battle .ba-msg{margin-top:0}
 .sb-v{font-size:.82rem;font-weight:800;color:#F4F1EA;white-space:nowrap}
 .sb-sep{width:1px;align-self:stretch;background:rgba(255,255,255,.14)}
 body.battle .stage.idle .sb-info{display:none}
+.site-foot{text-align:center;font-size:.78rem;color:var(--soft);padding:18px 16px calc(28px + env(safe-area-inset-bottom,0px))}
+.site-foot a{color:var(--soft)}
+.site-foot p{margin:6px 0 0;font-size:.72rem}
 .card.kiroku{background:#0F1118;color:#F2F2F5;border:6px solid #262A36;border-radius:34px;padding:26px 20px 14px}
 .kr-h{display:flex;align-items:center;gap:12px;font-size:1.55rem;font-weight:900;letter-spacing:.06em;margin:4px 6px 18px}
 .kr-h svg{width:30px;height:30px;color:#F4956E}
@@ -1110,7 +1113,7 @@ body.battle .ck-l{color:rgba(255,255,255,.7)}
 
   <section data-tab="train" class="card xvid" id="xvid">
     <h2>動画をさがす <svg class="pi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg></h2>
-    <p class="xv-s">好きな動画をさがして、見ながら練習できるよ（18歳以上向けのサイトが開きます）</p>
+    <p class="xv-s">FANZA（DMM）で好きな動画をさがして、サンプル動画を見ながら練習できるよ（18歳以上向けのサイトが開きます）</p>
     <div class="xv-row"><input id="xvQ" type="search" enterkeyhint="search" placeholder="言葉を入れてね" autocomplete="off"><button type="button" id="xvGo">さがす</button></div>
     <div class="xv-chips" id="xvHist"></div>
     <details class="xv-how"><summary>見ながら練習するやり方（iPhone）</summary>
@@ -1192,6 +1195,12 @@ body.battle .ck-l{color:rgba(255,255,255,.7)}
 
   <p data-tab="log" class="foot">ver.10<br>きろくは自分だけが見れるよ🔒<br><a href="https://form.jotform.com/262745742685065" target="_blank" rel="noopener" style="color:var(--soft)">お問い合わせ</a><br><button class="linkbtn" id="resetAll">きろくを全部けす</button></p>
 </main>
+<footer class="site-foot">
+  <a href="/privacy.html">プライバシーポリシー</a>
+  <span>・</span>
+  <a href="/contact.html">お問い合わせ</a>
+  <p>© とめれん帳</p>
+</footer>
 
 <script>
 (function(){
@@ -3801,7 +3810,7 @@ body.battle .ck-l{color:rgba(255,255,255,.7)}
     w=String(w||'').trim(); if(!w){ q.focus(); return; }
     var a=load().filter(function(x){ return x!==w; }); a.unshift(w); save(a.slice(0,6)); render();
     try{ if(window.gtag) gtag('event','video_search'); }catch(e){}
-    var u=['https://','www.','xvideos','.com/?k='].join('')+encodeURIComponent(w); window.open(u,'_blank','noopener,noreferrer');
+    var u='https://www.dmm.co.jp/digital/videoa/-/list/search/=/searchstr='+encodeURIComponent(w)+'/'; window.open(u,'_blank','noopener');
   }
   go.addEventListener('click',function(){ open(q.value); });
   q.addEventListener('keydown',function(e){ if(e.key==='Enter'){ e.preventDefault(); open(q.value); } });
