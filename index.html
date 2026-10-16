@@ -514,7 +514,7 @@ button:active,.ddbtn:active,.helpbtn:active{transform:scale(.95);filter:brightne
 #btScene svg{position:absolute;left:0;bottom:0;width:100%;height:100%}
 body.battle{background:var(--bt-bg)!important}
 body.battle main{position:relative;z-index:1}
-body.battle .tabs, body.battle main > h1, body.battle main > p.sub, body.battle #tip, body.battle .adpop, body.battle #btBanner{display:none!important}
+body.battle main > h1, body.battle main > p.sub, body.battle #tip, body.battle .adpop, body.battle #btBanner{display:none!important}
 body.battle .stage{--card:#1E2430;--ink:#fff;--line:rgba(255,255,255,.25);--bg:rgba(255,255,255,.08);background:rgba(10,12,18,.55)!important;border-color:rgba(255,255,255,.18)!important;color:#fff;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
 body.battle .stage .state, body.battle .stage .countTxt, body.battle .stage .lab, body.battle .stage .opts p{color:rgba(255,255,255,.85)!important}
 body.battle .stage .clock{color:#fff}
@@ -2601,6 +2601,7 @@ body.battle .ck-l{color:rgba(255,255,255,.7)}
   function showTab(t){
     curTab = t;
     try{ if (window.gtag) gtag('event','tab_view',{ tab_name: t }); }catch(e){}
+    if (t!=='train' && document.body.classList.contains('battle') && window.tmExitBattle) window.tmExitBattle();
     document.querySelectorAll('[data-tab]').forEach(el=>el.classList.toggle('hide', el.getAttribute('data-tab')!==t));
     document.querySelectorAll('#tabs button').forEach(b=>{ const on=b.getAttribute('data-go')===t; b.classList.toggle('on',on); b.setAttribute('aria-pressed', on?'true':'false'); });
     window.scrollTo(0,0);
@@ -3572,7 +3573,7 @@ body.battle .ck-l{color:rgba(255,255,255,.7)}
   var prevFinish=window.tmOnFinish;
   window.tmOnFinish=function(res,goal){
     try{ if(prevFinish) prevFinish(res,goal); }catch(e){}
-    var id=active(), s=id?stage(id):null;
+    var id=document.body.classList.contains('battle')?active():null, s=id?stage(id):null;
     if(!s){ if(res && !res.leaked && res.stops>=goal){ var g0=hpGet(); if(g0.hp<g0.max) hpSet(g0.hp+Math.round(.3*g0.max)); } return; }
     if(!res) return;
     var win=!res.leaked && res.active>=effSec(s) && res.stops>=s.stops && (!s.maxRest || (res.rest||0)<=s.maxRest);
@@ -3594,7 +3595,7 @@ body.battle .ck-l{color:rgba(255,255,255,.7)}
     if(e.target.closest('#tabs button[data-go="battle"]')){ setTimeout(function(){ render(); panel(); if(!avGet()) avatarSheet(function(){ panel(); }); },30); }
     if(e.target.closest('[data-avedit]')){ avatarSheet(function(){ panel(); }); return; }
   });
-  render(); (function(){ var id=active(), sg=id?stage(id):null; if(sg){ var t=document.querySelector('#tabs button[data-go="train"]'); if(t) t.click(); enter(sg); } })();
+  render(); window.tmExitBattle=exitBattle;
 })();
 </script>
 <script>
