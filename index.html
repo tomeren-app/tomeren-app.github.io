@@ -846,6 +846,7 @@ body.running.battle .ba-msg{margin-top:0}
 .sb-v{font-size:.82rem;font-weight:800;color:#F4F1EA;white-space:nowrap}
 .sb-sep{width:1px;align-self:stretch;background:rgba(255,255,255,.14)}
 body.battle .stage.idle .sb-info{display:none}
+.pr-tag{display:inline-block;vertical-align:middle;margin-left:6px;padding:1px 7px;border-radius:6px;border:1px solid var(--soft);color:var(--soft);font-size:.62rem;font-weight:700;letter-spacing:.06em}
 #btClose{display:flex!important;align-items:center;justify-content:center;width:52px!important;height:52px;min-width:52px;border-radius:50%!important;font-size:1.6rem!important;font-weight:900;line-height:1;color:#fff!important;background:rgba(255,255,255,.14)!important;border:2px solid rgba(255,255,255,.55)!important;padding:0!important;margin:0!important;cursor:pointer;flex:0 0 auto}
 body.running #xvid, body.battle #xvid, body.running .site-foot, body.battle .site-foot{display:none!important}
 .site-foot{text-align:center;font-size:.78rem;color:var(--soft);padding:18px 16px calc(28px + env(safe-area-inset-bottom,0px))}
@@ -1114,8 +1115,8 @@ body.battle .ck-l{color:rgba(255,255,255,.7)}
   </section>
 
   <section data-tab="train" class="card xvid" id="xvid">
-    <h2>動画をさがす <svg class="pi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg></h2>
-    <p class="xv-s">FANZA（DMM）で好きな動画をさがして、サンプル動画を見ながら練習できるよ（18歳以上向けのサイトが開きます）</p>
+    <h2>動画をさがす <svg class="pi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg> <span class="pr-tag">PR</span></h2>
+    <p class="xv-s">FANZA（DMM）で好きな動画をさがして、サンプル動画を見ながら練習できるよ（18歳以上向けのサイトが開きます。このリンクは広告をふくみます）</p>
     <div class="xv-row"><input id="xvQ" type="search" enterkeyhint="search" placeholder="言葉を入れてね" autocomplete="off"><button type="button" id="xvGo">さがす</button></div>
     <div class="xv-chips" id="xvHist"></div>
     <details class="xv-how"><summary>見ながら練習するやり方（iPhone）</summary>
@@ -3816,7 +3817,7 @@ body.battle .ck-l{color:rgba(255,255,255,.7)}
     w=String(w||'').trim(); if(!w){ q.focus(); return; }
     var a=load().filter(function(x){ return x!==w; }); a.unshift(w); save(a.slice(0,6)); render();
     try{ if(window.gtag) gtag('event','video_search'); }catch(e){}
-    var u='https://www.dmm.co.jp/digital/videoa/-/list/search/=/searchstr='+encodeURIComponent(w)+'/'; window.open(u,'_blank','noopener');
+    var dest='https://video.dmm.co.jp/list/?key='+encodeURIComponent(w); var u='https://al.fanza.co.jp/?lurl='+encodeURIComponent(dest)+'&af_id=tomeren-003&ch=search_link&ch_id=link'; window.open(u,'_blank','noopener');
   }
   go.addEventListener('click',function(){ open(q.value); });
   q.addEventListener('keydown',function(e){ if(e.key==='Enter'){ e.preventDefault(); open(q.value); } });
