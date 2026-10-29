@@ -453,6 +453,8 @@ button:active,.ddbtn:active,.helpbtn:active{transform:scale(.95);filter:brightne
 .tt-tip{position:fixed;left:16px;right:16px;max-width:420px;margin:0 auto;background:var(--card);color:var(--ink);border-radius:18px;padding:16px 16px 12px;box-shadow:0 10px 40px rgba(0,0,0,.35);transition:top .3s ease}
 .tt-step{font-size:.72rem;letter-spacing:.2em;color:var(--sun);font-weight:800}
 .tt-t{font-size:1.05rem;font-weight:900;margin:4px 0 4px}
+.tt-who{font-size:.72rem;font-weight:800;color:var(--soft);letter-spacing:.04em}
+.tt-name{display:none;width:100%;box-sizing:border-box;margin:10px 0 2px;padding:12px 14px;border-radius:12px;border:2px solid var(--sun);background:transparent;color:var(--ink);font:inherit;font-size:16px}
 .tt-d{font-size:.88rem;line-height:1.6;color:var(--ink)}
 .tt-btns{display:flex;gap:8px;margin-top:12px;align-items:center}
 .tt-skip{background:none;border:none;color:var(--soft);font:inherit;font-size:.82rem;cursor:pointer;padding:8px}
@@ -3105,23 +3107,27 @@ body.battle .ck-l{color:rgba(255,255,255,.7)}
 <script>
 (function(){
   var STEPS=[
-    {sel:null, t:'とめれん帳へようこそ！', d:'はじめての人向けに、30秒で使い方を案内するね。ひとりで、こっそり、自分のペースで続けられる練習の記録帳だよ。'},
-    {sel:'#stage .opts .chips', tab:'train', t:'① 見るものをえらぶ', d:'動画を見ながら、最初だけ動画、想像だけ、から選べるよ。慣れてきたら少しずつ想像だけにしていくのがおすすめ。'},
-    {sel:'#controls .big', tab:'train', t:'② 準備ができたら「はじめる」', d:'時計が動きだすよ。リングは5分でちょうど一周するよ。'},
-    {sel:'#stage .clock', tab:'train', t:'③ 高まってきたら「とめた！」', d:'気持ちよさが7くらいになったら「とめた！」で手を止めて、落ち着いたら「再開」。これを3回できたらゴールだよ。練習中は、今の気持ちよさを1〜10で押すと、声で合図してくれるよ。'},
-    {sel:'#tabs button[data-go="next"]', t:'④ めやす', d:'次に練習する日の目安がわかるよ。毎日じゃなくて、週3回くらいがちょうどいいよ。'},
-    {sel:'#tabs .ddwrap .ddbtn', idx:0, t:'⑤ きろく', d:'これまでの記録、今日のレポート、そして称号がここで見られるよ。続けるほど称号が上がっていくよ。'},
-    {sel:'#tabs .ddwrap .ddbtn', idx:1, t:'⑥ 設定', d:'声かけの声や、練習中に出る画像を自分好みに変えられるよ。'},
-    {sel:'#helpBtn', t:'⑦ ヘルプ', d:'使い方、お問い合わせ、お知らせ、記録を守る方法はここから。このチュートリアルも、ここからもう一度見られるよ。'},
-    {sel:null, t:'準備OK！さっそく始めよう', d:'記録はこのスマホの中だけに保存されて、誰にも見られないよ。ホーム画面に追加して開くと、記録が消えにくくなるよ。'}
+    {sel:null, ask:true, t:'はじめまして', d:'私はあなた専用のコンシェルジュ。これからあなたの練習を、そばでそっと見守らせてもらうわ。まずは、あなたの名前を教えてね。'},
+    {sel:null, t:'{n}ね、よろしく。', d:'まずはこのアプリについて教えるわ。とめれん帳は、ひとりで、こっそり、自分のペースで続けられる練習の記録帳よ。30秒だけ付き合ってちょうだい。'},
+    {sel:'#stage .opts .chips', tab:'train', t:'① 見るものを選ぶ', d:'ここで「動画を見ながら」「最初だけ動画」「想像だけ」から選べるわ。慣れてきたら、少しずつ想像だけにしていくのがおすすめよ。'},
+    {sel:'#controls .big', tab:'train', t:'② 準備ができたら「はじめる」', d:'押すと時計が動きだすわ。リングは5分でちょうど一周よ。'},
+    {sel:'#stage .clock', tab:'train', t:'③ 高まってきたら「とめた！」', d:'気持ちよさが7くらいになったら「とめた！」で手を止めて、落ち着いたら「再開」。これを3回できたらゴールよ。練習中に今の気持ちよさを1〜10で押せば、声で合図してあげる。'},
+    {sel:'#tabs button[data-go="next"]', t:'④ めやす', d:'次に練習する日の目安がわかるわ。毎日じゃなくて、週3回くらいがちょうどいいのよ。'},
+    {sel:'#tabs .ddwrap .ddbtn', idx:0, t:'⑤ きろく', d:'{n}のこれまでの記録、今日のレポート、称号はここで見られるわ。続けるほど称号が上がっていくから、楽しみにしてて。'},
+    {sel:'#tabs .ddwrap .ddbtn', idx:1, t:'⑥ 設定', d:'声かけの声や、練習中に出る画像を好みに変えられるわ。'},
+    {sel:'#helpBtn', t:'⑦ ヘルプ', d:'使い方、お問い合わせ、お知らせ、記録を守る方法はここ。この案内も、ここからいつでも呼びだせるわ。'},
+    {sel:null, t:'準備はいい？{n}', d:'記録はこのスマホの中だけに保存されて、誰にも見られないわ。ホーム画面に追加して開くと、記録が消えにくくなるわよ。さあ、始めましょう。'}
   ];
+  function uname(){ try{ return localStorage.getItem('tomeren-uname')||''; }catch(e){ return ''; } }
+  function fill(x){ var n=uname()||'あなた'; return x.replace(/\{n\}/g,n); }
   var ov,hole,tip,i=0;
   function el(st){ if(!st.sel) return null; var a=document.querySelectorAll(st.sel); return a[st.idx||0]||null; }
   function place(){
     var st=STEPS[i], e=el(st);
     tip.querySelector('.tt-step').textContent=(i+1)+' / '+STEPS.length;
-    tip.querySelector('.tt-t').textContent=st.t; tip.querySelector('.tt-d').textContent=st.d;
-    tip.querySelector('.tt-next').textContent=i===STEPS.length-1?'はじめる':'次へ';
+    tip.querySelector('.tt-t').textContent=fill(st.t); tip.querySelector('.tt-d').textContent=fill(st.d);
+    var nm=tip.querySelector('.tt-name'); nm.style.display=st.ask?'block':'none'; if(st.ask){ nm.value=uname(); setTimeout(function(){ try{ nm.focus(); }catch(e){} },350); }
+    tip.querySelector('.tt-next').textContent=st.ask?'決定':(i===STEPS.length-1?'はじめる':'次へ');
     tip.querySelector('.tt-dots').innerHTML=STEPS.map(function(_,k){return '<i class="'+(k===i?'on':'')+'"></i>';}).join('');
     if(!e){ hole.className='tt-hole none'; tip.style.top='34%'; return; }
     e.scrollIntoView({block:'center'});
@@ -3141,9 +3147,11 @@ body.battle .ck-l{color:rgba(255,255,255,.7)}
   function start(){
     if(ov) return; i=0;
     ov=document.createElement('div'); ov.className='tt-ov'; ov.setAttribute('role','dialog'); ov.setAttribute('aria-label','チュートリアル');
-    ov.innerHTML='<div class="tt-hole none"></div><div class="tt-tip"><div class="tt-step"></div><div class="tt-t"></div><div class="tt-d"></div><div class="tt-btns"><button type="button" class="tt-skip">スキップ</button><div class="tt-dots"></div><button type="button" class="tt-next">次へ</button></div></div>';
+    ov.innerHTML='<div class="tt-hole none"></div><div class="tt-tip"><div class="tt-who">🛎️ あなた専用コンシェルジュ</div><div class="tt-step"></div><div class="tt-t"></div><div class="tt-d"></div><input class="tt-name" type="text" maxlength="10" placeholder="ニックネームでOKよ" autocomplete="off"><div class="tt-btns"><button type="button" class="tt-skip">スキップ</button><div class="tt-dots"></div><button type="button" class="tt-next">次へ</button></div></div>';
     document.body.appendChild(ov); hole=ov.querySelector('.tt-hole'); tip=ov.querySelector('.tt-tip');
-    ov.querySelector('.tt-next').addEventListener('click',function(){ go(i+1); });
+    function nextStep(){ if(STEPS[i].ask){ var v=(tip.querySelector('.tt-name').value||'').trim().slice(0,10); try{ if(v) localStorage.setItem('tomeren-uname',v); }catch(e){} tip.querySelector('.tt-name').blur(); } go(i+1); }
+    ov.querySelector('.tt-next').addEventListener('click',nextStep);
+    ov.querySelector('.tt-name').addEventListener('keydown',function(ev){ if(ev.key==='Enter'){ ev.preventDefault(); nextStep(); } });
     ov.querySelector('.tt-skip').addEventListener('click',end);
     window.addEventListener('resize',function(){ if(ov) place(); });
     go(0);
