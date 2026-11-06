@@ -65,8 +65,12 @@ table{width:100%;border-collapse:collapse;font-size:.9rem;margin:6px 0 16px}
 th,td{border:1px solid var(--line);padding:8px;text-align:left;vertical-align:top}
 th{background:rgba(127,140,200,.12)}
 .tbl{overflow-x:auto}
-.cta{display:block;text-align:center;background:var(--ink);color:var(--card);text-decoration:none;font-weight:800;border-radius:16px;padding:16px;margin:24px 0 8px}
-.cta small{display:block;font-weight:500;opacity:.8;font-size:.78rem;margin-top:4px}
+.cta{display:block;text-align:center;background:linear-gradient(135deg,#FFB547,#F28C28);color:#2A1A00;text-decoration:none;font-weight:900;font-size:1.05rem;border-radius:16px;padding:16px;margin:24px 0 8px;box-shadow:0 6px 18px rgba(242,140,40,.35)}
+.cta small{display:block;font-weight:600;opacity:.85;font-size:.78rem;margin-top:4px}
+.stick{position:fixed;left:0;right:0;bottom:0;z-index:20;padding:10px 14px calc(10px + env(safe-area-inset-bottom,0px));background:var(--card);border-top:1px solid var(--line);transform:translateY(110%);transition:transform .3s}
+.stick.on{transform:none}
+.stick a{display:block;max-width:720px;margin:0 auto;text-align:center;background:linear-gradient(135deg,#FFB547,#F28C28);color:#2A1A00;text-decoration:none;font-weight:900;border-radius:14px;padding:13px}
+body{padding-bottom:90px}
 details{border:1px solid var(--line);border-radius:12px;padding:10px 14px;margin:8px 0}
 summary{font-weight:700;cursor:pointer}
 details p{margin:8px 0 0}
@@ -93,6 +97,8 @@ footer a{color:var(--soft)}
         <li>週3回・4週間を目安に、記録をつけながら続ける</li>
       </ul>
     </div>
+
+    <a class="cta" href="/?utm_source=article&utm_medium=cta&utm_campaign=souro-training&utm_content=top">👉 無料で記録をはじめる<small>登録なし・記録はスマホの中だけ。タイマーと声かけでストップ・スタート法をサポート</small></a>
 
     <nav class="toc"><b>もくじ</b>
       <a href="#toha">1. 早漏改善トレーニングとは？</a><br>
@@ -153,7 +159,7 @@ footer a{color:var(--soft)}
       <tr><td>4週目</td><td>止める位置を8に近づける。休けい中に呼吸と骨盤底筋で落ち着かせる</td></tr>
     </table></div>
     <p>4週間たったら、続けながら少しずつ止める回数をへらしたり、パートナーとの練習に進んだりしてみてください。</p>
-    <a class="cta" href="/">止めた回数とがまんできた時間を自動で記録<br>とめれん帳でトレーニングを始める（無料・登録なし）<small>タイマーと声かけで、ストップ・スタート法をサポート。記録はスマホの中だけに保存されます</small></a>
+    <a class="cta" href="/?utm_source=article&utm_medium=cta&utm_campaign=souro-training&utm_content=middle">👉 無料で記録をはじめる<small>止めた回数とがまんできた時間を自動で記録。4週間プログラムをこのまま試せます</small></a>
 
     <h2 id="kotsu">5. 続けるコツ</h2>
     <ul>
@@ -187,10 +193,14 @@ footer a{color:var(--soft)}
     <details><summary>毎日やったほうがいいですか？</summary><p>ストップ・スタート法などひとりでする練習は週3回くらいで十分です。骨盤底筋トレーニングは毎日やってもOKです。</p></details>
     <details><summary>気をそらして長持ちさせる方法は効きますか？</summary><p>別のことを考えて気をそらすと、かえって射精の手前の感覚がつかめなくなりがちです。感覚に注意を向けて、高まりを調整する練習のほうがおすすめです。</p></details>
 
+    <a class="cta" href="/?utm_source=article&utm_medium=cta&utm_campaign=souro-training&utm_content=bottom">👉 今日から1回目をやってみる<small>無料・登録なし。とめれん帳で、ひとりでこっそり練習を記録</small></a>
+
     <p class="note">※この記事は一般的な情報で、医師の診断や治療にかわるものではありません。悩みが強いとき、痛みや違和感があるとき、勃起しにくい状態が続くときは、泌尿器科などの医療機関に相談してください。</p>
     <p class="ref">参考：国際性医学会（ISSM）の早漏の手引き（2014年）／Semans JH（1956年）／Masters WH, Johnson VE（1970年）／Pastore ALら（2014年）</p>
   </article>
   <footer><a href="/">とめれん帳｜ひとりでできる止めて・再開トレーニング記録</a></footer>
 </div>
+<div class="stick" id="stick"><a href="/?utm_source=article&utm_medium=cta&utm_campaign=souro-training&utm_content=sticky">👉 無料で記録をはじめる</a></div>
+<script>(function(){var b=document.getElementById('stick');function f(){var y=window.scrollY,h=document.body.scrollHeight-innerHeight;b.classList.toggle('on',y>500&&y<h-300);}addEventListener('scroll',f,{passive:true});f();})();</script>
 </body>
 </html>
