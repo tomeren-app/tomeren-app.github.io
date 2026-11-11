@@ -2,7 +2,11 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://tomeren-app.github.io/</loc>
-    <lastmod>2026-10-05</lastmod>
+    <lastmod>2026-11-12</lastmod>
+  </url>
+  <url>
+    <loc>https://tomeren-app.github.io/souro-genin.html</loc>
+    <lastmod>2026-11-12</lastmod>
   </url>
   <url>
     <loc>https://tomeren-app.github.io/souro-time.html</loc>
@@ -22,14 +26,14 @@
   </url>
   <url>
     <loc>https://tomeren-app.github.io/souro-training.html</loc>
-    <lastmod>2026-10-05</lastmod>
+    <lastmod>2026-11-06</lastmod>
   </url>
   <url>
     <loc>https://tomeren-app.github.io/privacy.html</loc>
-    <lastmod>2026-10-15</lastmod>
+    <lastmod>2026-10-16</lastmod>
   </url>
   <url>
     <loc>https://tomeren-app.github.io/contact.html</loc>
-    <lastmod>2026-10-15</lastmod>
+    <lastmod>2026-10-16</lastmod>
   </url>
 </urlset>
