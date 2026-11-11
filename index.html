@@ -3886,8 +3886,10 @@ body.battle .ck-l{color:rgba(255,255,255,.7)}
 
 <style id="btnFix">
 /* 「とめた！／再開する」の位置固定（2026-11-12）：上の状態テキストの長さや画像の有無でボタンが上下しないようにする */
-.stage.run .state{min-height:4.65em;display:flex;align-items:center;justify-content:center}
+.stage.run .state{height:4.65em;display:flex;align-items:center;justify-content:center;overflow:hidden}
 .stage.run .stageimg{height:20vh}
+.stage.run .counts{height:16px}
+.stage.run .countTxt{height:22px;line-height:22px;white-space:nowrap;overflow:hidden}
 </style>
 <style id="idleFull">
 /* スタンバイ画面（じゅんびOK・称号・はじめる）を全画面化（2026-11-12）。タブは上に残す */
