@@ -3889,5 +3889,11 @@ body.battle .ck-l{color:rgba(255,255,255,.7)}
 .stage.run .state{min-height:4.65em;display:flex;align-items:center;justify-content:center}
 .stage.run .stageimg{height:20vh}
 </style>
+<style id="idleFull">
+/* スタンバイ画面（じゅんびOK・称号・はじめる）を全画面化（2026-11-12）。タブは上に残す */
+.stage.idle{position:fixed;inset:0;z-index:40;margin:0;border:none;border-radius:0;overflow-y:auto;overscroll-behavior:contain;background:radial-gradient(120% 80% at 50% 30%,#2A3266 0%,#161A33 70%)!important;padding:calc(88px + env(safe-area-inset-top,0px)) 18px calc(24px + env(safe-area-inset-bottom,0px))}
+#tabs{z-index:44}
+body:has(#stage.idle:not(.hide)) h1,body:has(#stage.idle:not(.hide)) .sub{display:none}
+</style>
 </body>
 </html>
