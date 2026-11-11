@@ -74,6 +74,14 @@ details p{margin:8px 0 0}
 .ref{font-size:.78rem;color:var(--soft)}
 footer{text-align:center;font-size:.78rem;color:var(--soft);padding:20px 0 30px}
 footer a{color:var(--soft)}
+
+.appbnr-wrap{position:fixed;left:10px;right:10px;bottom:calc(10px + env(safe-area-inset-bottom));z-index:60;max-width:700px;margin:0 auto}
+.appbnr{display:flex;align-items:center;gap:10px;background:linear-gradient(135deg,#F2B53A,#F5C352);color:#1E2340;border-radius:16px;padding:12px 42px 12px 14px;box-shadow:0 10px 28px rgba(10,12,30,.3);text-decoration:none}
+.appbnr .t{font-weight:800;line-height:1.35;font-size:.95rem}
+.appbnr .s{display:block;font-weight:600;font-size:.72rem;opacity:.75;margin-top:1px}
+.appbnr .go{margin-left:auto;background:#1E2340;color:#fff;font-weight:800;border-radius:999px;padding:9px 13px;font-size:.85rem;white-space:nowrap}
+.appbnr-x{position:absolute;top:-8px;right:-2px;width:26px;height:26px;border-radius:50%;border:1px solid #D6DBEE;background:#fff;color:#5B6285;font-size:.85rem;line-height:1;cursor:pointer;padding:0}
+body{padding-bottom:calc(94px + env(safe-area-inset-bottom))}
 </style>
 </head>
 <body>
@@ -153,5 +161,8 @@ footer a{color:var(--soft)}
   </article>
   <footer><a href="/">とめれん帳｜ひとりでできる止めて・再開トレーニング記録</a></footer>
 </div>
+
+<div class="appbnr-wrap" id="appBnr"><a class="appbnr" href="/"><span class="t">💪 とめれん帳で練習をはじめる<span class="s">タイマー・声かけ・記録が無料／登録なし</span></span><span class="go">はじめる</span></a><button type="button" class="appbnr-x" id="appBnrX" aria-label="バナーを閉じる">×</button></div>
+<script>(function(){try{var w=document.getElementById('appBnr');if(!w)return;if(localStorage.getItem('tomeren-colbnr')==='0'){w.remove();return;}document.getElementById('appBnrX').addEventListener('click',function(){try{localStorage.setItem('tomeren-colbnr','0');}catch(e){}w.remove();});}catch(e){}})();</script>
 </body>
 </html>
