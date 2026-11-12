@@ -3944,8 +3944,8 @@ body.battle .ck-l{color:rgba(255,255,255,.7)}
 </style>
 <style id="idleFull">
 /* スタンバイ画面（じゅんびOK・称号・はじめる）を全画面化（2026-11-12）。タブは上に残す。修正：おしゃれ版の body:not(.battle) .stage.idle{position:relative} が詳細度で勝ち全画面化が効いていなかったため、position/overflow を !important で固定し、上余白も同詳細度＋!important で上書き。背景・装飾はおしゃれ版を活かす */
-.stage.idle{position:fixed!important;inset:0;z-index:40;margin:0;border:none;border-radius:0;overflow-y:auto!important;overscroll-behavior:contain;background:radial-gradient(120% 80% at 50% 30%,#2A3266 0%,#161A33 70%)!important;padding:calc(88px + env(safe-area-inset-top,0px)) 18px calc(24px + env(safe-area-inset-bottom,0px))}
-body:not(.battle) .stage.idle{padding-top:calc(88px + env(safe-area-inset-top,0px))!important}
+.stage.idle{position:fixed!important;inset:0;z-index:40;margin:0;border:none;border-radius:0;overflow-y:auto!important;overscroll-behavior:contain;background:radial-gradient(120% 80% at 50% 30%,#2A3266 0%,#161A33 70%)!important;padding:calc(108px + env(safe-area-inset-top,0px)) 18px calc(24px + env(safe-area-inset-bottom,0px))}
+body:not(.battle) .stage.idle{padding-top:calc(108px + env(safe-area-inset-top,0px))!important}
 #tabs{z-index:44}
 body:has(#stage.idle:not(.hide)) h1,body:has(#stage.idle:not(.hide)) .sub{display:none}
 </style>
