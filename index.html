@@ -462,6 +462,8 @@ button:active,.ddbtn:active,.helpbtn:active{transform:scale(.95);filter:brightne
 .tt-dots{display:flex;gap:4px}.tt-dots i{width:6px;height:6px;border-radius:50%;background:var(--line)}.tt-dots i.on{background:var(--sun)}
 body.tut-on #adPop{display:none!important}
 .tt-hole.pulse{animation:ttpulse .45s ease}@keyframes ttpulse{0%{outline-offset:3px}50%{outline-offset:12px}100%{outline-offset:3px}}
+.tt-hole.act{animation:ttpulse 1.2s ease infinite}
+.tt-hole.act::after{content:'👆 ここをタップ';position:absolute;left:50%;top:-36px;transform:translateX(-50%);background:var(--sun);color:var(--sunInk);font-size:.78rem;font-weight:800;padding:4px 10px;border-radius:999px;white-space:nowrap;pointer-events:none;box-shadow:0 4px 14px rgba(0,0,0,.3)}
 .tt-mods{display:none;flex-direction:column;gap:8px;margin-top:12px}.tt-mods.open{display:flex}.tt-mod{border:2px solid var(--line);background:transparent;color:var(--ink);border-radius:14px;padding:12px 14px;font:inherit;font-weight:800;text-align:left;cursor:pointer}.tt-mod:active{border-color:var(--sun)}
 </style>
 <style>
@@ -3161,7 +3163,7 @@ body.battle .ck-l{color:rgba(255,255,255,.7)}
     e.scrollIntoView({block:'center'});
     setTimeout(function(){
       var r=e.getBoundingClientRect(), pad=6;
-      hole.className='tt-hole'; hole.style.left=(r.left-pad)+'px'; hole.style.top=(r.top-pad)+'px'; hole.style.width=(r.width+pad*2)+'px'; hole.style.height=(r.height+pad*2)+'px';
+      hole.className='tt-hole'+(st.act?' act':''); hole.style.left=(r.left-pad)+'px'; hole.style.top=(r.top-pad)+'px'; hole.style.width=(r.width+pad*2)+'px'; hole.style.height=(r.height+pad*2)+'px';
       var vh=window.innerHeight, th=tip.offsetHeight||190;
       tip.style.top = (r.bottom+16+th < vh) ? (r.bottom+16)+'px' : Math.max(12, r.top-16-th)+'px';
     },60);
@@ -3171,6 +3173,7 @@ body.battle .ck-l{color:rgba(255,255,255,.7)}
     var st=cur[i]; if(st.tab){ var b=document.querySelector('#tabs button[data-go="'+st.tab+'"]'); if(b && !b.classList.contains('on')) b.click(); }
     if(st.act && !document.querySelector(st.act)){ go(i+1); return; }
     place();
+    setTimeout(function(){ if(ov&&!picking&&cur[i]===st) place(); },450);
   }
   function end(fin){
     try{ if(curMod){ if(fin){ var m=doneMap(); m[curMod]=1; localStorage.setItem('tomeren-tutmod',JSON.stringify(m)); } if(curMod==='normal') localStorage.setItem('tomeren-tut','done'); } }catch(e){}
