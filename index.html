@@ -3166,13 +3166,13 @@ body.battle .ck-l{color:rgba(255,255,255,.7)}
     },60);
   }
   function go(n){
-    i=n; if(i>=cur.length){ end(); return; }
+    i=n; if(i>=cur.length){ end(true); return; }
     var st=cur[i]; if(st.tab){ var b=document.querySelector('#tabs button[data-go="'+st.tab+'"]'); if(b && !b.classList.contains('on')) b.click(); }
     if(st.act && !document.querySelector(st.act)){ go(i+1); return; }
     place();
   }
-  function end(){
-    try{ if(curMod){ var m=doneMap(); m[curMod]=1; localStorage.setItem('tomeren-tutmod',JSON.stringify(m)); if(curMod==='normal') localStorage.setItem('tomeren-tut','done'); } }catch(e){}
+  function end(fin){
+    try{ if(curMod){ if(fin){ var m=doneMap(); m[curMod]=1; localStorage.setItem('tomeren-tutmod',JSON.stringify(m)); } if(curMod==='normal') localStorage.setItem('tomeren-tut','done'); } }catch(e){}
     var wasNormal=(curMod==='normal'); curMod=null; cur=[]; picking=false;
     document.removeEventListener('click', onAct, true); if(ov) ov.remove(); ov=null; document.body.classList.remove('tut-on');
     if(wasNormal){ var b=document.querySelector('#tabs button[data-go="train"]'); if(b) b.click(); window.scrollTo(0,0); }
@@ -3691,7 +3691,7 @@ body.battle .ck-l{color:rgba(255,255,255,.7)}
       if(tm2.mode==='active'||tm2.mode==='rest'){ if(!confirm('練習をやめて、バトルからもどる？')) return; var q=[].slice.call(document.querySelectorAll('#controls button')).filter(function(x){ return x.textContent.trim()==='やめる'; })[0]; if(q) q.click(); setTimeout(go,350); return; }
       go(); return; }
     if(e.target.closest('#btRun')){ var tm=window.__tm||{}; if(tm.mode==='active'||tm.mode==='rest'){ var m=document.getElementById('baMsg'); if(m) m.textContent='練習中はにげられないよ。「やめる」か「おわり」を押してね'; return; } setActive(null); exitBattle(); var b=document.querySelector('#tabs button[data-go="battle"]'); if(b) b.click(); render(); return; }
-    if(e.target.closest('#tabs button[data-go="battle"]')){ setTimeout(function(){ render(); panel(); if(!avGet()) avatarSheet(function(){ panel(); }); },30); }
+    if(e.target.closest('#tabs button[data-go="battle"]')){ setTimeout(function(){ render(); panel(); if(!avGet() && !document.querySelector('.tt-ov')) avatarSheet(function(){ panel(); }); },30); }
     if(e.target.closest('[data-avedit]')){ avatarSheet(function(){ panel(); }); return; }
   });
   render(); window.tmExitBattle=exitBattle;
