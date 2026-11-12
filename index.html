@@ -460,6 +460,7 @@ button:active,.ddbtn:active,.helpbtn:active{transform:scale(.95);filter:brightne
 .tt-skip{background:none;border:none;color:var(--soft);font:inherit;font-size:.82rem;cursor:pointer;padding:8px}
 .tt-next{margin-left:auto;border:none;border-radius:999px;padding:10px 22px;font:inherit;font-weight:800;background:var(--sun);color:var(--sunInk);cursor:pointer}
 .tt-dots{display:flex;gap:4px}.tt-dots i{width:6px;height:6px;border-radius:50%;background:var(--line)}.tt-dots i.on{background:var(--sun)}
+body.tut-on #adPop{display:none!important}
 .tt-mods{display:none;flex-direction:column;gap:8px;margin-top:12px}.tt-mods.open{display:flex}.tt-mod{border:2px solid var(--line);background:transparent;color:var(--ink);border-radius:14px;padding:12px 14px;font:inherit;font-weight:800;text-align:left;cursor:pointer}.tt-mod:active{border-color:var(--sun)}
 </style>
 <style>
@@ -2629,7 +2630,7 @@ body.battle .ck-l{color:rgba(255,255,255,.7)}
   // ---- 広告ポップアップ（練習中は出さない） ----
   const adPop = document.getElementById('adPop');
   let adClosedAt = 0;
-  function adAllowed(){ return mode !== 'active' && mode !== 'rest' && mode !== 'warm' && document.getElementById('gate').hidden && !document.getElementById('splash'); }
+  function adAllowed(){ return mode !== 'active' && mode !== 'rest' && mode !== 'warm' && document.getElementById('gate').hidden && !document.getElementById('splash') && !document.querySelector('.tt-ov'); }
   let bannerLoaded = false;
   function loadBanner(){
     if (bannerLoaded) return; bannerLoaded = true;
@@ -3173,7 +3174,7 @@ body.battle .ck-l{color:rgba(255,255,255,.7)}
   function end(){
     try{ if(curMod){ var m=doneMap(); m[curMod]=1; localStorage.setItem('tomeren-tutmod',JSON.stringify(m)); if(curMod==='normal') localStorage.setItem('tomeren-tut','done'); } }catch(e){}
     var wasNormal=(curMod==='normal'); curMod=null; cur=[]; picking=false;
-    document.removeEventListener('click', onAct, true); if(ov) ov.remove(); ov=null;
+    document.removeEventListener('click', onAct, true); if(ov) ov.remove(); ov=null; document.body.classList.remove('tut-on');
     if(wasNormal){ var b=document.querySelector('#tabs button[data-go="train"]'); if(b) b.click(); window.scrollTo(0,0); }
   }
   function onAct(e){
@@ -3210,7 +3211,7 @@ body.battle .ck-l{color:rgba(255,255,255,.7)}
     if(ov) return;
     ov=document.createElement('div'); ov.className='tt-ov'; ov.setAttribute('role','dialog'); ov.setAttribute('aria-label','チュートリアル');
     ov.innerHTML='<div class="tt-hole none"></div><div class="tt-tip"><div class="tt-who">🛎️ あなた専用コンシェルジュ</div><div class="tt-step"></div><div class="tt-t"></div><div class="tt-d"></div><input class="tt-name" type="text" maxlength="10" placeholder="ニックネームでOKよ" autocomplete="off"><div class="tt-mods"></div><div class="tt-btns"><button type="button" class="tt-skip">スキップ</button><div class="tt-dots"></div><button type="button" class="tt-next">次へ</button></div></div>';
-    document.body.appendChild(ov); hole=ov.querySelector('.tt-hole'); tip=ov.querySelector('.tt-tip');
+    document.body.appendChild(ov); hole=ov.querySelector('.tt-hole'); tip=ov.querySelector('.tt-tip'); document.body.classList.add('tut-on'); var ap=document.getElementById('adPop'); if(ap) ap.hidden=true; document.body.classList.remove('adopen');
     function nextStep(){ if(picking) return; if(cur[i]&&cur[i].ask){ var v=(tip.querySelector('.tt-name').value||'').trim().slice(0,10); try{ if(v) localStorage.setItem('tomeren-uname',v); }catch(e){} tip.querySelector('.tt-name').blur(); } go(i+1); }
     ov.querySelector('.tt-next').addEventListener('click',nextStep);
     ov.querySelector('.tt-name').addEventListener('keydown',function(ev){ if(ev.key==='Enter'){ ev.preventDefault(); nextStep(); } });
