@@ -3964,5 +3964,9 @@ body:has(#stage.idle:not(.hide)) h1,body:has(#stage.idle:not(.hide)) .sub{displa
 .tabs .ddbtn span,.tabs .helpbtn span{font-size:.6rem;font-weight:700;letter-spacing:.05em}
 .tabs .helpbtn.on{background:linear-gradient(135deg,#FFB547,#FF7A59);border-color:transparent;color:#2A1600;box-shadow:0 5px 16px rgba(255,150,90,.40),inset 0 1px 0 rgba(255,255,255,.35)}
 </style>
+<style id="adFix">
+/* 練習画面ではアフィリエイトを表示する（2026-11-12ユーザー指示）：サイト全体の .adpop 消去指定は残したまま、練習画面（スタンバイ／練習中／バトル中）でのみ解除する。hidden 属性がある間は出ない（JSの表示・非表示制御に従う）。チュートリアル中は adAllowed と body.tut-on の指定で従来通り非表示 */
+body.running .adpop:not([hidden]),body.battle .adpop:not([hidden]),body:has(#stage.idle:not(.hide)) .adpop:not([hidden]){display:block!important}
+</style>
 </body>
 </html>
