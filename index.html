@@ -2633,7 +2633,7 @@ body.battle .ck-l{color:rgba(255,255,255,.7)}
   // ---- 広告ポップアップ（練習中は出さない） ----
   const adPop = document.getElementById('adPop');
   let adClosedAt = 0;
-  function adAllowed(){ return mode !== 'active' && mode !== 'rest' && mode !== 'warm' && document.getElementById('gate').hidden && !document.getElementById('splash') && !document.querySelector('.tt-ov'); }
+  function adAllowed(){ return document.getElementById('gate').hidden && !document.getElementById('splash') && !document.querySelector('.tt-ov'); }
   let bannerLoaded = false;
   function loadBanner(){
     if (bannerLoaded) return; bannerLoaded = true;
