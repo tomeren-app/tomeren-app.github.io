@@ -461,6 +461,7 @@ button:active,.ddbtn:active,.helpbtn:active{transform:scale(.95);filter:brightne
 .tt-next{margin-left:auto;border:none;border-radius:999px;padding:10px 22px;font:inherit;font-weight:800;background:var(--sun);color:var(--sunInk);cursor:pointer}
 .tt-dots{display:flex;gap:4px}.tt-dots i{width:6px;height:6px;border-radius:50%;background:var(--line)}.tt-dots i.on{background:var(--sun)}
 body.tut-on #adPop{display:none!important}
+.tt-hole.pulse{animation:ttpulse .45s ease}@keyframes ttpulse{0%{outline-offset:3px}50%{outline-offset:12px}100%{outline-offset:3px}}
 .tt-mods{display:none;flex-direction:column;gap:8px;margin-top:12px}.tt-mods.open{display:flex}.tt-mod{border:2px solid var(--line);background:transparent;color:var(--ink);border-radius:14px;padding:12px 14px;font:inherit;font-weight:800;text-align:left;cursor:pointer}.tt-mod:active{border-color:var(--sun)}
 </style>
 <style>
@@ -3178,7 +3179,17 @@ body.battle .ck-l{color:rgba(255,255,255,.7)}
     if(wasNormal){ var b=document.querySelector('#tabs button[data-go="train"]'); if(b) b.click(); window.scrollTo(0,0); }
   }
   function onAct(e){
-    if(!ov||picking) return; var j=-1;
+    if(!ov||picking) return;
+    if(tip && e.target && tip.contains(e.target)) return;
+    var st=cur[i];
+    if(st&&st.act){
+      if(!(e.target&&e.target.closest&&e.target.closest(st.act))){
+        e.preventDefault(); e.stopPropagation(); e.stopImmediatePropagation();
+        if(hole){ hole.classList.remove('pulse'); void hole.offsetWidth; hole.classList.add('pulse'); }
+        return;
+      }
+    }
+    var j=-1;
     for(var k=i;k<cur.length;k++){ if(cur[k].act && e.target && e.target.closest && e.target.closest(cur[k].act)) j=k; }
     if(j<0) return;
     var tgt=j; setTimeout(function(){ if(ov&&!picking) go(tgt+1); }, 450);
