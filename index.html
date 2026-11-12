@@ -3125,7 +3125,7 @@ body.battle .ck-l{color:rgba(255,255,255,.7)}
     ]},
     battle:{label:'② バトル', endLabel:'とじる', steps:[
       {sel:'#btMap', tab:'battle', t:'バトルってなに？', d:'バトルは、練習そのもので敵をたおすモードよ。マップでワールドを選んで、ステージの「たたかう」を押すと、練習画面に敵があらわれるわ。勝つとコインや装備がもらえるの。'},
-      {sel:'#btWorld', tab:'battle', act:'.bt-go:not([disabled])', t:'「たたかう」を押してみて', d:'開いているステージの「たたかう」を、実際に押してみて。練習画面に切りかわって、バトルが始まるわ。'},
+      {sel:'.bt-go:not([disabled])', tab:'battle', act:'.bt-go:not([disabled])', t:'「たたかう」を押してみて', d:'開いているステージの「たたかう」を、実際に押してみて。練習画面に切りかわって、バトルが始まるわ。'},
       {sel:'#btArena', t:'敵が出たわ！', d:'あとはノーマルと同じ練習よ。「はじめる」で動かした時間と「とめた！」の回数で、敵にダメージが入るわ。決められた時間・回数・休けいの長さの条件を満たして「おわり」を押せば勝ち。負けるとHPが減るから、やくそうで回復してね。'},
       {sel:'#btSub', tab:'battle', t:'そうび・もちもの・ショップ', d:'バトル画面の上のボタンから、装備を変えたり、道具を使ったり、ショップで買ったりできるわ。装備で攻撃やHPが上がるから、強い敵の前にのぞいてみてね。'}
     ]},
@@ -3185,7 +3185,7 @@ body.battle .ck-l{color:rgba(255,255,255,.7)}
     if(!ov||picking) return;
     if(tip && e.target && tip.contains(e.target)) return;
     var st=cur[i];
-    if(st&&st.act){
+    if(st&&st.act&&e.isTrusted){
       if(!(e.target&&e.target.closest&&e.target.closest(st.act))){
         e.preventDefault(); e.stopPropagation(); e.stopImmediatePropagation();
         if(hole){ hole.classList.remove('pulse'); void hole.offsetWidth; hole.classList.add('pulse'); }
@@ -3930,35 +3930,6 @@ body.battle .ck-l{color:rgba(255,255,255,.7)}
   q.addEventListener('keydown',function(e){ if(e.key==='Enter'){ e.preventDefault(); open(q.value); } });
   hist.addEventListener('click',function(e){ var b=e.target.closest('button'); if(!b) return; if(b.hasAttribute('data-xvclr')){ save([]); render(); return; } open(b.getAttribute('data-xvw')); });
   render();
-})();
-</script>
-
-<style>
-#goTrainBar{position:fixed;left:12px;right:12px;bottom:calc(10px + env(safe-area-inset-bottom));z-index:40;background:#F2B53A;color:#1E2340;border:none;border-radius:999px;padding:15px 16px;font-size:1rem;font-weight:800;font-family:inherit;box-shadow:0 8px 24px rgba(10,12,30,.28);cursor:pointer}
-#goTrainBar[hidden]{display:none}
-#goTrainBar small{display:block;font-weight:600;font-size:.72rem;opacity:.75;margin-top:2px}
-</style>
-<button type="button" id="goTrainBar" hidden>▶ 練習をはじめる<small>無料・登録なし／記録はスマホの中だけ</small></button>
-<script>
-(function(){
-  var bar=document.getElementById('goTrainBar'); if(!bar) return;
-  function sync(){
-    var on=document.querySelector('#tabs button[data-go="train"].on');
-    var gate=document.getElementById('gate');
-    var gateOn=gate && !gate.hasAttribute('hidden');
-    bar.hidden = !!on || !!gateOn;
-  }
-  bar.addEventListener('click',function(){
-    var b=document.querySelector('#tabs button[data-go="train"]');
-    if(b) b.click();
-    window.scrollTo({top:0,behavior:'smooth'});
-    sync();
-  });
-  var tabs=document.getElementById('tabs');
-  if(tabs && window.MutationObserver) new MutationObserver(sync).observe(tabs,{subtree:true,attributes:true,attributeFilter:['class']});
-  var gate=document.getElementById('gate');
-  if(gate && window.MutationObserver) new MutationObserver(sync).observe(gate,{attributes:true,attributeFilter:['hidden']});
-  setInterval(sync,1500); sync();
 })();
 </script>
 
