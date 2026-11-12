@@ -460,6 +460,7 @@ button:active,.ddbtn:active,.helpbtn:active{transform:scale(.95);filter:brightne
 .tt-skip{background:none;border:none;color:var(--soft);font:inherit;font-size:.82rem;cursor:pointer;padding:8px}
 .tt-next{margin-left:auto;border:none;border-radius:999px;padding:10px 22px;font:inherit;font-weight:800;background:var(--sun);color:var(--sunInk);cursor:pointer}
 .tt-dots{display:flex;gap:4px}.tt-dots i{width:6px;height:6px;border-radius:50%;background:var(--line)}.tt-dots i.on{background:var(--sun)}
+.tt-mods{display:none;flex-direction:column;gap:8px;margin-top:12px}.tt-mods.open{display:flex}.tt-mod{border:2px solid var(--line);background:transparent;color:var(--ink);border-radius:14px;padding:12px 14px;font:inherit;font-weight:800;text-align:left;cursor:pointer}.tt-mod:active{border-color:var(--sun)}
 </style>
 <style>
 .bt-lead{font-size:.85rem;color:var(--soft);margin:0 0 10px}
@@ -3107,29 +3108,53 @@ body.battle .ck-l{color:rgba(255,255,255,.7)}
 
 <script>
 (function(){
-  var STEPS=[
-    {sel:null, ask:true, t:'はじめまして', d:'私はあなた専用のコンシェルジュ。これからあなたの練習を、そばでそっと見守らせてもらうわ。まずは、あなたの名前を教えてね。'},
-    {sel:null, t:'{n}ね、よろしく。', d:'とめれん帳は、ひとりで、こっそり、自分のペースで続けられる練習の記録帳よ。説明を読むより、実際に触ったほうが早いわ。さっそく本物の画面でやってみましょ。'},
-    {sel:'#stage .opts .chips', tab:'train', act:'#stage .opts .chip', t:'① 見るものを選んでみて', d:'光っているところを、実際に押してみて。「動画を見ながら」「最初だけ動画」「想像だけ」から選べるわ。あとから設定で変えられるから、気軽にね。'},
-    {sel:'#controls .big', tab:'train', act:'#controls .big.go', t:'② 「はじめる」を押してみて', d:'準備ができたら、このボタンを実際に押してみて。時計が動きだして、練習が始まるわ。リングは5分でちょうど一周よ。'},
-    {sel:'#lv', act:'#lvgrid button', t:'③ 気持ちよさを数字で押してみて', d:'練習が始まったわ。ここでは「今どのくらい気持ちいいか」を1〜10の数字で押せるの。ためしに、今の感じで押してみて。7以上を押すと、自動で休けいになるわ。'},
-    {sel:'#controls .big', act:'#controls .big.stop', t:'④ 「とめた！」を押してみて', d:'気持ちよさが7くらいになったら、このボタンで手を止めるのが本番の動き。ためしに押してみて。'},
-    {sel:'#controls .big', act:'#controls .big.again', t:'⑤ 落ち着いたら「再開する」', d:'休けい中は時計が青くなるわ。深呼吸して落ち着いたら、このボタンを押して再開。ためしに押してみて。'},
-    {sel:null, t:'しかくはバッチリよ、{n}', d:'あとは「とめた！→再開」をくり返すだけ。3回とめたらゴール、最後は気持ちよく出して大成功よ。めやす・きろく・設定は上のタブからいつでも見られるし、この案内はヘルプからまた呼べるわ。記録はこのスマホの中だけに保存されて、誰にも見られないの。このまま練習を続けてね。'}
-  ];
+  var MODS={
+    normal:{label:'① ノーマルの使用法', endLabel:'練習をつづける', steps:[
+      {sel:null, ask:true, t:'はじめまして', d:'私はあなた専用のコンシェルジュ。これからあなたの練習を、そばでそっと見守らせてもらうわ。まずは、あなたの名前を教えてね。'},
+      {sel:null, t:'{n}ね、よろしく。', d:'とめれん帳は、ひとりで、こっそり、自分のペースで続けられる練習の記録帳よ。説明を読むより、実際に触ったほうが早いわ。さっそく本物の画面でやってみましょ。'},
+      {sel:'#stage .opts .chips', tab:'train', act:'#stage .opts .chip', t:'① 見るものを選んでみて', d:'光っているところを、実際に押してみて。「動画を見ながら」「最初だけ動画」「想像だけ」から選べるわ。あとから設定で変えられるから、気軽にね。'},
+      {sel:'#controls .big', tab:'train', act:'#controls .big.go', t:'② 「はじめる」を押してみて', d:'準備ができたら、このボタンを実際に押してみて。時計が動きだして、練習が始まるわ。リングは5分でちょうど一周よ。'},
+      {sel:'#lv', act:'#lvgrid button', t:'③ 気持ちよさを数字で押してみて', d:'練習が始まったわ。ここでは「今どのくらい気持ちいいか」を1〜10の数字で押せるの。ためしに、今の感じで押してみて。7以上を押すと、自動で休けいになるわ。'},
+      {sel:'#controls .big', act:'#controls .big.stop', t:'④ 「とめた！」を押してみて', d:'気持ちよさが7くらいになったら、このボタンで手を止めるのが本番の動き。ためしに押してみて。'},
+      {sel:'#controls .big', act:'#controls .big.again', t:'⑤ 落ち着いたら「再開する」', d:'休けい中は時計が青くなるわ。深呼吸して落ち着いたら、このボタンを押して再開。ためしに押してみて。'},
+      {sel:null, t:'しかくはバッチリよ、{n}', d:'あとは「とめた！→再開」をくり返すだけ。3回とめたらゴール、最後は気持ちよく出して大成功よ。めやす・きろく・設定は上のタブからいつでも見られるし、この案内はヘルプからまた呼べるわ。バトルや動画・画像・声の案内は、ヘルプの「チュートリアル」から項目ごとに選べるの。記録はこのスマホの中だけに保存されて、誰にも見られないの。このまま練習を続けてね。'}
+    ]},
+    battle:{label:'② バトル', endLabel:'とじる', steps:[
+      {sel:'#btMap', tab:'battle', t:'バトルってなに？', d:'バトルは、練習そのもので敵をたおすモードよ。マップでワールドを選んで、ステージの「たたかう」を押すと、練習画面に敵があらわれるわ。勝つとコインや装備がもらえるの。'},
+      {sel:'#btWorld', tab:'battle', act:'.bt-go:not([disabled])', t:'「たたかう」を押してみて', d:'開いているステージの「たたかう」を、実際に押してみて。練習画面に切りかわって、バトルが始まるわ。'},
+      {sel:'#btArena', t:'敵が出たわ！', d:'あとはノーマルと同じ練習よ。「はじめる」で動かした時間と「とめた！」の回数で、敵にダメージが入るわ。決められた時間・回数・休けいの長さの条件を満たして「おわり」を押せば勝ち。負けるとHPが減るから、やくそうで回復してね。'},
+      {sel:'#btSub', tab:'battle', t:'そうび・もちもの・ショップ', d:'バトル画面の上のボタンから、装備を変えたり、道具を使ったり、ショップで買ったりできるわ。装備で攻撃やHPが上がるから、強い敵の前にのぞいてみてね。'}
+    ]},
+    video:{label:'③ 動画設定（FANZA）', endLabel:'とじる', steps:[
+      {sel:'#stage .opts .chips', tab:'train', act:'#stage .opts .chip', t:'「動画を見ながら」を選んでみて', d:'スタイルのチップを実際に押してみて。「動画を見ながら」を選ぶと、動画ありの練習になるわ。'},
+      {sel:'#xvid', tab:'train', t:'動画をさがす（FANZA）', d:'練習タブの下にある「動画をさがす」で、言葉を入れて「さがす」を押すとFANZAが開いて、サンプル動画を見ながら練習できるわ（18歳以上向けのサイト・広告を含むリンクよ）。'},
+      {sel:'#xvid .xv-how summary', act:'#xvid .xv-how summary', t:'小窓のやり方を開いてみて', d:'「見ながら練習するやり方（iPhone）」を実際に開いてみて。動画を小窓にして、時計を見ながら練習する手順が書いてあるわ。'},
+      {sel:null, t:'動画はほどほどにね', d:'刺激の強い動画は早く高まりやすいから、慣れてきたら「最初だけ動画」や「想像だけ」にも挑戦してみてね。'}
+    ]},
+    media:{label:'④ 画像・音声設定', endLabel:'とじる', steps:[
+      {sel:'#imgPanel', tab:'img', t:'秒数で出る画像', d:'画像タブでは、練習中に決めた秒数から出る画像を登録できるわ。「がまん中」と「ゴールタイム（ごほうび）」の2種類があるの。'},
+      {sel:'#imgPanel', tab:'img', t:'画像の入れ方', d:'まず「保存した画像を読みこむ」を押して、それから「➕ 画像を追加する」で写真を選んで、表示したい秒数を決めるだけ。画像はこのスマホの中だけに保存されるよ🔒'},
+      {sel:'#voicePanel', tab:'voice', t:'自然な声を入れる', d:'声タブでは、画面に出る声かけを自然な声のMP3に入れかえられるわ。🎁マークの文は、はじめから声が入ってるの。'},
+      {sel:'#voicePanel', tab:'voice', act:'#voicePanel .vrow .chip', t:'「📋 まとめてコピー」を押してみて', d:'グループの文を実際にコピーしてみて。音読さんなどの読み上げサービスに貼るとMP3が作れて、「🎵 ファイルを入れる」から取りこめるわ。'},
+      {sel:null, t:'少しずつで大丈夫', d:'声は全部で約2,500文字分。よく使うグループ（基本・手を動かす・やわらかくなってきた・ゴールタイム）から入れるのがおすすめよ。入れてない文は、文字とブルっ（振動）だけになるわ。'}
+    ]}
+  };
+  var ORDER=['normal','battle','video','media'];
   function uname(){ try{ return localStorage.getItem('tomeren-uname')||''; }catch(e){ return ''; } }
   function fill(x){ var n=uname()||'あなた'; return x.replace(/\{n\}/g,n); }
-  var ov,hole,tip,i=0;
+  function doneMap(){ try{ return JSON.parse(localStorage.getItem('tomeren-tutmod')||'{}'); }catch(e){ return {}; } }
+  var ov,hole,tip,i=0,cur=[],curMod=null,picking=false;
   function el(st){ if(!st.sel) return null; var a=document.querySelectorAll(st.sel); return a[st.idx||0]||null; }
   function place(){
-    var st=STEPS[i], e=el(st);
-    tip.querySelector('.tt-step').textContent=(i+1)+' / '+STEPS.length;
+    if(picking||!cur.length) return;
+    var st=cur[i], e=el(st);
+    tip.querySelector('.tt-step').textContent=MODS[curMod].label+'　'+(i+1)+' / '+cur.length;
     tip.querySelector('.tt-t').textContent=fill(st.t); tip.querySelector('.tt-d').textContent=fill(st.d);
     var nm=tip.querySelector('.tt-name'); nm.style.display=st.ask?'block':'none'; if(st.ask){ nm.value=uname(); setTimeout(function(){ try{ nm.focus(); }catch(e){} },350); }
-    tip.querySelector('.tt-next').textContent=st.ask?'決定':(i===STEPS.length-1?'練習をつづける':'次へ');
+    tip.querySelector('.tt-next').textContent=st.ask?'決定':(i===cur.length-1?MODS[curMod].endLabel:'次へ');
     tip.querySelector('.tt-next').style.display=st.act?'none':'';
     ov.style.pointerEvents=st.act?'none':'auto'; tip.style.pointerEvents='auto';
-    tip.querySelector('.tt-dots').innerHTML=STEPS.map(function(_,k){return '<i class="'+(k===i?'on':'')+'"></i>';}).join('');
+    tip.querySelector('.tt-dots').innerHTML=cur.map(function(_,k){return '<i class="'+(k===i?'on':'')+'"></i>';}).join('');
     if(!e){ hole.className='tt-hole none'; tip.style.top='34%'; return; }
     e.scrollIntoView({block:'center'});
     setTimeout(function(){
@@ -3140,36 +3165,66 @@ body.battle .ck-l{color:rgba(255,255,255,.7)}
     },60);
   }
   function go(n){
-    i=n; if(i>=STEPS.length){ end(); return; }
-    var st=STEPS[i]; if(st.tab){ var b=document.querySelector('#tabs button[data-go="'+st.tab+'"]'); if(b && !b.classList.contains('on')) b.click(); }
+    i=n; if(i>=cur.length){ end(); return; }
+    var st=cur[i]; if(st.tab){ var b=document.querySelector('#tabs button[data-go="'+st.tab+'"]'); if(b && !b.classList.contains('on')) b.click(); }
     if(st.act && !document.querySelector(st.act)){ go(i+1); return; }
     place();
   }
-  function end(){ try{ localStorage.setItem('tomeren-tut','done'); }catch(e){} document.removeEventListener('click', onAct, true); if(ov) ov.remove(); ov=null; var b=document.querySelector('#tabs button[data-go="train"]'); if(b) b.click(); window.scrollTo(0,0); }
-  function onAct(e){
-    if(!ov) return; var j=-1;
-    for(var k=i;k<STEPS.length;k++){ if(STEPS[k].act && e.target && e.target.closest && e.target.closest(STEPS[k].act)) j=k; }
-    if(j<0) return;
-    var tgt=j; setTimeout(function(){ if(ov) go(tgt+1); }, 450);
+  function end(){
+    try{ if(curMod){ var m=doneMap(); m[curMod]=1; localStorage.setItem('tomeren-tutmod',JSON.stringify(m)); if(curMod==='normal') localStorage.setItem('tomeren-tut','done'); } }catch(e){}
+    var wasNormal=(curMod==='normal'); curMod=null; cur=[]; picking=false;
+    document.removeEventListener('click', onAct, true); if(ov) ov.remove(); ov=null;
+    if(wasNormal){ var b=document.querySelector('#tabs button[data-go="train"]'); if(b) b.click(); window.scrollTo(0,0); }
   }
-  function start(){
-    if(ov) return; i=0;
-    ov=document.createElement('div'); ov.className='tt-ov'; ov.setAttribute('role','dialog'); ov.setAttribute('aria-label','チュートリアル');
-    ov.innerHTML='<div class="tt-hole none"></div><div class="tt-tip"><div class="tt-who">🛎️ あなた専用コンシェルジュ</div><div class="tt-step"></div><div class="tt-t"></div><div class="tt-d"></div><input class="tt-name" type="text" maxlength="10" placeholder="ニックネームでOKよ" autocomplete="off"><div class="tt-btns"><button type="button" class="tt-skip">スキップ</button><div class="tt-dots"></div><button type="button" class="tt-next">次へ</button></div></div>';
-    document.body.appendChild(ov); hole=ov.querySelector('.tt-hole'); tip=ov.querySelector('.tt-tip');
-    function nextStep(){ if(STEPS[i].ask){ var v=(tip.querySelector('.tt-name').value||'').trim().slice(0,10); try{ if(v) localStorage.setItem('tomeren-uname',v); }catch(e){} tip.querySelector('.tt-name').blur(); } go(i+1); }
-    ov.querySelector('.tt-next').addEventListener('click',nextStep);
-    ov.querySelector('.tt-name').addEventListener('keydown',function(ev){ if(ev.key==='Enter'){ ev.preventDefault(); nextStep(); } });
-    ov.querySelector('.tt-skip').addEventListener('click',end);
-    document.addEventListener('click', onAct, true);
-    window.addEventListener('resize',function(){ if(ov) place(); });
+  function onAct(e){
+    if(!ov||picking) return; var j=-1;
+    for(var k=i;k<cur.length;k++){ if(cur[k].act && e.target && e.target.closest && e.target.closest(cur[k].act)) j=k; }
+    if(j<0) return;
+    var tgt=j; setTimeout(function(){ if(ov&&!picking) go(tgt+1); }, 450);
+  }
+  function showPicker(){
+    picking=true; curMod=null; cur=[];
+    hole.className='tt-hole none'; tip.style.top='34%'; ov.style.pointerEvents='auto'; tip.style.pointerEvents='auto';
+    tip.querySelector('.tt-step').textContent='チュートリアル';
+    tip.querySelector('.tt-t').textContent='どの項目をやる？';
+    tip.querySelector('.tt-d').textContent='やってみたい項目を選んでね。どれも実際の画面を触って覚える方式よ。終わった項目には ✓ がつくわ。';
+    tip.querySelector('.tt-name').style.display='none';
+    tip.querySelector('.tt-next').style.display='none';
+    tip.querySelector('.tt-dots').innerHTML='';
+    tip.querySelector('.tt-skip').textContent='閉じる';
+    var box=tip.querySelector('.tt-mods'); box.className='tt-mods open'; box.innerHTML='';
+    var dm=doneMap();
+    ORDER.forEach(function(key){
+      var btn=document.createElement('button'); btn.type='button'; btn.className='tt-mod'; btn.textContent=MODS[key].label+(dm[key]?'　✓':'');
+      btn.addEventListener('click',function(){ runModule(key); });
+      box.appendChild(btn);
+    });
+  }
+  function runModule(key){
+    picking=false; curMod=key; cur=MODS[key].steps; i=0;
+    tip.querySelector('.tt-mods').className='tt-mods'; tip.querySelector('.tt-mods').innerHTML='';
+    tip.querySelector('.tt-skip').textContent='スキップ';
     go(0);
   }
-  window.tmTutorial=start;
+  function start(mod){
+    if(ov) return;
+    ov=document.createElement('div'); ov.className='tt-ov'; ov.setAttribute('role','dialog'); ov.setAttribute('aria-label','チュートリアル');
+    ov.innerHTML='<div class="tt-hole none"></div><div class="tt-tip"><div class="tt-who">🛎️ あなた専用コンシェルジュ</div><div class="tt-step"></div><div class="tt-t"></div><div class="tt-d"></div><input class="tt-name" type="text" maxlength="10" placeholder="ニックネームでOKよ" autocomplete="off"><div class="tt-mods"></div><div class="tt-btns"><button type="button" class="tt-skip">スキップ</button><div class="tt-dots"></div><button type="button" class="tt-next">次へ</button></div></div>';
+    document.body.appendChild(ov); hole=ov.querySelector('.tt-hole'); tip=ov.querySelector('.tt-tip');
+    function nextStep(){ if(picking) return; if(cur[i]&&cur[i].ask){ var v=(tip.querySelector('.tt-name').value||'').trim().slice(0,10); try{ if(v) localStorage.setItem('tomeren-uname',v); }catch(e){} tip.querySelector('.tt-name').blur(); } go(i+1); }
+    ov.querySelector('.tt-next').addEventListener('click',nextStep);
+    ov.querySelector('.tt-name').addEventListener('keydown',function(ev){ if(ev.key==='Enter'){ ev.preventDefault(); nextStep(); } });
+    ov.querySelector('.tt-skip').addEventListener('click',function(){ end(); });
+    document.addEventListener('click', onAct, true);
+    window.addEventListener('resize',function(){ if(ov) place(); });
+    if(mod&&MODS[mod]) runModule(mod); else showPicker();
+  }
+  window.tmTutorial=function(){ start(); };
   document.addEventListener('click',function(e){ if(e.target.closest('#helpTut')){ e.preventDefault(); var hm=document.getElementById('helpMenu'); if(hm) hm.classList.remove('open'); start(); } });
-  var first=false; try{ var lg=JSON.parse(localStorage.getItem('tomeren-log')||'{}'); first=!localStorage.getItem('tomeren-tut') && !((lg.sessions||[]).length); }catch(e){}
-  try{ if(new URLSearchParams(location.search).get('tut')==='1') first=true; }catch(e){}
-  if(first){ var tries=0, iv=setInterval(function(){ tries++; var sp=document.getElementById('splash'), g=document.getElementById('gate'); if(!sp && (!g||g.hidden)){ clearInterval(iv); setTimeout(start,500); } if(tries>400) clearInterval(iv); },300); }
+  var first=false, tutParam=false;
+  try{ var lg=JSON.parse(localStorage.getItem('tomeren-log')||'{}'); first=!localStorage.getItem('tomeren-tut') && !((lg.sessions||[]).length); }catch(e){}
+  try{ tutParam=(new URLSearchParams(location.search).get('tut')==='1'); }catch(e){}
+  if(first||tutParam){ var tries=0, iv=setInterval(function(){ tries++; var sp=document.getElementById('splash'), g=document.getElementById('gate'); if(!sp && (!g||g.hidden)){ clearInterval(iv); setTimeout(function(){ if(first) start('normal'); else start(); },500); } if(tries>400) clearInterval(iv); },300); }
 })();
 </script>
 
