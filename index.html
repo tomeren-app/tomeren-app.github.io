@@ -3949,5 +3949,17 @@ body:not(.battle) .stage.idle{padding-top:calc(108px + env(safe-area-inset-top,0
 #tabs{z-index:44}
 body:has(#stage.idle:not(.hide)) h1,body:has(#stage.idle:not(.hide)) .sub{display:none}
 </style>
+<style id="tabsFix">
+/* ヘッダーメニュー（タブバー）の質感アップ（2026-11-12）：白い箱と太い枠の並びが安っぽく見えたため、スタンバイのおしゃれ版と同じ紺×アンバーの世界観に統一。濃紺のガラスバー＋選択中はアンバーグラデーション */
+.tabs{background:linear-gradient(180deg,rgba(38,45,74,.98),rgba(21,26,44,.98));-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.10);border-radius:20px;padding:6px;gap:4px;box-shadow:0 12px 28px rgba(21,26,44,.30),inset 0 1px 0 rgba(255,255,255,.08);margin:4px 0 10px}
+.tabs button{border:1px solid transparent;background:transparent;color:rgba(244,241,234,.60);border-radius:14px;padding:7px 2px 5px;box-shadow:none;transition:background .18s,color .18s,transform .1s}
+.tabs button:active{transform:scale(.94)}
+.tabs button span{font-size:.6rem;font-weight:700;letter-spacing:.05em}
+.tabs .ti{width:21px;height:21px;opacity:.92}
+.tabs button.on,.tabs .ddbtn.on{background:linear-gradient(135deg,#FFB547,#FF7A59);border-color:transparent;color:#2A1600;box-shadow:0 5px 16px rgba(255,150,90,.40),inset 0 1px 0 rgba(255,255,255,.35)}
+.tabs .ddmenu{background:#1D2440;border:1px solid rgba(255,255,255,.12);border-radius:16px;box-shadow:0 18px 40px rgba(10,12,30,.45);padding:6px}
+.tabs .ddmenu button{color:rgba(244,241,234,.85)}
+.tabs .ddmenu button.on{background:linear-gradient(135deg,#FFB547,#FF7A59)!important;color:#2A1600!important}
+</style>
 </body>
 </html>
