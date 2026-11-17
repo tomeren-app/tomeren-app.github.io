@@ -3991,7 +3991,7 @@ body.tut-on .tm-cta{display:none!important}
    GO_BASE は Worker デプロイ後に実URLへ差し替える（この1箇所だけ）。
    チュートリアル中・年齢確認・スプラッシュでは広告系を出さない既存ルールを踏襲する。 */
 (function(){
-  var GO_BASE = 'https://tomeren-go.vansboffice.workers.dev'; /* ★Worker稼働中（2026-11-17デプロイ・計測確認済み） */
+  var GO_BASE = 'https://tomeren-go.PLACEHOLDER.workers.dev'; /* ★302停止中（2026-11-18 社長判断：DMM確認が取れるまで中継を使わない。リンクは従来の直接リンクに戻る） */
   var GO_LIVE = GO_BASE.indexOf('PLACEHOLDER') === -1;
   /* Worker未稼働時（GO_BASEがプレースホルダの間）のフォールバック：
      リンクは現行サイトと同一の直接URLを使い、計測ビーコンは送らない。
