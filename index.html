@@ -1127,6 +1127,10 @@ body.battle .ck-l{color:rgba(255,255,255,.7)}
     <div class="counts" id="dots"></div>
     <div class="countTxt" id="countTxt">目標：3回止める</div>
     <div id="controls"></div>
+    <div id="tmCtaResult" class="tm-cta" hidden>
+      <a class="tm-cta-main" data-tmgo="result-main" data-tmsrc="result" target="_blank" rel="noopener sponsored">🎬 FANZA TV 無料お試し<span>練習のごほうびに、まずは無料でためしてみる ›</span></a>
+      <a class="tm-cta-sub" data-tmgo="result-sub" data-tmsrc="result" target="_blank" rel="noopener sponsored">月額動画で見放題もチェック ›</a>
+    </div>
   </section>
 
   <section data-tab="train" class="card xvid" id="xvid">
@@ -1173,6 +1177,9 @@ body.battle .ck-l{color:rgba(255,255,255,.7)}
     <div class="kr-h"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 6-7"/></svg><span>きろく</span></div>
     <div class="kr-chart"><div class="kr-lab">続いた時間</div><div id="chart"></div></div>
     <ul class="kr-list" id="hist"></ul>
+    <div id="tmCtaHist" class="tm-cta" hidden>
+      <a class="tm-cta-main" data-tmgo="hist-main" data-tmsrc="history" target="_blank" rel="noopener sponsored">🎬 FANZA TV 無料お試し<span>がんばった日のごほうびに、まずは無料で ›</span></a>
+    </div>
   </section>
 
   <section data-tab="log" class="card" id="titleCard">
@@ -2643,7 +2650,7 @@ body.battle .ck-l{color:rgba(255,255,255,.7)}
     sc.src = 'https://widget-view.dmm.co.jp/js/banner_placement.js?affiliate_id=tomeren-003&banner_id=2169_300_250';
     box.appendChild(sc);
     setTimeout(()=>{ if (!box.querySelector('iframe,img,a')) {
-      const u = 'https://al.fanza.co.jp/?lurl='+encodeURIComponent('https://video.dmm.co.jp/')+'&af_id=tomeren-003&ch=search_link&ch_id=link';
+      const u = (window.TM_GO && TM_GO.go) ? TM_GO.go('banner-fallback','popup') : 'https://al.fanza.co.jp/?lurl='+encodeURIComponent('https://video.dmm.co.jp/')+'&af_id=tomeren-003&ch=search_link&ch_id=link';
       box.innerHTML = '<a class="ad-fb" href="'+u+'" target="_blank" rel="noopener sponsored"><b>FANZA動画</b><span>サンプル動画を見ながら練習しよう</span><em>FANZAをひらく ›</em></a>';
     } }, 5000);
   }
@@ -3924,7 +3931,7 @@ body.battle .ck-l{color:rgba(255,255,255,.7)}
     w=String(w||'').trim(); if(!w){ q.focus(); return; }
     var a=load().filter(function(x){ return x!==w; }); a.unshift(w); save(a.slice(0,6)); render();
     try{ if(window.gtag) gtag('event','video_search'); }catch(e){}
-    var dest='https://video.dmm.co.jp/list/?key='+encodeURIComponent(w); var u='https://al.fanza.co.jp/?lurl='+encodeURIComponent(dest)+'&af_id=tomeren-003&ch=search_link&ch_id=link'; window.open(u,'_blank','noopener');
+    var dest='https://video.dmm.co.jp/list/?key='+encodeURIComponent(w); var u=(window.TM_GO && TM_GO.go) ? TM_GO.go('search','search', w) : 'https://al.fanza.co.jp/?lurl='+encodeURIComponent(dest)+'&af_id=tomeren-003&ch=search_link&ch_id=link'; window.open(u,'_blank','noopener');
   }
   go.addEventListener('click',function(){ open(q.value); });
   q.addEventListener('keydown',function(e){ if(e.key==='Enter'){ e.preventDefault(); open(q.value); } });
@@ -3968,5 +3975,111 @@ body:has(#stage.idle:not(.hide)) h1,body:has(#stage.idle:not(.hide)) .sub{displa
 /* 練習画面ではアフィリエイトを表示する（2026-11-12ユーザー指示）：サイト全体の .adpop 消去指定は残したまま、練習画面（スタンバイ／練習中／バトル中）でのみ解除する。hidden 属性がある間は出ない（JSの表示・非表示制御に従う）。チュートリアル中は adAllowed と body.tut-on の指定で従来通り非表示 */
 body.running .adpop:not([hidden]),body.battle .adpop:not([hidden]),body:has(#stage.idle:not(.hide)) .adpop:not([hidden]){display:block!important}
 </style>
+
+<style id="tmGoStyle">
+/* 収益化Wave 1: 結果・履歴画面のCTA（チュートリアル中は出さない） */
+.tm-cta{margin:14px auto 4px;max-width:340px;display:flex;flex-direction:column;gap:8px}
+.tm-cta[hidden]{display:none}
+body.tut-on .tm-cta{display:none!important}
+.tm-cta a{display:block;text-align:center;border-radius:12px;text-decoration:none;padding:12px 14px;font-weight:800}
+.tm-cta-main{background:linear-gradient(135deg,#1E2340,#3A2B52);color:#F5EFE6;font-size:1.05rem;letter-spacing:.03em}
+.tm-cta-main span{display:block;margin-top:4px;font-size:.78rem;font-weight:600;opacity:.85}
+.tm-cta-sub{background:rgba(242,181,58,.16);color:#F2B53A;border:1px solid rgba(242,181,58,.45);font-size:.88rem}
+</style>
+<script>
+/* ===== 収益化Wave 1 計測（/go/ 302 ＋ インプレッション） =====
+   GO_BASE は Worker デプロイ後に実URLへ差し替える（この1箇所だけ）。
+   チュートリアル中・年齢確認・スプラッシュでは広告系を出さない既存ルールを踏襲する。 */
+(function(){
+  var GO_BASE = 'https://tomeren-go.PLACEHOLDER.workers.dev'; /* ★Worker未デプロイのためプレースホルダ */
+  var GO_LIVE = GO_BASE.indexOf('PLACEHOLDER') === -1;
+  /* Worker未稼働時（GO_BASEがプレースホルダの間）のフォールバック：
+     リンクは現行サイトと同一の直接URLを使い、計測ビーコンは送らない。
+     直接URLの遷移先は Worker の AFFILIATE_URLS と一致させてある。 */
+  function directUrl(dest){ return 'https://al.fanza.co.jp/?lurl=' + encodeURIComponent(dest) + '&af_id=tomeren-003&ch=search_link&ch_id=link'; }
+  var DIRECT = {
+    'result-main': directUrl('https://video.dmm.co.jp/'),
+    'result-sub': directUrl('https://video.dmm.co.jp/'),
+    'hist-main': directUrl('https://video.dmm.co.jp/'),
+    'banner-fallback': directUrl('https://video.dmm.co.jp/')
+  };
+  function go(p, src, key){
+    if (!GO_LIVE){
+      if (p === 'search') return directUrl('https://video.dmm.co.jp/list/?key=' + encodeURIComponent(key || ''));
+      return DIRECT[p] || directUrl('https://video.dmm.co.jp/');
+    }
+    return GO_BASE + '/go/fanza?p=' + encodeURIComponent(p) + (src ? '&src=' + encodeURIComponent(src) : '') + (key ? '&key=' + encodeURIComponent(key) : '');
+  }
+  function count(p){
+    if (!GO_LIVE) return; /* Worker未稼働時はビーコンを送らない */
+    var u = GO_BASE + '/count?p=' + encodeURIComponent(p);
+    try{
+      if (navigator.sendBeacon && navigator.sendBeacon(u)) return;
+    }catch(e){}
+    try{ fetch(u, { mode:'no-cors', keepalive:true }).catch(function(){}); }
+    catch(e){ try{ new Image().src = u; }catch(_){} }
+  }
+  // 広告を出してよい状態か（既存 adAllowed の条件＋チュートリアル除外）
+  function adOk(){
+    var g = document.getElementById('gate');
+    if (g && !g.hidden) return false;                       /* 年齢確認中 */
+    var sp = document.getElementById('splash');
+    if (sp && !sp.classList.contains('out') && sp.style.opacity !== '0') return false; /* スプラッシュ中 */
+    if (document.querySelector('.tt-ov')) return false;      /* チュートリアル中 */
+    if (document.body.classList.contains('tut-on')) return false;
+    return true;
+  }
+  window.TM_GO = { GO_BASE: GO_BASE, go: go, count: count };
+
+  /* CTAリンクの href を GO_BASE 経由に設定 */
+  document.querySelectorAll('[data-tmgo]').forEach(function(a){
+    a.href = go(a.getAttribute('data-tmgo'), a.getAttribute('data-tmsrc') || '');
+  });
+
+  /* --- 結果画面: stage が done になったら CTA 表示＋インプレッション --- */
+  var stage = document.getElementById('stage');
+  var ctaResult = document.getElementById('tmCtaResult');
+  var resultCounted = false;
+  function syncResult(){
+    if (!stage || !ctaResult) return;
+    var done = stage.classList.contains('done');
+    if (done && adOk()){
+      ctaResult.hidden = false;
+      if (!resultCounted){ resultCounted = true; count('result'); }
+    } else {
+      ctaResult.hidden = true;
+      if (!done) resultCounted = false;
+    }
+  }
+  if (stage) new MutationObserver(syncResult).observe(stage, { attributes:true, attributeFilter:['class'] });
+
+  /* --- 履歴画面: logタブが開いたら CTA 表示＋インプレッション --- */
+  var histSec = document.querySelector('section.kiroku');
+  var ctaHist = document.getElementById('tmCtaHist');
+  var histCounted = false;
+  function syncHist(){
+    if (!histSec || !ctaHist) return;
+    var shown = !histSec.classList.contains('hide');
+    if (shown && adOk()){
+      ctaHist.hidden = false;
+      if (!histCounted){ histCounted = true; count('history'); }
+    } else {
+      ctaHist.hidden = true;
+      if (!shown) histCounted = false;
+    }
+  }
+  if (histSec) new MutationObserver(syncHist).observe(histSec, { attributes:true, attributeFilter:['class'] });
+
+  /* --- 記録完了時: セッションが保存されたら count('complete') ---
+     既存の tmOnFinish チェーン（前の定義を呼んでから自分の処理）を踏襲する */
+  var prevFinish = window.tmOnFinish;
+  window.tmOnFinish = function(s, goal){
+    if (prevFinish) { try{ prevFinish(s, goal); }catch(e){} }
+    try{ if (s && s.active >= 1) count('complete'); }catch(e){}
+  };
+
+  syncResult(); syncHist();
+})();
+</script>
 </body>
 </html>
