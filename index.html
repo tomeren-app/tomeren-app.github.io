@@ -2654,7 +2654,7 @@ body.battle .ck-l{color:rgba(255,255,255,.7)}
       box.innerHTML = '<a class="ad-fb" href="'+u+'" target="_blank" rel="noopener sponsored"><b>FANZA動画</b><span>サンプル動画を見ながら練習しよう</span><em>FANZAをひらく ›</em></a>';
     } }, 5000);
   }
-  function showAd(){ if (!adAllowed()) return; adPop.hidden = false; document.body.classList.add('adopen'); requestAnimationFrame(loadBanner); }
+  function showAd(){ if (!adAllowed()) return; var wasHidden = adPop.hidden; adPop.hidden = false; document.body.classList.add('adopen'); requestAnimationFrame(loadBanner); if (wasHidden){ try{ if (window.TM_GO && TM_GO.count) TM_GO.count('popup'); }catch(e){} } }
   function hideAd(){ adPop.hidden = true; document.body.classList.remove('adopen'); }
   document.getElementById('adClose').onclick = ()=>{ adClosedAt = Date.now(); hideAd(); };
   // とじても、タブを切りかえたり練習が終わったら、また出る
@@ -3931,7 +3931,7 @@ body.battle .ck-l{color:rgba(255,255,255,.7)}
     w=String(w||'').trim(); if(!w){ q.focus(); return; }
     var a=load().filter(function(x){ return x!==w; }); a.unshift(w); save(a.slice(0,6)); render();
     try{ if(window.gtag) gtag('event','video_search'); }catch(e){}
-    var dest='https://video.dmm.co.jp/list/?key='+encodeURIComponent(w); var u=(window.TM_GO && TM_GO.go) ? TM_GO.go('search','search', w) : 'https://al.fanza.co.jp/?lurl='+encodeURIComponent(dest)+'&af_id=tomeren-003&ch=search_link&ch_id=link'; window.open(u,'_blank','noopener');
+    var dest='https://video.dmm.co.jp/list/?key='+encodeURIComponent(w); var u=(window.TM_GO && TM_GO.go) ? TM_GO.go('search','search', w) : 'https://al.fanza.co.jp/?lurl='+encodeURIComponent(dest)+'&af_id=tomeren-003&ch=search_link&ch_id=link'; try{ if(window.TM_GO && TM_GO.count) TM_GO.count('click-search'); }catch(e){} window.open(u,'_blank','noopener');
   }
   go.addEventListener('click',function(){ open(q.value); });
   q.addEventListener('keydown',function(e){ if(e.key==='Enter'){ e.preventDefault(); open(q.value); } });
@@ -4010,9 +4010,14 @@ body.tut-on .tm-cta{display:none!important}
     }
     return GO_BASE + '/go/fanza?p=' + encodeURIComponent(p) + (src ? '&src=' + encodeURIComponent(src) : '') + (key ? '&key=' + encodeURIComponent(key) : '');
   }
+  /* 計測再開（2026-11-18 会議6・手順1の代替、社長承認）：302中継は停止のまま、
+     表示とクリックの位置名だけを実Workerの /count へ送る。DMMリンクは書き換えない。
+     社長の訪問（?me=1 → localStorage 'tomeren-me'）は送らない。 */
+  var LOG_BASE = 'https://tomeren-go.vansboffice.workers.dev';
+  function isMe(){ try{ return localStorage.getItem('tomeren-me') === '1'; }catch(e){ return false; } }
   function count(p){
-    if (!GO_LIVE) return; /* Worker未稼働時はビーコンを送らない */
-    var u = GO_BASE + '/count?p=' + encodeURIComponent(p);
+    if (!LOG_BASE || isMe()) return;
+    var u = LOG_BASE + '/count?p=' + encodeURIComponent(p);
     try{
       if (navigator.sendBeacon && navigator.sendBeacon(u)) return;
     }catch(e){}
@@ -4030,6 +4035,18 @@ body.tut-on .tm-cta{display:none!important}
     return true;
   }
   window.TM_GO = { GO_BASE: GO_BASE, go: go, count: count };
+
+  /* --- CTA・代替バナーのクリック位置を記録（遷移は妨げない） --- */
+  document.addEventListener('click', function(e){
+    try{
+      var a = e.target && e.target.closest ? e.target.closest('a') : null;
+      if (!a) return;
+      var pos = a.getAttribute('data-tmgo');
+      if (!pos && a.classList.contains('ad-fb')) pos = 'banner-fallback';
+      if (!pos) return;
+      count('click-' + pos);
+    }catch(_){}
+  }, true);
 
   /* CTAリンクの href を GO_BASE 経由に設定 */
   document.querySelectorAll('[data-tmgo]').forEach(function(a){

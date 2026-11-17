@@ -27,3 +27,13 @@
   リンク確定後に、このファイルの定数だけを差し替える。
 - ログに IPアドレスは保存していない（UA・Referer のみ）。
 - KV の list は結果整合性に遅延があるため、/stats の件数は「目安」として扱う。
+
+## 2026-11-18 計測再開（302は停止のまま、会議6・手順1の代替）
+
+- 302中継（/go/fanza）は使わない。DMM回答があるまで停止を維持する
+- 代わりに /count へ位置名だけを送る（index.html 側の変更のみ、Worker変更なし）
+  - 表示：`result`（結果画面）`history`（履歴画面）`complete`（記録完了）`popup`（広告ポップアップ）
+  - クリック：`click-result-main` `click-result-sub` `click-hist-main` `click-banner-fallback` `click-search`
+- /stats では `imp:<位置名>` の形で件数が見える（クリックも imp:click-...）
+- 社長の訪問（?me=1）は送らない
+- DMMリンクは書き換えていない。バナー枠内クリックは数えられない（DMM側レポートで確認）
