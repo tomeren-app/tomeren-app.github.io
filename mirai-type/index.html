@@ -60,7 +60,7 @@ input[type=text]:focus { outline: none; border-color: #6c5ce7; }
 .card .meta { margin-top: 4px; font-size: 13px; color: #555; }
 .card .hitokoto { margin-top: 20px; font-size: 14px; font-weight: 700; line-height: 1.8; }
 .card .myword { margin-top: 14px; font-size: 14px; font-weight: 700; line-height: 1.8; color: #6c5ce7; }
-.heart { position: absolute; right: 16px; bottom: 40px; border: 1px solid #eee; background: #fff; border-radius: 999px; padding: 6px 12px; font-size: 14px; color: #999; cursor: pointer; }
+.heart { position: absolute; right: 14px; top: 14px; border: 1px solid #eee; background: #fff; border-radius: 999px; padding: 6px 12px; font-size: 14px; color: #999; cursor: pointer; }
 .heart.on { color: #e74c3c; border-color: #f5c6c0; animation: pop .3s ease; }
 @keyframes pop { 0% { transform: scale(1); } 50% { transform: scale(1.25); } 100% { transform: scale(1); } }
 .card .world { margin-top: 10px; font-size: 12px; line-height: 1.8; color: #555; }
@@ -73,6 +73,8 @@ input[type=text]:focus { outline: none; border-color: #6c5ce7; }
 
 /* 暫定カード（2段構成：5問時点） */
 #provresult { display: none; }
+#provresult .card { aspect-ratio: auto; padding-bottom: 30px; } /* 暫定カードは中身が少ないので、縦長の固定比率をやめて下の空白をなくす */
+#provresult .card .meta { margin-top: 22px; }
 .stamp { position: absolute; top: 16px; right: 16px; border: 2px solid #e74c3c; color: #e74c3c; border-radius: 6px; padding: 3px 12px; font-size: 15px; font-weight: 800; letter-spacing: .35em; transform: rotate(8deg); background: rgba(255,255,255,.85); }
 .cont { width: 100%; margin-top: 16px; padding: 14px; border: none; border-radius: 8px; background: #6c5ce7; color: #fff; font-size: 15px; font-weight: 700; cursor: pointer; }
 .pnote { margin-top: 16px; font-size: 12px; color: #888; line-height: 1.8; text-align: center; }
