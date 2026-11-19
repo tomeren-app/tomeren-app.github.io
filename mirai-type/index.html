@@ -77,6 +77,18 @@ input[type=text]:focus { outline: none; border-color: #6c5ce7; }
 #provresult .card .meta { margin-top: 22px; }
 .stamp { position: absolute; top: 16px; right: 16px; border: 2px solid #e74c3c; color: #e74c3c; border-radius: 6px; padding: 3px 12px; font-size: 15px; font-weight: 800; letter-spacing: .35em; transform: rotate(8deg); background: rgba(255,255,255,.85); }
 .cont { width: 100%; margin-top: 16px; padding: 14px; border: none; border-radius: 8px; background: #6c5ce7; color: #fff; font-size: 15px; font-weight: 700; cursor: pointer; }
+#result .card { aspect-ratio: auto; padding-top: 40px; padding-bottom: 34px; } /* 結果カードは「タイプ・名前・偏差値」に絞ったので固定比率をやめる */
+#result .card .score { margin-top: 26px; }
+#result .card .hitokoto { margin-top: 18px; }
+#result .card .pair { margin-top: 16px; }
+.more { margin-top: 14px; background: #fff; border: 1px solid #e3e3e3; border-radius: 12px; }
+.more summary { padding: 14px 16px; font-size: 14px; font-weight: 700; color: #6c5ce7; cursor: pointer; text-align: center; list-style: none; }
+.more summary::-webkit-details-marker { display: none; }
+.more summary::after { content: " ▼"; font-size: 11px; }
+.more[open] summary::after { content: " ▲"; }
+.more-body { padding: 0 18px 16px; }
+.m-item { padding: 12px 0; border-top: 1px solid #f0f0f0; font-size: 13px; line-height: 1.8; color: #444; }
+.m-item b { display: block; font-size: 12px; color: #999; font-weight: 700; margin-bottom: 2px; }
 .pnote { margin-top: 16px; font-size: 12px; color: #888; line-height: 1.8; text-align: center; }
 </style>
 </head>
@@ -111,19 +123,25 @@ input[type=text]:focus { outline: none; border-color: #6c5ce7; }
 <div class="action">50問の回答から</div>
 <div class="code" id="r-code"></div>
 <div class="tname" id="r-tname"></div>
-<div class="future" id="r-future"></div>
 <div class="score">行動偏差値<b id="r-score"></b></div>
-<div class="meta" id="r-meta"></div>
 <div class="hitokoto" id="r-hitokoto"></div>
 <div class="myword" id="r-myword"></div>
-<div class="tip" id="r-tip"></div>
 <div class="pair" id="r-pair"></div>
-<div class="world" id="r-world"></div>
 <div class="sign" id="r-sign"></div>
 <div class="tags">#未来タイプ診断 #行動偏差値</div>
 <div class="note">※あそびの診断です。偏差値は、この診断の中での目安です。実際の人たちと比べた数字ではありません。</div>
 <button class="heart" id="heart">♡ <span id="heart-n"></span></button>
 </div>
+<details class="more">
+<summary>くわしく見る</summary>
+<div class="more-body">
+<div class="m-item"><b>あなたの未来</b><span id="r-future"></span></div>
+<div class="m-item"><b>判定の型</b><span id="r-meta"></span></div>
+<div class="m-item"><b>次の一手</b><span id="r-tip"></span></div>
+<div class="m-item"><b>相性がいい理由</b><span id="r-pairwhy"></span></div>
+<div class="m-item"><b>世界に及ぼす影響</b><span id="r-world"></span></div>
+</div>
+</details>
 <label for="myword">あなたの今の一言（カードに載って、そのままXに呟けます）</label>
 <input type="text" id="myword" maxlength="40" placeholder="例：来週は朝型に戻す">
 <button class="share" id="share">Xでシェアする</button>
@@ -616,9 +634,11 @@ function finish(){
     document.getElementById("r-score").textContent = last.score.toFixed(1);
     document.getElementById("r-meta").textContent = last.cat.judge;
     document.getElementById("r-hitokoto").textContent = last.hito;
-    document.getElementById("r-tip").textContent = last.tip;
-    document.getElementById("r-world").innerHTML = "<b>世界に及ぼす影響</b><br>" + last.world;
-    document.getElementById("r-pair").innerHTML = "相性のいい未来タイプ<br><b>" + last.pair.code + "「" + last.pair.tname + "」</b><br>" + last.pair.why;
+    document.getElementById("r-tip").textContent = String(last.tip).replace(/^次の一手：/, "");
+    document.getElementById("r-world").textContent = last.world;
+    document.getElementById("r-pair").innerHTML = "相性のいい未来タイプ<br><b>" + last.pair.code + "「" + last.pair.tname + "」</b>";
+    document.getElementById("r-pairwhy").textContent = last.pair.code + "「" + last.pair.tname + "」：" + last.pair.why;
+    document.querySelector("#result details.more").open = false;
     const sign = document.getElementById("sign").value.trim();
     document.getElementById("r-sign").textContent = sign ? "― " + sign : "";
     document.getElementById("result").style.display = "block";
