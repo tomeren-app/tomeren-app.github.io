@@ -11,8 +11,9 @@
 //
 // リダイレクト先は AFFILIATE_URLS で一箇所管理する。
 // 初期値は現行サイトで使われている FANZA リンク（af_id=tomeren-003）の流用。
-// ★ result-main / result-sub / hist-main は、DMM料率の一次確認と
-//   「無料お試し」案件リンクの確定後に差し替える前提のプレースホルダ。
+// ★ result-main / hist-main は、DMM回答（2026-11-19）と社長承認を受けて
+//   2026-11-19にFANZA TVトップ（https://tv.dmm.co.jp/vod/）へ差し替え済み。
+//   result-sub は月額動画系のため FANZA動画トップのまま。
 
 const AF_ID = 'tomeren-003';
 
@@ -22,12 +23,12 @@ function fanzaUrl(dest) {
 }
 
 const AFFILIATE_URLS = {
-  // 結果画面・主CTA（無料お試し系に差し替え予定。当面は既存リンク流用）
-  'result-main': fanzaUrl('https://video.dmm.co.jp/'),
-  // 結果画面・従CTA（月額動画系に差し替え予定。当面は既存リンク流用）
+  // 結果画面・主CTA（FANZA TV 無料お試し。2026-11-19差し替え済み）
+  'result-main': fanzaUrl('https://tv.dmm.co.jp/vod/'),
+  // 結果画面・従CTA（月額動画系。FANZA動画トップ）
   'result-sub': fanzaUrl('https://video.dmm.co.jp/'),
-  // 履歴画面CTA（無料お試し系に差し替え予定。当面は既存リンク流用）
-  'hist-main': fanzaUrl('https://video.dmm.co.jp/'),
+  // 履歴画面CTA（FANZA TV 無料お試し。2026-11-19差し替え済み）
+  'hist-main': fanzaUrl('https://tv.dmm.co.jp/vod/'),
   // 広告ポップアップのフォールバックリンク（現行サイトと同一）
   'banner-fallback': fanzaUrl('https://video.dmm.co.jp/'),
   // 'search' は動的生成（下記 searchUrl）なのでここには置かない
