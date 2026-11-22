@@ -1130,6 +1130,7 @@ body.battle .ck-l{color:rgba(255,255,255,.7)}
     <div id="tmCtaResult" class="tm-cta" hidden>
       <a class="tm-cta-main" data-tmgo="result-main" data-tmsrc="result" target="_blank" rel="noopener sponsored">🎬 FANZA TV 無料お試し<span>練習のごほうびに、まずは無料でためしてみる ›</span></a>
       <a class="tm-cta-sub" data-tmgo="result-sub" data-tmsrc="result" target="_blank" rel="noopener sponsored">月額動画で見放題もチェック ›</a>
+      <a class="tm-cta-sub" data-tmgo="result-mgs" data-tmsrc="result" target="_blank" rel="noopener sponsored">MGS動画でもさがす（PR・18歳以上） ›</a>
     </div>
   </section>
 
@@ -1179,6 +1180,7 @@ body.battle .ck-l{color:rgba(255,255,255,.7)}
     <ul class="kr-list" id="hist"></ul>
     <div id="tmCtaHist" class="tm-cta" hidden>
       <a class="tm-cta-main" data-tmgo="hist-main" data-tmsrc="history" target="_blank" rel="noopener sponsored">🎬 FANZA TV 無料お試し<span>がんばった日のごほうびに、まずは無料で ›</span></a>
+      <a class="tm-cta-sub" data-tmgo="hist-mgs" data-tmsrc="history" target="_blank" rel="noopener sponsored">MGS動画でもさがす（PR・18歳以上） ›</a>
     </div>
   </section>
 
@@ -3996,14 +3998,19 @@ body.tut-on .tm-cta{display:none!important}
   /* Worker未稼働時（GO_BASEがプレースホルダの間）のフォールバック：
      リンクは現行サイトと同一の直接URLを使い、計測ビーコンは送らない。
      直接URLの遷移先は Worker の AFFILIATE_URLS と一致させてある。 */
+  var MGS_URL = 'https://www.mgstage.com/?agef=1&aff=DXU3FHGHIEJYDB8MD25XC5U8TM';
   function directUrl(dest){ return 'https://al.fanza.co.jp/?lurl=' + encodeURIComponent(dest) + '&af_id=tomeren-003&ch=search_link&ch_id=link'; }
   var DIRECT = {
     'result-main': directUrl('https://tv.dmm.co.jp/vod/'),
     'result-sub': directUrl('https://video.dmm.co.jp/'),
     'hist-main': directUrl('https://tv.dmm.co.jp/vod/'),
-    'banner-fallback': directUrl('https://video.dmm.co.jp/')
+    'banner-fallback': directUrl('https://video.dmm.co.jp/'),
+    /* MGS動画アフィリエイト（2026-11-22 社長決定：大人向けOKの広告からMGSを選択。報酬は購入額の40%） */
+    'result-mgs': MGS_URL,
+    'hist-mgs': MGS_URL
   };
   function go(p, src, key){
+    if (/-mgs$/.test(p)) return MGS_URL; /* MGSは中継を通さず常に直接リンク */
     if (!GO_LIVE){
       if (p === 'search') return directUrl('https://video.dmm.co.jp/list/?key=' + encodeURIComponent(key || ''));
       return DIRECT[p] || directUrl('https://video.dmm.co.jp/');
