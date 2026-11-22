@@ -7,4 +7,3 @@ https://tomeren-app.github.io/kotsuban.html
 https://tomeren-app.github.io/souro-training.html
 https://tomeren-app.github.io/privacy.html
 https://tomeren-app.github.io/contact.html
-https://tomeren-app.github.io/mirai-type/
