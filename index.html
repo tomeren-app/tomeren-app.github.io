@@ -857,6 +857,9 @@ body.battle .stage.idle .sb-info{display:none}
 .ad-fb{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;width:300px;max-width:100%;height:250px;border-radius:12px;background:linear-gradient(135deg,#1E2340,#3A2A4A);color:#fff;text-decoration:none;text-align:center;padding:16px}
 .ad-fb b{font-size:1.5rem;letter-spacing:.06em}
 .ad-fb span{font-size:.85rem;opacity:.85}
+.ad-mgs{background:linear-gradient(135deg,#3A1E2A,#6B2340)}
+#mgsBanner{display:flex;justify-content:center}
+#mgsBanner[hidden]{display:none}
 .ad-fb em{font-style:normal;margin-top:6px;padding:8px 16px;border-radius:999px;background:#F2B53A;color:#1E2340;font-weight:800}
 .adslot .widget-banner{display:block;max-width:300px;width:100%;min-height:250px;margin:0 auto}
 .adslot iframe,.adslot img{max-width:100%;height:auto}
@@ -939,6 +942,7 @@ body.battle .ck-l{color:rgba(255,255,255,.7)}
     <div id="adSlot" class="adslot">
       <!-- ▼ここに広告会社のコードを入れる▼ -->
       <div id="dmmBanner"></div>
+      <div id="mgsBanner" hidden><a class="ad-fb ad-mgs" data-tmgo="popup-mgs" data-tmsrc="popup" target="_blank" rel="noopener sponsored"><b>MGS動画</b><span>ほかのサイトでもさがしてみよう（18歳以上）</span><em>MGS動画をひらく ›</em></a></div>
       <!-- ▲ここまで▲ -->
     </div>
   </div>
@@ -2656,9 +2660,24 @@ body.battle .ck-l{color:rgba(255,255,255,.7)}
       box.innerHTML = '<a class="ad-fb" href="'+u+'" target="_blank" rel="noopener sponsored"><b>FANZA動画</b><span>サンプル動画を見ながら練習しよう</span><em>FANZAをひらく ›</em></a>';
     } }, 5000);
   }
-  function showAd(){ if (!adAllowed()) return; var wasHidden = adPop.hidden; adPop.hidden = false; document.body.classList.add('adopen'); requestAnimationFrame(loadBanner); if (wasHidden){ try{ if (window.TM_GO && TM_GO.count) TM_GO.count('popup'); }catch(e){} } }
+  function showAd(){ if (!adAllowed()) return; var wasHidden = adPop.hidden; adPop.hidden = false; document.body.classList.add('adopen'); requestAnimationFrame(loadBanner); if (wasHidden){ setAdMode('fanza'); try{ if (window.TM_GO && TM_GO.count) TM_GO.count('popup'); }catch(e){} } }
   function hideAd(){ adPop.hidden = true; document.body.classList.remove('adopen'); }
-  document.getElementById('adClose').onclick = ()=>{ adClosedAt = Date.now(); hideAd(); };
+  // とじるを押したら、FANZAの代わりにMGS動画が出る。MGSでもう一度とじたら、本当に閉じる（次に出る時はFANZAに戻る）
+  let adMode = 'fanza';
+  function setAdMode(m){
+    adMode = m;
+    const d = document.getElementById('dmmBanner'), g = document.getElementById('mgsBanner');
+    if (d) d.hidden = (m === 'mgs');
+    if (g) g.hidden = (m !== 'mgs');
+  }
+  document.getElementById('adClose').onclick = ()=>{
+    if (adMode === 'fanza'){
+      setAdMode('mgs');
+      try{ if (window.TM_GO && TM_GO.count) TM_GO.count('popup-mgs'); }catch(e){}
+      return;
+    }
+    setAdMode('fanza'); adClosedAt = Date.now(); hideAd();
+  };
   // とじても、タブを切りかえたり練習が終わったら、また出る
   document.querySelectorAll('#tabs button').forEach(b=>b.addEventListener('click', ()=>{ if (Date.now()-adClosedAt > 1500) showAd(); }));
   setInterval(()=>{ if (!adAllowed()) hideAd(); else if (adPop.hidden && Date.now()-adClosedAt > 60000) showAd(); }, 1000);
