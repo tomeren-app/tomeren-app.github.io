@@ -865,7 +865,6 @@ body.battle .stage.idle .sb-info{display:none}
 .adslot iframe,.adslot img{max-width:100%;height:auto}
 .pr-tag{display:inline-block;vertical-align:middle;margin-left:6px;padding:1px 7px;border-radius:6px;border:1px solid var(--soft);color:var(--soft);font-size:.62rem;font-weight:700;letter-spacing:.06em}
 #btClose{display:flex!important;align-items:center;justify-content:center;width:52px!important;height:52px;min-width:52px;border-radius:50%!important;font-size:1.6rem!important;font-weight:900;line-height:1;color:#fff!important;background:rgba(255,255,255,.14)!important;border:2px solid rgba(255,255,255,.55)!important;padding:0!important;margin:0!important;cursor:pointer;flex:0 0 auto}
-#xvid{display:none!important} /* 社長指示 2026-11-22 23:01「動画を探すバナーが圧倒的にいらない」 */
 body.running #xvid, body.battle #xvid, body.running .site-foot, body.battle .site-foot{display:none!important}
 .site-foot{text-align:center;font-size:.78rem;color:var(--soft);padding:18px 16px calc(28px + env(safe-area-inset-bottom,0px))}
 .site-foot a{color:var(--soft)}
@@ -3161,6 +3160,8 @@ body.battle .ck-l{color:rgba(255,255,255,.7)}
     ]},
     video:{label:'③ 動画設定（FANZA）', endLabel:'とじる', steps:[
       {sel:'#stage .opts .chips', tab:'train', act:'#stage .opts .chip', t:'「動画を見ながら」を選んでみて', d:'スタイルのチップを実際に押してみて。「動画を見ながら」を選ぶと、動画ありの練習になるわ。'},
+      {sel:'#xvid', tab:'train', t:'動画をさがす（FANZA）', d:'練習タブの下にある「動画をさがす」で、言葉を入れて「さがす」を押すとFANZAが開いて、サンプル動画を見ながら練習できるわ（18歳以上向けのサイト・広告を含むリンクよ）。'},
+      {sel:'#xvid .xv-how summary', act:'#xvid .xv-how summary', t:'小窓のやり方を開いてみて', d:'「見ながら練習するやり方（iPhone）」を実際に開いてみて。動画を小窓にして、時計を見ながら練習する手順が書いてあるわ。'},
       {sel:null, t:'動画はほどほどにね', d:'刺激の強い動画は早く高まりやすいから、慣れてきたら「最初だけ動画」や「想像だけ」にも挑戦してみてね。'}
     ]},
     media:{label:'④ 画像・音声設定', endLabel:'とじる', steps:[
